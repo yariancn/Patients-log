@@ -3,138 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OXYHYPERBARIC - PATIENT PORTAL</title>
+    <title>OXYHYPERBARIC - PORTAL CLÍNICO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --clinico: #2563eb; --oro: #d4af37; --fondo: #f8fafc; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--fondo); color: #1e293b; }
-        .card-white { background: white; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; }
+        :root { --clinico: #1e40af; --oro: #d4af37; --fondo: #fcfcfc; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--fondo); color: #0f172a; }
+        .card-medical { background: white; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
         .accent-gold { color: var(--oro); }
-        .bg-clinico { background-color: var(--clinico); }
-        .btn-clinico { background: #1e293b; color: white; font-weight: 700; padding: 16px; border-radius: 16px; width: 100%; transition: all 0.3s; }
-        .nav-tab { flex: 1; text-align: center; padding: 15px; font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; }
-        .nav-tab.active { color: var(--clinico); border-bottom: 3px solid var(--clinico); }
-        .stat-label { font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
-        .diet-card { border-left: 4px solid var(--oro); background: #fffdf5; padding: 15px; border-radius: 0 16px 16px 0; }
+        .bg-gold { background-color: var(--oro); }
+        .nav-active { color: var(--clinico); border-bottom: 3px solid var(--clinico); font-weight: 900; }
+        .stat-box { padding: 12px; border-radius: 12px; background: #f8fafc; border: 1px solid #f1f5f9; }
+        .label-tiny { font-size: 9px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 1px; }
+        .value-med { font-size: 18px; font-weight: 700; color: #1e293b; }
+        .timeline-dot { width: 10px; height: 10px; background: var(--oro); border-radius: 50%; position: relative; z-index: 10; }
     </style>
 </head>
 <body class="antialiased">
 
-    <div id="loginScreen" class="min-h-screen flex flex-col justify-center px-8 transition-all duration-500">
+    <div id="loginScreen" class="min-h-screen flex flex-col justify-center px-10">
         <div class="text-center mb-10">
-            <img src="logo.jpg" alt="Oxyhyperbaric" class="h-20 mx-auto mb-4 object-contain" onerror="this.style.display='none'">
-            <h1 class="text-3xl font-black tracking-tight text-slate-900 uppercase italic">Patient Portal</h1>
+            <h1 class="text-3xl font-black italic tracking-tighter text-blue-900">OXYHYPERBARIC</h1>
+            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[4px]">Clinical Patient Portal</p>
         </div>
-        <div class="space-y-4 max-w-md mx-auto w-full">
-            <div class="bg-white p-8 rounded-[32px] shadow-2xl shadow-blue-900/10 border border-slate-100">
-                <input type="text" id="loginID" class="w-full p-4 mb-3 bg-slate-50 border border-slate-200 rounded-xl text-center font-bold" placeholder="PATIENT ID">
-                <input type="text" id="loginName" class="w-full p-4 mb-6 bg-slate-50 border border-slate-200 rounded-xl text-center font-bold" placeholder="FIRST NAME">
-                <button onclick="attemptLogin()" id="btnLogin" class="btn-clinico shadow-lg shadow-blue-500/20">ACCESS RECORD</button>
-                <p id="loginError" class="text-red-500 text-[11px] text-center font-bold hidden mt-4 uppercase">Verify ID or Name</p>
-            </div>
+        <div class="max-w-md mx-auto w-full space-y-4">
+            <input type="text" id="loginID" class="w-full p-5 rounded-2xl border border-slate-200 bg-white shadow-sm font-bold text-center" placeholder="ID DEL PACIENTE">
+            <input type="text" id="loginName" class="w-full p-5 rounded-2xl border border-slate-200 bg-white shadow-sm font-bold text-center" placeholder="NOMBRE">
+            <button onclick="attemptLogin()" id="btnLogin" class="w-full bg-slate-900 text-white p-5 rounded-2xl font-black uppercase tracking-widest shadow-xl">ENTRAR AL EXPEDIENTE</button>
+            <p id="loginError" class="text-red-500 text-[10px] text-center font-black hidden uppercase">Datos no encontrados</p>
         </div>
     </div>
 
-    <div id="mainDashboard" class="hidden min-h-screen pb-32">
-        <header class="p-8 pt-12 flex justify-between items-center bg-white border-b border-slate-100">
+    <div id="mainDashboard" class="hidden min-h-screen">
+        <header class="sticky top-0 bg-white/80 backdrop-blur-md border-b border-slate-100 z-50 p-6 flex justify-between items-center">
             <div>
-                <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest">Medical Record</p>
-                <h2 id="patientHello" class="text-2xl font-black text-slate-900 italic">--</h2>
+                <p id="patientHello" class="text-xl font-black italic">--</p>
+                <div id="planBadge" class="inline-block px-2 py-1 bg-blue-50 text-blue-700 text-[9px] font-black rounded-md mt-1 uppercase">PLAN: --</div>
             </div>
-            <button onclick="location.reload()" class="p-2 text-slate-400 font-bold text-xs uppercase">Exit</button>
+            <button onclick="location.reload()" class="text-[10px] font-black text-slate-400 uppercase">Salir</button>
         </header>
 
-        <main class="p-6">
+        <main class="p-5 pb-32 space-y-8">
             
-            <div id="view-progress" class="space-y-6">
-                <div id="bioAgeCard" class="card-white p-6 bg-gradient-to-r from-emerald-50 to-white border-emerald-100 hidden">
-                    <div class="flex items-center gap-4">
-                        <div class="bg-emerald-500 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl shadow-lg shadow-emerald-200">🧬</div>
-                        <div>
-                            <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest leading-none">Cellular Vitality</p>
-                            <h3 class="text-2xl font-black text-slate-800">+<span id="dashRegained">0</span> YRS REGAINED</h3>
-                        </div>
+            <section id="view-stats" class="space-y-6">
+                <div class="flex justify-between items-end px-2">
+                    <h3 class="text-sm font-black uppercase tracking-widest text-slate-400">Estado Metabólico</h3>
+                    <p class="text-[10px] font-bold text-blue-600 uppercase" id="lastDate">Hoy</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="card-medical p-4">
+                        <p class="label-tiny">Peso Actual</p>
+                        <p class="value-med"><span id="valPeso">--</span> <small class="text-[10px] text-slate-400">LB</small></p>
+                    </div>
+                    <div class="card-medical p-4">
+                        <p class="label-tiny">Grasa Corporal</p>
+                        <p class="value-med text-blue-600"><span id="valGrasa">--</span> <small class="text-[10px]">%</small></p>
+                    </div>
+                    <div class="card-medical p-4">
+                        <p class="label-tiny">Músculo Esquelético</p>
+                        <p class="value-med"><span id="valMusculo">--</span> <small class="text-[10px]">LB</small></p>
+                    </div>
+                    <div class="card-medical p-4 border-amber-100">
+                        <p class="label-tiny text-amber-600">Grasa Visceral</p>
+                        <p class="value-med text-amber-600">Nivel <span id="valVisceral">--</span></p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="card-white p-5">
-                        <p class="stat-label">Initial Weight</p>
-                        <p class="text-2xl font-black text-slate-400 mt-1"><span id="dashStartWeight">--</span><span class="text-xs ml-1">LB</span></p>
+                <div class="card-medical p-5 grid grid-cols-3 gap-4 text-center">
+                    <div>
+                        <p class="label-tiny">IMC</p>
+                        <p class="text-sm font-black" id="valIMC">--</p>
                     </div>
-                    <div class="card-white p-5 border-blue-100">
-                        <p class="stat-label text-blue-600">Current Weight</p>
-                        <p class="text-2xl font-black text-blue-600 mt-1"><span id="dashCurrWeight">--</span><span class="text-xs ml-1">LB</span></p>
+                    <div>
+                        <p class="label-tiny">Agua</p>
+                        <p class="text-sm font-black text-blue-500"><span id="valAgua">--</span>%</p>
                     </div>
-                </div>
-
-                <div class="card-white p-6">
-                    <h4 class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-6 border-b pb-2">Metabolic Intelligence</h4>
-                    <div class="grid grid-cols-2 gap-y-8 gap-x-4">
-                        <div>
-                            <p class="stat-label">Body Fat</p>
-                            <p class="text-xl font-bold text-slate-800"><span id="metGrasa">--</span>%</p>
-                        </div>
-                        <div>
-                            <p class="stat-label">Muscle Mass</p>
-                            <p class="text-xl font-bold text-slate-800"><span id="metMusculo">--</span><span class="text-[10px] ml-1">LB</span></p>
-                        </div>
-                        <div>
-                            <p class="stat-label">Visceral Fat</p>
-                            <p class="text-xl font-bold text-slate-800">Lvl <span id="metVisceral">--</span></p>
-                        </div>
-                        <div>
-                            <p class="stat-label">Body Water</p>
-                            <p class="text-xl font-bold text-slate-800"><span id="metAgua">--</span>%</p>
-                        </div>
+                    <div>
+                        <p class="label-tiny">BMR</p>
+                        <p class="text-sm font-black" id="valBMR">--</p>
+                    </div>
+                    <div>
+                        <p class="label-tiny">Ósea</p>
+                        <p class="text-sm font-black" id="valOsea">--</p>
+                    </div>
+                    <div>
+                        <p class="label-tiny">Proteína</p>
+                        <p class="text-sm font-black" id="valProteina">--</p>
+                    </div>
+                    <div>
+                        <p class="label-tiny">Subcutánea</p>
+                        <p class="text-sm font-black" id="valSubcu">--%</p>
                     </div>
                 </div>
 
-                <div class="card-white p-6 border-oro border-opacity-20 bg-[#fffef9]">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="w-2 h-2 bg-oro rounded-full animate-ping"></span>
-                        <p class="text-[10px] font-black uppercase tracking-widest text-oro">Oxy-AI Clinical Analysis</p>
+                <div class="card-medical p-6 bg-slate-900 text-white relative overflow-hidden">
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                            <p class="text-[10px] font-black uppercase tracking-[3px] text-blue-300">Oxy-AI Clinical Insights</p>
+                        </div>
+                        <p id="aiLongMsg" class="text-sm leading-relaxed font-medium text-slate-300 italic">
+                            Analizando tu perfil biológico...
+                        </p>
                     </div>
-                    <p id="aiRecommendation" class="text-[14px] leading-relaxed text-slate-700 font-medium">
-                        Processing clinical data...
+                    <div class="absolute -right-4 -bottom-4 text-6xl opacity-10">🧬</div>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-sm font-black uppercase tracking-widest text-slate-400 px-2">Evolución de Sesiones</h3>
+                    <div id="timelineContainer" class="space-y-3">
+                        </div>
+                </div>
+            </section>
+
+            <section id="view-nutrition" class="hidden space-y-6">
+                <h3 class="text-xl font-black italic text-slate-900">Protocolo de Alimentación</h3>
+                <div id="dailyGuide" class="space-y-4">
+                    </div>
+                <div class="card-medical p-5 bg-red-50 border-red-100">
+                    <p class="label-tiny text-red-600 mb-2">Restricciones Críticas (Baldan Protocol)</p>
+                    <ul class="text-[11px] text-red-800 space-y-1 font-bold list-disc pl-4">
+                        <li>Cero azúcares refinados y harinas blancas.</li>
+                        <li>Evitar lácteos enteros (solo deslactosados permitidos).</li>
+                        <li>Prohibido alcohol y jugos de fruta procesados.</li>
+                        <li>Sal solo durante la cocción, nunca después.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="view-training" class="hidden space-y-6">
+                <h3 class="text-xl font-black italic text-slate-900">Pre-Session Training</h3>
+                <div id="trainingDetails" class="space-y-4">
+                    </div>
+                <div class="card-medical p-5 bg-blue-50 border-blue-100">
+                    <p class="text-[12px] text-blue-800 leading-relaxed font-medium">
+                        <strong>Nota Clínica:</strong> Realiza estos ejercicios 5-10 minutos antes de tu sesión de Infra Baldan para maximizar la microcirculación y la respuesta lipolítica.
                     </p>
                 </div>
-            </div>
-
-            <div id="view-nutrition" class="hidden space-y-6">
-                <div id="nutritionContent" class="space-y-4">
-                    </div>
-            </div>
+            </section>
 
         </main>
 
-        <nav class="fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 flex justify-around items-center z-50 h-20 shadow-2xl">
-            <div onclick="switchTab('progress')" id="tab-progress" class="nav-tab active">
-                <p class="text-xl">📊</p>
-                <p class="mt-1">Overview</p>
+        <nav class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-100 h-20 flex justify-around items-center z-[100] px-4 shadow-2xl">
+            <div onclick="switchTab('stats')" id="tab-stats" class="flex flex-col items-center gap-1 nav-active flex-1 py-2">
+                <span class="text-xl">📈</span><span class="text-[9px] uppercase font-black">Historial</span>
             </div>
-            <div onclick="switchTab('nutrition')" id="tab-nutrition" class="nav-tab">
-                <p class="text-xl">🍎</p>
-                <p class="mt-1">My Plan</p>
+            <div onclick="switchTab('nutrition')" id="tab-nutrition" class="flex flex-col items-center gap-1 text-slate-400 flex-1 py-2">
+                <span class="text-xl">🍎</span><span class="text-[9px] uppercase font-black">Nutrición</span>
+            </div>
+            <div onclick="switchTab('training')" id="tab-training" class="flex flex-col items-center gap-1 text-slate-400 flex-1 py-2">
+                <span class="text-xl">🚴</span><span class="text-[9px] uppercase font-black">Entreno</span>
             </div>
         </nav>
     </div>
 
 <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyuIcI4lN-AMx82_W35BfcGn1szKgnrIbu3YOPAwuhtx3kKAOQ5i-pBWxM0Z2G8oKPz/exec";
-
+    const LB_FACTOR = 2.20462;
     let patientData = null;
 
     async function attemptLogin() {
         const id = document.getElementById('loginID').value.trim();
         const name = document.getElementById('loginName').value.trim().toLowerCase();
-        const btn = document.getElementById('btnLogin');
         if(!id || !name) return;
 
-        btn.innerText = "CONNECTING...";
-        btn.disabled = true;
-
+        document.getElementById('btnLogin').innerText = "AUTENTICANDO...";
+        
         try {
             const res = await fetch(`${WEB_APP_URL}?action=obtenerClientes`);
             const data = await res.json();
@@ -145,113 +180,141 @@
                 loadDashboard();
             } else {
                 document.getElementById('loginError').classList.remove('hidden');
-                btn.innerText = "ACCESS RECORD";
-                btn.disabled = false;
+                document.getElementById('btnLogin').innerText = "ENTRAR AL EXPEDIENTE";
             }
         } catch(e) {
-            alert("Connection error.");
-            btn.disabled = false;
+            alert("Error de conexión");
         }
     }
 
     function loadDashboard() {
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('mainDashboard').classList.remove('hidden');
+        document.getElementById('patientHello').innerText = `HOLA, ${patientData.nombre.split(' ')[0].toUpperCase()}`;
+        document.getElementById('planBadge').innerText = `PLAN: ${patientData.plan_asignado || 'Ginoide'}`;
 
-        document.getElementById('patientHello').innerText = patientData.nombre.toUpperCase();
-
-        // Calcular datos finales (último avance o inicial)
-        let w = parseFloat(patientData.peso);
-        let g = parseFloat(patientData.grasa);
-        let v = parseInt(patientData.grasa_visceral || 0);
-        let m = parseFloat(patientData.masa_muscular_kg || 0);
-        let a = parseFloat(patientData.agua_corporal_perc || 0);
-        let ageM = parseInt(patientData.edad_metabolica || 0);
-
+        // Determinar últimos datos
+        let last = patientData;
         if(patientData.avances && patientData.avances.length > 0) {
-            const last = [...patientData.avances].pop();
-            w = parseFloat(last.peso);
-            g = parseFloat(last.grasa);
-            v = parseInt(last.grasa_visceral || v);
-            m = parseFloat(last.masa_muscular_kg || m);
-            a = parseFloat(last.agua_corporal_perc || a);
-            ageM = parseInt(last.edad_metabolica || ageM);
+            last = [...patientData.avances].pop();
         }
 
-        // Llenado de UI (Convertido a LB para Texas)
-        document.getElementById('dashStartWeight').innerText = (parseFloat(patientData.peso) * 2.20462).toFixed(1);
-        document.getElementById('dashCurrWeight').innerText = (w * 2.20462).toFixed(1);
-        document.getElementById('metGrasa').innerText = g.toFixed(1);
-        document.getElementById('metMusculo').innerText = (m * 2.20462).toFixed(1);
-        document.getElementById('metVisceral').innerText = v;
-        document.getElementById('metAgua').innerText = a.toFixed(1);
+        // Llenado de Biometría
+        document.getElementById('valPeso').innerText = (parseFloat(last.peso) * LB_FACTOR).toFixed(1);
+        document.getElementById('valGrasa').innerText = parseFloat(last.grasa).toFixed(1);
+        document.getElementById('valMusculo').innerText = (parseFloat(last.masa_muscular_kg || 0) * LB_FACTOR).toFixed(1);
+        document.getElementById('valVisceral').innerText = last.grasa_visceral || last.predicta_data?.grasa_visceral || '--';
+        document.getElementById('valIMC').innerText = last.imc || last.predicta_data?.imc || '--';
+        document.getElementById('valAgua').innerText = last.agua_corporal_perc || last.predicta_data?.agua_corporal_perc || '--';
+        document.getElementById('valBMR').innerText = last.bmr || last.predicta_data?.bmr || '--';
+        document.getElementById('valOsea').innerText = last.masa_osea_kg || last.predicta_data?.masa_osea_kg || '--';
+        document.getElementById('valProteina').innerText = last.proteina_perc || last.predicta_data?.proteina_perc || '--';
+        document.getElementById('valSubcu').innerText = last.grasa_subcutanea_perc || last.predicta_data?.grasa_subcutanea_perc || '--';
 
-        // Años Ganados
-        const reg = parseInt(patientData.edad_metabolica || 0) - ageM;
-        if(reg > 0) {
-            document.getElementById('bioAgeCard').classList.remove('hidden');
-            document.getElementById('dashRegained').innerText = reg;
-        }
-
-        generateAIAnalysis(w, g, v, m);
+        renderTimeline();
         renderNutrition(patientData.plan_asignado);
+        renderTraining(patientData.plan_asignado);
+        generateDetailedAdvice(last);
     }
 
-    function generateAIAnalysis(w, g, v, m) {
-        const initialG = parseFloat(patientData.grasa);
-        const initialV = parseInt(patientData.grasa_visceral || 10);
-        let insights = [];
-
-        if (g < initialG) insights.push("Tu oxidación de grasa subcutánea es excelente, lo que indica que el protocolo aeróbico está en su zona óptima.");
-        if (v < initialV) insights.push("Has reducido grasa visceral; esto es una victoria crítica para tu salud cardiovascular y longevidad.");
-        else if (v > 9) insights.push("Tu nivel de grasa visceral es prioridad médica. Asegúrate de evitar carbohidratos después de las 4 PM.");
+    function renderTimeline() {
+        const container = document.getElementById('timelineContainer');
+        let html = "";
         
-        if (m >= parseFloat(patientData.masa_muscular_kg)) insights.push("Estás protegiendo tu masa muscular. Esto mantiene tu metabolismo basal alto.");
+        // Incluir el registro inicial y los avances
+        const history = [{ fecha: 'Inicio', peso: patientData.peso, grasa: patientData.grasa }, ...(patientData.avances || [])];
+        
+        history.reverse().forEach(entry => {
+            const f = entry.fecha === 'Inicio' ? 'Registro Inicial' : new Date(entry.fecha).toLocaleDateString();
+            html += `
+                <div class="card-medical p-4 flex justify-between items-center">
+                    <div>
+                        <p class="label-tiny">${f}</p>
+                        <p class="text-sm font-bold text-slate-700 italic">${(parseFloat(entry.peso) * LB_FACTOR).toFixed(1)} LB</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="label-tiny">Grasa</p>
+                        <p class="text-sm font-bold text-blue-600">${parseFloat(entry.grasa).toFixed(1)}%</p>
+                    </div>
+                </div>`;
+        });
+        container.innerHTML = html;
+    }
 
-        document.getElementById('aiRecommendation').innerText = insights.join(" ") || "Tu metabolismo se está adaptando al estímulo de Infra Baldan. Mantén la consistencia para ver resultados exponenciales.";
+    function generateDetailedAdvice(current) {
+        const initialG = parseFloat(patientData.grasa);
+        const currentG = parseFloat(current.grasa);
+        const visceral = parseInt(current.grasa_visceral || 10);
+        
+        let advice = "Tu perfil metabólico muestra una respuesta activa al tratamiento. ";
+        
+        if(currentG < initialG) {
+            advice += `Has logrado reducir tu porcentaje de grasa en un ${(initialG - currentG).toFixed(1)}%, lo cual es un indicador real de oxidación lipídica. `;
+        } else {
+            advice += "Estamos en fase de estabilización metabólica; es vital mantener el ritmo de 3 sesiones semanales para activar la lipólisis. ";
+        }
+
+        if(visceral > 10) {
+            advice += "Tu grasa visceral sigue en rango de riesgo; esto requiere un enfoque estricto en el consumo de fibra y eliminación total de azúcares esta semana. ";
+        } else {
+            advice += "Tus órganos internos están trabajando en un ambiente limpio, sigue así. ";
+        }
+
+        advice += "Recuerda que Infra Baldan no solo quema calorías, reprograma tu metabolismo basal.";
+        document.getElementById('aiLongMsg').innerText = advice;
     }
 
     function renderNutrition(plan) {
-        const content = document.getElementById('nutritionContent');
-        const planes = {
+        const guide = document.getElementById('dailyGuide');
+        const content = {
             "Ginoide": [
-                {t: "Desayuno", d: "Café/Té sin azúcar + Yogur deslactosado o leche de avena con salvado."},
-                {t: "Snack", d: "5 Nueces o frutos rojos."},
-                {t: "Comida", d: "Arroz Basmati (50g) + Carne magra o Pescado + Abundantes vegetales verdes."},
-                {t: "Cena", d: "Pollo o Pescado + Vegetales ilimitados. 1 pequeña papa permitida."},
-                {t: "Entrenamiento", d: "Antes de tu sesión: Mancuernas para pecho, hombro y brazos para activar microcirculación superior."}
+                {m: "Ayunas", c: "1 Vaso de agua tibia con té No. 2."},
+                {m: "Desayuno", c: "Café/Té + Yogur deslactosado + 1 cda salvado de avena o espelta."},
+                {m: "Almuerzo", c: "Arroz Basmati (40-60g) + Pollo/Pescado + Vegetales ilimitados."},
+                {m: "Cena", c: "Pescado + Vegetales + 1 papa pequeña (solo si hubo sesión)."},
+                {m: "Snack", c: "3-5 Nueces o frutos rojos."}
             ],
             "Androide": [
-                {t: "Desayuno", d: "Té verde + yogur de soya con salvado."},
-                {t: "Comida", d: "Legumbres (lentejas/garbanzos) + vegetales crudos."},
-                {t: "Cena", d: "Carne roja magra (Carpaccio/Tartare) + vegetales. CERO carbohidratos en la cena."},
-                {t: "Entrenamiento", d: "Antes de pedalear: 2x15 Squats y 2x10 Lunges para bombear sangre al tren inferior."}
-            ],
-            "Kit7Dias": [
-                {t: "Fase de Choque", d: "Sustituye comida por Batido Mességué. Solo vegetales blancos/verdes. Prohibido zanahoria y calabaza."},
-                {t: "Importante", d: "Uso obligatorio de Multivitamínico y Acelerador metabólico Baldan."}
+                {m: "Desayuno", c: "Té verde + Yogur de soya con salvado."},
+                {m: "Almuerzo", c: "Legumbres (lentejas/frijoles) + Vegetales crudos + 1 Fruta."},
+                {m: "Cena", c: "Carne magra (Carpaccio) + Vegetales. Prohibido carbohidratos de noche."},
+                {m: "Snack", c: "Zanahoria cruda o apio."}
             ]
         };
 
-        const dieta = planes[plan] || planes["Ginoide"];
-        let html = "";
-        dieta.forEach(i => {
-            html += `<div class="diet-card"><p class="stat-label text-amber-600">${i.t}</p><p class="text-sm font-semibold text-slate-700 mt-1">${i.d}</p></div>`;
-        });
-        content.innerHTML = html;
+        const active = content[plan] || content["Ginoide"];
+        guide.innerHTML = active.map(i => `
+            <div class="card-medical p-4 border-l-4 border-l-blue-600">
+                <p class="label-tiny text-blue-600">${i.m}</p>
+                <p class="text-[14px] font-bold mt-1">${i.c}</p>
+            </div>
+        `).join('');
     }
 
-    function switchTab(view) {
-        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-        if(view === 'progress') {
-            document.getElementById('view-progress').classList.remove('hidden');
-            document.getElementById('view-nutrition').classList.add('hidden');
-            document.getElementById('tab-progress').classList.add('active');
-        } else {
-            document.getElementById('view-progress').classList.add('hidden');
-            document.getElementById('view-nutrition').classList.remove('hidden');
-            document.getElementById('tab-nutrition').classList.add('active');
-        }
+    function renderTraining(plan) {
+        const train = document.getElementById('trainingDetails');
+        const protocols = {
+            "Ginoide": "3 Series de 12 repeticiones: Aperturas con mancuernas (pectorales), Elevaciones laterales (hombros), Bíceps y Tríceps. Realizar en la silla de Infra Baldan antes de pedalear.",
+            "Androide": "2 Series de 15 Squats (Sentadillas) + 2 Series de 10 Lunges (Estocadas) + 2 Series de 25 Glúteo en pared. Descanso de 20 segundos entre series.",
+            "Mixto": "No requiere ejercicios previos, pero se recomienda extender la sesión de pedaleo 10 minutos adicionales para optimizar resultados."
+        };
+        train.innerHTML = `
+            <div class="card-medical p-6 bg-white shadow-inner">
+                <p class="label-tiny accent-gold mb-3">Rutina Recomendada</p>
+                <p class="text-[15px] font-medium leading-relaxed">${protocols[plan] || protocols["Ginoide"]}</p>
+            </div>
+        `;
+    }
+
+    function switchTab(t) {
+        document.getElementById('view-stats').classList.add('hidden');
+        document.getElementById('view-nutrition').classList.add('hidden');
+        document.getElementById('view-training').classList.add('hidden');
+        document.getElementById(`view-${t}`).classList.remove('hidden');
+        
+        document.querySelectorAll('nav div').forEach(el => el.classList.remove('nav-active', 'text-slate-400'));
+        document.getElementById(`tab-${t}`).classList.add('nav-active');
+        window.scrollTo(0,0);
     }
 </script>
 </body>
