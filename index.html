@@ -1,309 +1,288 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OXYHYPERBARIC - PORTAL CLÍNICO</title>
+    <title>OXYHYPERBARIC - PATIENT PORTAL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --clinico: #1e40af; --oro: #d4af37; --fondo: #fcfcfc; }
         body { font-family: 'Inter', sans-serif; background-color: var(--fondo); color: #0f172a; }
         .card-medical { background: white; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
-        .accent-gold { color: var(--oro); }
-        .bg-gold { background-color: var(--oro); }
         .nav-active { color: var(--clinico); border-bottom: 3px solid var(--clinico); font-weight: 900; }
         .stat-box { padding: 12px; border-radius: 12px; background: #f8fafc; border: 1px solid #f1f5f9; }
         .label-tiny { font-size: 9px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 1px; }
         .value-med { font-size: 18px; font-weight: 700; color: #1e293b; }
-        .timeline-dot { width: 10px; height: 10px; background: var(--oro); border-radius: 50%; position: relative; z-index: 10; }
+        .float-btn { position: fixed; right: 20px; z-index: 100; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body class="antialiased">
 
+    <div class="fixed top-4 right-4 flex gap-2 z-[110]">
+        <button onclick="toggleLanguage()" class="bg-white border border-slate-200 text-[10px] font-black px-3 py-2 rounded-full shadow-sm uppercase" id="langBtn">EN / ES</button>
+        <button onclick="toggleUnits()" class="bg-blue-600 text-white text-[10px] font-black px-3 py-2 rounded-full shadow-sm uppercase" id="unitBtn">LB / IN</button>
+    </div>
+
     <div id="loginScreen" class="min-h-screen flex flex-col justify-center px-10">
-        <div class="text-center mb-10">
-            <h1 class="text-3xl font-black italic tracking-tighter text-blue-900">OXYHYPERBARIC</h1>
-            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[4px]">Clinical Patient Portal</p>
+        <div class="text-center mb-12">
+            <img src="logo.jpg" alt="Oxyhyperbaric" class="h-24 mx-auto mb-6 object-contain" onerror="this.src='https://via.placeholder.com/300x100?text=OXYHYPERBARIC';">
+            <h1 class="text-2xl font-black italic tracking-tighter text-blue-900 uppercase" id="txtWelcome">Patient Portal</h1>
         </div>
         <div class="max-w-md mx-auto w-full space-y-4">
-            <input type="text" id="loginID" class="w-full p-5 rounded-2xl border border-slate-200 bg-white shadow-sm font-bold text-center" placeholder="ID DEL PACIENTE">
-            <input type="text" id="loginName" class="w-full p-5 rounded-2xl border border-slate-200 bg-white shadow-sm font-bold text-center" placeholder="NOMBRE">
-            <button onclick="attemptLogin()" id="btnLogin" class="w-full bg-slate-900 text-white p-5 rounded-2xl font-black uppercase tracking-widest shadow-xl">ENTRAR AL EXPEDIENTE</button>
-            <p id="loginError" class="text-red-500 text-[10px] text-center font-black hidden uppercase">Datos no encontrados</p>
+            <input type="text" id="loginID" class="w-full p-5 rounded-2xl border border-slate-200 bg-white shadow-sm font-bold text-center uppercase" placeholder="PATIENT ID">
+            <input type="text" id="loginName" class="w-full p-5 rounded-2xl border border-slate-200 bg-white shadow-sm font-bold text-center uppercase" placeholder="NAME / NOMBRE">
+            <button onclick="attemptLogin()" id="btnLogin" class="w-full bg-slate-900 text-white p-5 rounded-2xl font-black uppercase tracking-widest shadow-xl">ACCESS RECORD</button>
+            <p id="loginError" class="text-red-500 text-[10px] text-center font-black hidden uppercase">Data not found / Datos no encontrados</p>
         </div>
     </div>
 
     <div id="mainDashboard" class="hidden min-h-screen">
         <header class="sticky top-0 bg-white/80 backdrop-blur-md border-b border-slate-100 z-50 p-6 flex justify-between items-center">
-            <div>
-                <p id="patientHello" class="text-xl font-black italic">--</p>
-                <div id="planBadge" class="inline-block px-2 py-1 bg-blue-50 text-blue-700 text-[9px] font-black rounded-md mt-1 uppercase">PLAN: --</div>
+            <div class="flex items-center gap-4">
+                <img src="logo.jpg" class="h-10 object-contain" onerror="this.style.display='none'">
+                <div>
+                    <p id="patientHello" class="text-lg font-black italic">--</p>
+                    <div id="planBadge" class="inline-block px-2 py-1 bg-blue-50 text-blue-700 text-[9px] font-black rounded-md uppercase">PLAN: --</div>
+                </div>
             </div>
-            <button onclick="location.reload()" class="text-[10px] font-black text-slate-400 uppercase">Salir</button>
         </header>
 
         <main class="p-5 pb-32 space-y-8">
             
             <section id="view-stats" class="space-y-6">
                 <div class="flex justify-between items-end px-2">
-                    <h3 class="text-sm font-black uppercase tracking-widest text-slate-400">Estado Metabólico</h3>
-                    <p class="text-[10px] font-bold text-blue-600 uppercase" id="lastDate">Hoy</p>
+                    <h3 class="text-sm font-black uppercase tracking-widest text-slate-400" id="txtStatusTitle">Metabolic Status</h3>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div class="card-medical p-4">
-                        <p class="label-tiny">Peso Actual</p>
-                        <p class="value-med"><span id="valPeso">--</span> <small class="text-[10px] text-slate-400">LB</small></p>
+                        <p class="label-tiny" id="lblPeso">Weight</p>
+                        <p class="value-med"><span id="valPeso">--</span> <small class="text-[10px] text-slate-400" id="uW">LB</small></p>
                     </div>
                     <div class="card-medical p-4">
-                        <p class="label-tiny">Grasa Corporal</p>
+                        <p class="label-tiny" id="lblGrasa">Body Fat</p>
                         <p class="value-med text-blue-600"><span id="valGrasa">--</span> <small class="text-[10px]">%</small></p>
                     </div>
                     <div class="card-medical p-4">
-                        <p class="label-tiny">Músculo Esquelético</p>
-                        <p class="value-med"><span id="valMusculo">--</span> <small class="text-[10px]">LB</small></p>
+                        <p class="label-tiny" id="lblMusculo">Muscle Mass</p>
+                        <p class="value-med"><span id="valMusculo">--</span> <small class="text-[10px]" id="uM">LB</small></p>
                     </div>
                     <div class="card-medical p-4 border-amber-100">
-                        <p class="label-tiny text-amber-600">Grasa Visceral</p>
-                        <p class="value-med text-amber-600">Nivel <span id="valVisceral">--</span></p>
+                        <p class="label-tiny text-amber-600" id="lblVisceral">Visceral Fat</p>
+                        <p class="value-med text-amber-600">Lvl <span id="valVisceral">--</span></p>
                     </div>
                 </div>
 
                 <div class="card-medical p-5 grid grid-cols-3 gap-4 text-center">
-                    <div>
-                        <p class="label-tiny">IMC</p>
-                        <p class="text-sm font-black" id="valIMC">--</p>
-                    </div>
-                    <div>
-                        <p class="label-tiny">Agua</p>
-                        <p class="text-sm font-black text-blue-500"><span id="valAgua">--</span>%</p>
-                    </div>
-                    <div>
-                        <p class="label-tiny">BMR</p>
-                        <p class="text-sm font-black" id="valBMR">--</p>
-                    </div>
-                    <div>
-                        <p class="label-tiny">Ósea</p>
-                        <p class="text-sm font-black" id="valOsea">--</p>
-                    </div>
-                    <div>
-                        <p class="label-tiny">Proteína</p>
-                        <p class="text-sm font-black" id="valProteina">--</p>
-                    </div>
-                    <div>
-                        <p class="label-tiny">Subcutánea</p>
-                        <p class="text-sm font-black" id="valSubcu">--%</p>
-                    </div>
+                    <div><p class="label-tiny">BMI</p><p class="text-sm font-black" id="valIMC">--</p></div>
+                    <div><p class="label-tiny" id="lblAgua">Water</p><p class="text-sm font-black text-blue-500"><span id="valAgua">--</span>%</p></div>
+                    <div><p class="label-tiny">BMR</p><p class="text-sm font-black" id="valBMR">--</p></div>
+                    <div><p class="label-tiny" id="lblOsea">Bone</p><p class="text-sm font-black" id="valOsea">--</p></div>
+                    <div><p class="label-tiny" id="lblProt">Protein</p><p class="text-sm font-black" id="valProteina">--</p></div>
+                    <div><p class="label-tiny" id="lblSub">Subcu.</p><p class="text-sm font-black" id="valSubcu">--%</p></div>
                 </div>
 
                 <div class="card-medical p-6 bg-slate-900 text-white relative overflow-hidden">
                     <div class="relative z-10">
                         <div class="flex items-center gap-2 mb-3">
                             <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-                            <p class="text-[10px] font-black uppercase tracking-[3px] text-blue-300">Oxy-AI Clinical Insights</p>
+                            <p class="text-[10px] font-black uppercase tracking-[3px] text-blue-300">Oxy-AI Insights</p>
                         </div>
-                        <p id="aiLongMsg" class="text-sm leading-relaxed font-medium text-slate-300 italic">
-                            Analizando tu perfil biológico...
-                        </p>
+                        <p id="aiLongMsg" class="text-sm leading-relaxed font-medium text-slate-300 italic">Analyzing profile...</p>
                     </div>
-                    <div class="absolute -right-4 -bottom-4 text-6xl opacity-10">🧬</div>
                 </div>
 
                 <div class="space-y-4">
-                    <h3 class="text-sm font-black uppercase tracking-widest text-slate-400 px-2">Evolución de Sesiones</h3>
-                    <div id="timelineContainer" class="space-y-3">
-                        </div>
+                    <h3 class="text-sm font-black uppercase tracking-widest text-slate-400 px-2" id="txtHistory">Session Evolution</h3>
+                    <div id="timelineContainer" class="space-y-3"></div>
                 </div>
             </section>
 
             <section id="view-nutrition" class="hidden space-y-6">
-                <h3 class="text-xl font-black italic text-slate-900">Protocolo de Alimentación</h3>
-                <div id="dailyGuide" class="space-y-4">
-                    </div>
-                <div class="card-medical p-5 bg-red-50 border-red-100">
-                    <p class="label-tiny text-red-600 mb-2">Restricciones Críticas (Baldan Protocol)</p>
-                    <ul class="text-[11px] text-red-800 space-y-1 font-bold list-disc pl-4">
-                        <li>Cero azúcares refinados y harinas blancas.</li>
-                        <li>Evitar lácteos enteros (solo deslactosados permitidos).</li>
-                        <li>Prohibido alcohol y jugos de fruta procesados.</li>
-                        <li>Sal solo durante la cocción, nunca después.</li>
-                    </ul>
-                </div>
+                <h3 class="text-xl font-black italic text-slate-900" id="txtNutritionTitle">Nutrition Protocol</h3>
+                <div id="dailyGuide" class="space-y-4"></div>
             </section>
 
             <section id="view-training" class="hidden space-y-6">
-                <h3 class="text-xl font-black italic text-slate-900">Pre-Session Training</h3>
-                <div id="trainingDetails" class="space-y-4">
-                    </div>
-                <div class="card-medical p-5 bg-blue-50 border-blue-100">
-                    <p class="text-[12px] text-blue-800 leading-relaxed font-medium">
-                        <strong>Nota Clínica:</strong> Realiza estos ejercicios 5-10 minutos antes de tu sesión de Infra Baldan para maximizar la microcirculación y la respuesta lipolítica.
-                    </p>
-                </div>
+                <h3 class="text-xl font-black italic text-slate-900" id="txtTrainingTitle">Pre-Session Training</h3>
+                <div id="trainingDetails" class="space-y-4"></div>
             </section>
 
         </main>
 
         <nav class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-100 h-20 flex justify-around items-center z-[100] px-4 shadow-2xl">
             <div onclick="switchTab('stats')" id="tab-stats" class="flex flex-col items-center gap-1 nav-active flex-1 py-2">
-                <span class="text-xl">📈</span><span class="text-[9px] uppercase font-black">Historial</span>
+                <span class="text-xl">📈</span><span class="text-[9px] uppercase font-black" id="navStats">Stats</span>
             </div>
             <div onclick="switchTab('nutrition')" id="tab-nutrition" class="flex flex-col items-center gap-1 text-slate-400 flex-1 py-2">
-                <span class="text-xl">🍎</span><span class="text-[9px] uppercase font-black">Nutrición</span>
+                <span class="text-xl">🍎</span><span class="text-[9px] uppercase font-black" id="navNutrition">Nutrition</span>
             </div>
             <div onclick="switchTab('training')" id="tab-training" class="flex flex-col items-center gap-1 text-slate-400 flex-1 py-2">
-                <span class="text-xl">🚴</span><span class="text-[9px] uppercase font-black">Entreno</span>
+                <span class="text-xl">🚴</span><span class="text-[9px] uppercase font-black" id="navTraining">Training</span>
             </div>
         </nav>
     </div>
 
 <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyuIcI4lN-AMx82_W35BfcGn1szKgnrIbu3YOPAwuhtx3kKAOQ5i-pBWxM0Z2G8oKPz/exec";
-    const LB_FACTOR = 2.20462;
+    
     let patientData = null;
+    let unitMode = 'LB'; 
+    let currentLang = 'EN';
+
+    const translations = {
+        EN: {
+            txtWelcome: "Patient Portal", btnLogin: "Access Record", lblPeso: "Weight", lblGrasa: "Body Fat", lblMusculo: "Muscle Mass",
+            lblVisceral: "Visceral Fat", lblAgua: "Water", lblOsea: "Bone", lblProt: "Protein", lblSub: "Subcu.", txtStatusTitle: "Metabolic Status",
+            txtHistory: "Session Evolution", txtNutritionTitle: "Nutrition Protocol", txtTrainingTitle: "Pre-Session Exercises",
+            navStats: "Overview", navNutrition: "Plan", navTraining: "Training", morning: "Morning", snack: "Snack", lunch: "Lunch", dinner: "Dinner", fasting: "Fasting"
+        },
+        ES: {
+            txtWelcome: "Portal del Paciente", btnLogin: "Entrar al Expediente", lblPeso: "Peso", lblGrasa: "Grasa Corporal", lblMusculo: "Masa Muscular",
+            lblVisceral: "Grasa Visceral", lblAgua: "Agua", lblOsea: "Ósea", lblProt: "Proteína", lblSub: "Subcutánea", txtStatusTitle: "Estado Metabólico",
+            txtHistory: "Evolución de Sesiones", txtNutritionTitle: "Protocolo Nutricional", txtTrainingTitle: "Ejercicios Pre-Sesión",
+            navStats: "Resumen", navNutrition: "Plan", navTraining: "Entreno", morning: "Mañana", snack: "Snack", lunch: "Comida", dinner: "Cena", fasting: "Ayunas"
+        }
+    };
+
+    function toggleLanguage() {
+        currentLang = (currentLang === 'EN' ? 'ES' : 'EN');
+        applyLanguage();
+    }
+
+    function applyLanguage() {
+        const t = translations[currentLang];
+        Object.keys(t).forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerText = t[id]; });
+        if(patientData) {
+            renderNutrition(patientData.plan_asignado);
+            renderTraining(patientData.plan_asignado);
+            generateDetailedAdvice();
+            renderTimeline();
+        }
+    }
+
+    function toggleUnits() {
+        unitMode = (unitMode === 'LB' ? 'KG' : 'LB');
+        document.getElementById('unitBtn').innerText = (unitMode === 'LB' ? 'LB / IN' : 'KG / CM');
+        if(patientData) loadDashboardData();
+    }
+
+    function convP(val) {
+        if(!val) return "--";
+        const num = parseFloat(val);
+        return unitMode === 'LB' ? (num * 2.20462).toFixed(1) : num.toFixed(1);
+    }
 
     async function attemptLogin() {
         const id = document.getElementById('loginID').value.trim();
         const name = document.getElementById('loginName').value.trim().toLowerCase();
         if(!id || !name) return;
-
-        document.getElementById('btnLogin').innerText = "AUTENTICANDO...";
-        
+        document.getElementById('btnLogin').innerText = "...";
         try {
             const res = await fetch(`${WEB_APP_URL}?action=obtenerClientes`);
             const data = await res.json();
             const match = data.find(p => String(p.id).trim() === id && String(p.nombre).toLowerCase().includes(name));
-
-            if(match) {
-                patientData = match;
-                loadDashboard();
-            } else {
-                document.getElementById('loginError').classList.remove('hidden');
-                document.getElementById('btnLogin').innerText = "ENTRAR AL EXPEDIENTE";
-            }
-        } catch(e) {
-            alert("Error de conexión");
-        }
+            if(match) { patientData = match; loadDashboard(); } 
+            else { document.getElementById('loginError').classList.remove('hidden'); document.getElementById('btnLogin').innerText = translations[currentLang].btnLogin; }
+        } catch(e) { alert("Network error"); }
     }
 
     function loadDashboard() {
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('mainDashboard').classList.remove('hidden');
-        document.getElementById('patientHello').innerText = `HOLA, ${patientData.nombre.split(' ')[0].toUpperCase()}`;
-        document.getElementById('planBadge').innerText = `PLAN: ${patientData.plan_asignado || 'Ginoide'}`;
+        applyLanguage();
+        loadDashboardData();
+    }
 
-        // Determinar últimos datos
+    function loadDashboardData() {
         let last = patientData;
-        if(patientData.avances && patientData.avances.length > 0) {
-            last = [...patientData.avances].pop();
-        }
-
-        // Llenado de Biometría
-        document.getElementById('valPeso').innerText = (parseFloat(last.peso) * LB_FACTOR).toFixed(1);
+        if(patientData.avances && patientData.avances.length > 0) last = [...patientData.avances].pop();
+        
+        document.getElementById('patientHello').innerText = `HELLO, ${patientData.nombre.split(' ')[0].toUpperCase()}`;
+        document.getElementById('planBadge').innerText = `PLAN: ${patientData.plan_asignado || 'Ginoide'}`;
+        document.getElementById('valPeso').innerText = convP(last.peso);
         document.getElementById('valGrasa').innerText = parseFloat(last.grasa).toFixed(1);
-        document.getElementById('valMusculo').innerText = (parseFloat(last.masa_muscular_kg || 0) * LB_FACTOR).toFixed(1);
-        document.getElementById('valVisceral').innerText = last.grasa_visceral || last.predicta_data?.grasa_visceral || '--';
+        document.getElementById('valMusculo').innerText = convP(last.masa_muscular_kg || 0);
+        document.getElementById('valVisceral').innerText = last.grasa_visceral || last.predicta_data?.visceral || '--';
         document.getElementById('valIMC').innerText = last.imc || last.predicta_data?.imc || '--';
-        document.getElementById('valAgua').innerText = last.agua_corporal_perc || last.predicta_data?.agua_corporal_perc || '--';
+        document.getElementById('valAgua').innerText = parseFloat(last.agua_corporal_perc || 0).toFixed(1);
         document.getElementById('valBMR').innerText = last.bmr || last.predicta_data?.bmr || '--';
-        document.getElementById('valOsea').innerText = last.masa_osea_kg || last.predicta_data?.masa_osea_kg || '--';
+        document.getElementById('valOsea').innerText = convP(last.masa_osea_kg || 0);
         document.getElementById('valProteina').innerText = last.proteina_perc || last.predicta_data?.proteina_perc || '--';
         document.getElementById('valSubcu').innerText = last.grasa_subcutanea_perc || last.predicta_data?.grasa_subcutanea_perc || '--';
+        
+        document.getElementById('uW').innerText = unitMode;
+        document.getElementById('uM').innerText = unitMode;
 
         renderTimeline();
-        renderNutrition(patientData.plan_asignado);
-        renderTraining(patientData.plan_asignado);
-        generateDetailedAdvice(last);
+        generateDetailedAdvice();
     }
 
     function renderTimeline() {
         const container = document.getElementById('timelineContainer');
         let html = "";
-        
-        // Incluir el registro inicial y los avances
-        const history = [{ fecha: 'Inicio', peso: patientData.peso, grasa: patientData.grasa }, ...(patientData.avances || [])];
-        
+        const history = [{ fecha: 'Start', peso: patientData.peso, grasa: patientData.grasa }, ...(patientData.avances || [])];
         history.reverse().forEach(entry => {
-            const f = entry.fecha === 'Inicio' ? 'Registro Inicial' : new Date(entry.fecha).toLocaleDateString();
-            html += `
-                <div class="card-medical p-4 flex justify-between items-center">
-                    <div>
-                        <p class="label-tiny">${f}</p>
-                        <p class="text-sm font-bold text-slate-700 italic">${(parseFloat(entry.peso) * LB_FACTOR).toFixed(1)} LB</p>
-                    </div>
-                    <div class="text-right">
-                        <p class="label-tiny">Grasa</p>
-                        <p class="text-sm font-bold text-blue-600">${parseFloat(entry.grasa).toFixed(1)}%</p>
-                    </div>
-                </div>`;
+            const dateStr = entry.fecha === 'Start' ? (currentLang === 'EN' ? 'Initial' : 'Inicio') : new Date(entry.fecha).toLocaleDateString();
+            html += `<div class="card-medical p-4 flex justify-between items-center"><div><p class="label-tiny">${dateStr}</p><p class="text-sm font-bold">${convP(entry.peso)} ${unitMode}</p></div><div class="text-right"><p class="label-tiny">${translations[currentLang].lblGrasa}</p><p class="text-sm font-bold text-blue-600">${parseFloat(entry.grasa).toFixed(1)}%</p></div></div>`;
         });
         container.innerHTML = html;
     }
 
-    function generateDetailedAdvice(current) {
-        const initialG = parseFloat(patientData.grasa);
-        const currentG = parseFloat(current.grasa);
-        const visceral = parseInt(current.grasa_visceral || 10);
+    function generateDetailedAdvice() {
+        let last = patientData;
+        if(patientData.avances && patientData.avances.length > 0) last = [...patientData.avances].pop();
         
-        let advice = "Tu perfil metabólico muestra una respuesta activa al tratamiento. ";
+        const initialG = parseFloat(patientData.grasa);
+        const currentG = parseFloat(last.grasa);
+        const visceral = parseInt(last.grasa_visceral || 10);
+        
+        let advice = currentLang === 'EN' ? "Your metabolic profile is responding well. " : "Tu perfil metabólico responde activamente. ";
         
         if(currentG < initialG) {
-            advice += `Has logrado reducir tu porcentaje de grasa en un ${(initialG - currentG).toFixed(1)}%, lo cual es un indicador real de oxidación lipídica. `;
+            advice += currentLang === 'EN' ? `You reduced body fat by ${(initialG - currentG).toFixed(1)}%. This shows effective lipolysis.` : `Redujiste grasa en ${(initialG - currentG).toFixed(1)}%. Indica una lipólisis efectiva.`;
         } else {
-            advice += "Estamos en fase de estabilización metabólica; es vital mantener el ritmo de 3 sesiones semanales para activar la lipólisis. ";
+            advice += currentLang === 'EN' ? "Stay consistent with the 3 sessions per week to trigger fat oxidation." : "Mantén la constancia de 3 sesiones semanales para activar la oxidación.";
         }
-
-        if(visceral > 10) {
-            advice += "Tu grasa visceral sigue en rango de riesgo; esto requiere un enfoque estricto en el consumo de fibra y eliminación total de azúcares esta semana. ";
-        } else {
-            advice += "Tus órganos internos están trabajando en un ambiente limpio, sigue así. ";
-        }
-
-        advice += "Recuerda que Infra Baldan no solo quema calorías, reprograma tu metabolismo basal.";
         document.getElementById('aiLongMsg').innerText = advice;
     }
 
     function renderNutrition(plan) {
         const guide = document.getElementById('dailyGuide');
+        const t = translations[currentLang];
         const content = {
             "Ginoide": [
-                {m: "Ayunas", c: "1 Vaso de agua tibia con té No. 2."},
-                {m: "Desayuno", c: "Café/Té + Yogur deslactosado + 1 cda salvado de avena o espelta."},
-                {m: "Almuerzo", c: "Arroz Basmati (40-60g) + Pollo/Pescado + Vegetales ilimitados."},
-                {m: "Cena", c: "Pescado + Vegetales + 1 papa pequeña (solo si hubo sesión)."},
-                {m: "Snack", c: "3-5 Nueces o frutos rojos."}
+                {m: t.fasting, c: "1 glass of warm water + Herbal Tea No. 2"},
+                {m: t.morning, c: "Tea/Coffee + Lactose-free yogurt + 1 tbsp oat bran"},
+                {m: t.lunch, c: "Basmati Rice (40-60g) + Chicken/Fish + Unlimited green vegetables"},
+                {m: t.dinner, c: "Fish + Vegetables + 1 small potato (only after sessions)"},
+                {m: t.snack, c: "3-5 Walnuts or red berries"}
             ],
             "Androide": [
-                {m: "Desayuno", c: "Té verde + Yogur de soya con salvado."},
-                {m: "Almuerzo", c: "Legumbres (lentejas/frijoles) + Vegetales crudos + 1 Fruta."},
-                {m: "Cena", c: "Carne magra (Carpaccio) + Vegetales. Prohibido carbohidratos de noche."},
-                {m: "Snack", c: "Zanahoria cruda o apio."}
+                {m: t.morning, c: "Green Tea + Soy yogurt with oat bran"},
+                {m: t.lunch, c: "Legumes (lentils/beans) + Raw vegetables + 1 fruit"},
+                {m: t.dinner, c: "Lean meat (Carpaccio) + Veggies. No carbs at night."},
+                {m: t.snack, c: "Raw carrots or celery"}
+            ],
+            "Kit7Dias": [
+                {m: t.morning, c: "Water + Protein Shake/Bar"},
+                {m: t.lunch, c: "Protein Shake + Green/White vegetables. No carrots/pumpkin."},
+                {m: t.dinner, c: "Lean protein + 100% whole wheat crackers + Veggies"}
             ]
         };
-
         const active = content[plan] || content["Ginoide"];
-        guide.innerHTML = active.map(i => `
-            <div class="card-medical p-4 border-l-4 border-l-blue-600">
-                <p class="label-tiny text-blue-600">${i.m}</p>
-                <p class="text-[14px] font-bold mt-1">${i.c}</p>
-            </div>
-        `).join('');
+        guide.innerHTML = active.map(i => `<div class="card-medical p-4 border-l-4 border-l-blue-600"><p class="label-tiny text-blue-600">${i.m}</p><p class="text-[14px] font-bold mt-1">${i.c}</p></div>`).join('');
     }
 
     function renderTraining(plan) {
         const train = document.getElementById('trainingDetails');
         const protocols = {
-            "Ginoide": "3 Series de 12 repeticiones: Aperturas con mancuernas (pectorales), Elevaciones laterales (hombros), Bíceps y Tríceps. Realizar en la silla de Infra Baldan antes de pedalear.",
-            "Androide": "2 Series de 15 Squats (Sentadillas) + 2 Series de 10 Lunges (Estocadas) + 2 Series de 25 Glúteo en pared. Descanso de 20 segundos entre series.",
-            "Mixto": "No requiere ejercicios previos, pero se recomienda extender la sesión de pedaleo 10 minutos adicionales para optimizar resultados."
+            "Ginoide": currentLang === 'EN' ? "3 sets of 12 reps: Dumbbell flyes (pectorals), lateral raises (shoulders), Biceps and Triceps curls. Perform in the Infrabaldan seat before pedaling." : "3 series de 12: Aperturas con mancuernas, elevaciones laterales, bíceps y tríceps. Realizar en la silla antes de pedalear.",
+            "Androide": currentLang === 'EN' ? "2 sets of 15 bodyweight squats + 2 sets of 10 lunges + 2 sets of 25 standing glute stretches (against wall)." : "2 series de 15 sentadillas + 2 de 10 estocadas + 2 de 25 glúteo en pared.",
+            "Mixto": currentLang === 'EN' ? "Pre-exercises not required. Extend pedaling by 10 minutes for optimal results." : "No requiere ejercicios previos. Extienda el pedaleo 10 min adicionales."
         };
-        train.innerHTML = `
-            <div class="card-medical p-6 bg-white shadow-inner">
-                <p class="label-tiny accent-gold mb-3">Rutina Recomendada</p>
-                <p class="text-[15px] font-medium leading-relaxed">${protocols[plan] || protocols["Ginoide"]}</p>
-            </div>
-        `;
+        train.innerHTML = `<div class="card-medical p-6 bg-white shadow-inner"><p class="label-tiny accent-gold mb-3">${currentLang === 'EN' ? 'Recommended Routine' : 'Rutina Recomendada'}</p><p class="text-[15px] font-medium leading-relaxed">${protocols[plan] || protocols["Ginoide"]}</p></div>`;
     }
 
     function switchTab(t) {
@@ -311,10 +290,8 @@
         document.getElementById('view-nutrition').classList.add('hidden');
         document.getElementById('view-training').classList.add('hidden');
         document.getElementById(`view-${t}`).classList.remove('hidden');
-        
         document.querySelectorAll('nav div').forEach(el => el.classList.remove('nav-active', 'text-slate-400'));
         document.getElementById(`tab-${t}`).classList.add('nav-active');
-        window.scrollTo(0,0);
     }
 </script>
 </body>
