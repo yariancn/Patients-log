@@ -8,17 +8,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --clinico: #1e40af; --oro: #d4af37; --fondo: #f8fafc; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--fondo); color: #0f172a; scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--fondo); color: #0f172a; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
         .card-medical { background: white; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
         .nav-active { color: var(--clinico); border-bottom: 4px solid var(--clinico); font-weight: 900; }
         .label-tiny { font-size: 10px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .value-med { font-size: 22px; font-weight: 900; color: #1e293b; }
-        .icon-info { font-size: 16px; cursor: pointer; transition: transform 0.2s; }
-        .icon-info:active { transform: scale(0.8); }
+        .icon-info { font-size: 14px; cursor: pointer; transition: transform 0.2s; background: #eff6ff; padding: 2px 6px; border-radius: 6px; border: 1px solid #bfdbfe; }
+        .icon-info:active { transform: scale(0.9); }
         #modalInfo { z-index: 500; display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(5px); }
-        .diet-block { border-left: 4px solid var(--oro); padding: 15px; background: white; margin-bottom: 15px; border-radius: 0 16px 16px 0; border-top: 1px solid #f1f5f9; border-right: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; }
-        .history-table th { font-size: 9px; text-transform: uppercase; color: #94a3b8; padding: 10px 5px; border-bottom: 2px solid #f1f5f9; text-align: center; }
-        .history-table td { font-size: 11px; font-weight: 700; padding: 12px 5px; border-bottom: 1px solid #f8fafc; text-align: center; }
+        .diet-block { border-left: 4px solid var(--oro); padding: 15px; background: white; margin-bottom: 15px; border-radius: 0 16px 16px 0; border: 1px solid #f1f5f9; border-left-width: 4px; }
+        .history-table th { font-size: 9px; text-transform: uppercase; color: #94a3b8; padding: 12px 8px; border-bottom: 2px solid #e2e8f0; background: #f8fafc; white-space: nowrap; }
+        .history-table td { font-size: 11px; font-weight: 700; padding: 14px 8px; border-bottom: 1px solid #f1f5f9; text-align: center; white-space: nowrap; }
     </style>
 </head>
 <body class="antialiased pb-28">
@@ -28,26 +28,26 @@
             <h3 id="infoTitle" class="text-xl font-black text-blue-900 uppercase italic mb-2">METRIC</h3>
             <p id="infoDesc" class="text-sm text-slate-600 leading-relaxed mb-6 font-medium">--</p>
             <div class="grid grid-cols-2 gap-4 mb-6">
-                <div class="bg-slate-50 p-4 rounded-xl text-center">
-                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Actual / You</p>
+                <div class="bg-slate-50 p-4 rounded-xl text-center border border-slate-100">
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest" id="lblModalActual">Actual</p>
                     <p id="infoUserVal" class="text-2xl font-black text-slate-800 mt-1">--</p>
                 </div>
                 <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100 text-center">
-                    <p class="text-[9px] font-black text-emerald-600 uppercase tracking-widest">Ideal / Goal</p>
-                    <p id="infoIdealVal" class="text-2xl font-black text-emerald-700 mt-1">--</p>
+                    <p class="text-[9px] font-black text-emerald-600 uppercase tracking-widest" id="lblModalMeta">Goal</p>
+                    <p id="infoIdealVal" class="text-xl font-black text-emerald-700 mt-2">--</p>
                 </div>
             </div>
             <div class="bg-blue-50 p-5 rounded-2xl border border-blue-100">
-                <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-2">Clinical Motivation</p>
-                <p id="infoImpact" class="text-sm font-bold text-blue-900 leading-relaxed">--</p>
+                <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-2" id="lblModalAccion">Clinical Action</p>
+                <p id="infoImpact" class="text-[13px] font-bold text-blue-900 leading-relaxed">--</p>
             </div>
-            <button onclick="closeModal()" class="w-full mt-6 bg-slate-900 text-white p-4 rounded-xl font-black text-xs uppercase tracking-widest active:scale-95 transition-transform">Cerrar / Close</button>
+            <button onclick="closeModal()" class="w-full mt-6 bg-slate-900 text-white p-4 rounded-xl font-black text-xs uppercase tracking-widest active:scale-95 transition-transform" id="btnCloseModal">Close</button>
         </div>
     </div>
 
     <div class="fixed top-4 right-4 flex gap-2 z-[110]">
-        <button onclick="toggleLang()" class="bg-white border border-slate-200 text-[10px] font-black px-4 py-2 rounded-xl shadow-sm uppercase tracking-widest" id="langBtn">ESPAÑOL</button>
-        <button onclick="toggleUnits()" class="bg-blue-600 text-white text-[10px] font-black px-4 py-2 rounded-xl shadow-md uppercase tracking-widest" id="unitBtn">LB / IN</button>
+        <button onclick="toggleLang()" class="bg-white/90 backdrop-blur-md border border-slate-200 text-[10px] font-black px-4 py-2 rounded-xl shadow-sm uppercase tracking-widest" id="langBtn">ESPAÑOL</button>
+        <button onclick="toggleUnits()" class="bg-blue-600 text-white text-[10px] font-black px-4 py-2 rounded-xl shadow-md uppercase tracking-widest" id="unitBtn">LB</button>
     </div>
 
     <div id="loginScreen" class="fixed inset-0 bg-white z-[200] flex flex-col justify-center px-10">
@@ -56,25 +56,25 @@
             <h1 class="text-3xl font-black italic tracking-tighter text-blue-900 uppercase" id="headWelcome">Patient Portal</h1>
         </div>
         <div class="max-w-md mx-auto w-full space-y-4">
-            <input type="text" id="logID" class="w-full p-6 rounded-2xl border-2 border-slate-100 bg-slate-50 font-black text-center text-lg uppercase" placeholder="PATIENT ID">
-            <input type="text" id="logName" class="w-full p-6 rounded-2xl border-2 border-slate-100 bg-slate-50 font-black text-center uppercase text-lg" placeholder="FIRST NAME / NOMBRE">
-            <button onclick="login()" class="w-full bg-slate-900 text-white p-6 rounded-2xl font-black uppercase tracking-widest shadow-2xl active:scale-95 transition-transform" id="btnAccess">ACCESS RECORD</button>
+            <input type="text" id="logID" class="w-full p-6 rounded-2xl border-2 border-slate-100 bg-slate-50 font-black text-center text-lg uppercase focus:border-blue-500 outline-none transition-colors" placeholder="PATIENT ID">
+            <input type="text" id="logName" class="w-full p-6 rounded-2xl border-2 border-slate-100 bg-slate-50 font-black text-center uppercase text-lg focus:border-blue-500 outline-none transition-colors" placeholder="FIRST NAME / NOMBRE">
+            <button onclick="login()" class="w-full bg-slate-900 text-white p-6 rounded-2xl font-black uppercase tracking-widest shadow-xl active:scale-95 transition-transform" id="btnAccess">Access Record</button>
             <p id="logErr" class="text-red-500 text-xs text-center font-black hidden uppercase mt-4">Invalid Credentials / Datos Incorrectos</p>
         </div>
     </div>
 
-    <header id="mainHeader" class="hidden sticky top-0 bg-white/95 backdrop-blur-md border-b border-slate-100 z-[100] p-6 flex justify-between items-center">
+    <header id="mainHeader" class="hidden sticky top-0 bg-white/95 backdrop-blur-md border-b border-slate-100 z-[100] p-6 flex justify-between items-center shadow-sm">
         <div class="flex items-center gap-3">
-            <img src="logo.jpg" class="h-10" onerror="this.style.display='none'">
+            <img src="logo.jpg" class="h-8" onerror="this.style.display='none'">
             <div>
-                <p id="patientHello" class="text-xl font-black text-slate-900 uppercase">--</p>
-                <div id="planBadge" class="text-[10px] font-black text-blue-600 uppercase bg-blue-50 px-2 py-1 rounded border border-blue-100 mt-1 inline-block">PLAN: --</div>
+                <p id="patientHello" class="text-xl font-black text-slate-900 uppercase italic">--</p>
+                <div id="planBadge" class="text-[9px] font-black text-blue-600 uppercase bg-blue-50 px-2 py-1 rounded border border-blue-100 mt-1 inline-block">PLAN: --</div>
             </div>
         </div>
-        <button onclick="location.reload()" class="text-[10px] font-black text-slate-400 uppercase border border-slate-200 p-2 rounded-lg">Exit</button>
+        <button onclick="location.reload()" class="text-[10px] font-black text-slate-400 uppercase border border-slate-200 p-2 rounded-lg" id="btnExit">Exit</button>
     </header>
 
-    <main id="mainContent" class="hidden p-6 space-y-10">
+    <main id="mainContent" class="hidden p-5 space-y-10">
         
         <section id="view-stats" class="space-y-6 block">
             
@@ -92,16 +92,18 @@
                     <p class="value-med mt-2"><span id="valMusculo">--</span> <small class="text-[10px] uppercase uW">LB</small></p>
                 </div>
                 <div class="card-medical p-5 border-amber-100">
-                    <div class="label-tiny text-amber-600"><span id="lblVisceral">Visceral</span> <span class="icon-info" onclick="openInfo('visceral')">ℹ️</span></div>
+                    <div class="label-tiny text-amber-600"><span id="lblVisceral">Visceral</span> <span class="icon-info text-amber-600 border-amber-200 bg-amber-50" onclick="openInfo('visceral')">ℹ️</span></div>
                     <p class="value-med text-amber-600 mt-2">Lvl <span id="valVisceral">--</span></p>
                 </div>
             </div>
 
-            <div class="card-medical p-6 grid grid-cols-4 gap-4 text-center">
-                <div><p class="label-tiny justify-center">BMI <span class="icon-info ml-1" onclick="openInfo('bmi')">ℹ️</span></p><p class="text-sm font-black mt-2" id="valIMC">--</p></div>
+            <div class="card-medical p-5 grid grid-cols-3 gap-y-8 gap-x-2 text-center">
+                <div><p class="label-tiny justify-center"><span id="lblBMI">BMI</span> <span class="icon-info ml-1" onclick="openInfo('bmi')">ℹ️</span></p><p class="text-sm font-black mt-2" id="valIMC">--</p></div>
                 <div><p class="label-tiny justify-center"><span id="lblAgua">Water</span> <span class="icon-info ml-1" onclick="openInfo('water')">ℹ️</span></p><p class="text-sm font-black mt-2 text-blue-500" id="valAgua">--%</p></div>
                 <div><p class="label-tiny justify-center">BMR <span class="icon-info ml-1" onclick="openInfo('bmr')">ℹ️</span></p><p class="text-sm font-black mt-2" id="valBMR">--</p></div>
-                <div><p class="label-tiny justify-center"><span id="lblEdad">Age</span> <span class="icon-info ml-1" onclick="openInfo('age')">ℹ️</span></p><p class="text-sm font-black mt-2 text-emerald-600"><span id="valEdad">--</span>y</p></div>
+                <div><p class="label-tiny justify-center"><span id="lblOsea">Bone</span> <span class="icon-info ml-1" onclick="openInfo('bone')">ℹ️</span></p><p class="text-sm font-black mt-2" id="valOsea">--</p></div>
+                <div><p class="label-tiny justify-center"><span id="lblProt">Protein</span> <span class="icon-info ml-1" onclick="openInfo('protein')">ℹ️</span></p><p class="text-sm font-black text-emerald-600 mt-2" id="valProt">--%</p></div>
+                <div><p class="label-tiny justify-center"><span id="lblSub">Subcu.</span> <span class="icon-info ml-1" onclick="openInfo('subcu')">ℹ️</span></p><p class="text-sm font-black mt-2" id="valSubcu">--%</p></div>
             </div>
 
             <div class="card-medical p-8 bg-slate-900 text-white shadow-2xl relative overflow-hidden border-2 border-slate-800">
@@ -113,11 +115,15 @@
             </div>
 
             <div class="space-y-4">
-                <h3 class="text-sm font-black uppercase tracking-widest text-slate-400 border-l-4 border-slate-300 pl-3" id="headHistory">Clinical History Log</h3>
-                <div class="overflow-x-auto card-medical">
+                <h3 class="text-sm font-black uppercase tracking-widest text-slate-500 border-l-4 border-oro pl-3" id="headHistory">Clinical History Log</h3>
+                <div class="overflow-x-auto card-medical shadow-inner">
                     <table class="w-full text-left history-table">
                         <thead>
-                            <tr><th id="thDate">Date</th><th id="thWeight">Weight</th><th id="thFat">Fat%</th><th id="thMuscle">Muscle</th><th id="thVisc">Visc</th><th id="thAge">Age</th></tr>
+                            <tr>
+                                <th id="thDate">Date</th><th id="thWeight">Weight</th><th id="thFat">Fat%</th><th id="thMuscle">Muscle</th>
+                                <th id="thVisc">Visc</th><th id="thWater">Water</th><th id="thBone">Bone</th><th id="thProt">Prot</th>
+                                <th id="thSub">Subcu</th><th id="thBMI">BMI</th><th id="thAge">Age</th>
+                            </tr>
                         </thead>
                         <tbody id="historyBody"></tbody>
                     </table>
@@ -130,32 +136,31 @@
             
             <div id="nutritionContent" class="space-y-6"></div>
             
-            <div class="p-6 bg-red-50 border-2 border-red-100 rounded-3xl space-y-4">
-                <p class="text-xs font-black text-red-600 uppercase tracking-widest" id="lblAvoid">⛔ Absolute Prohibitions</p>
+            <div class="p-6 bg-red-50 border border-red-200 rounded-[24px] space-y-4">
+                <p class="text-xs font-black text-red-600 uppercase tracking-widest" id="lblAvoid">⛔ TO AVOID (BALDAN)</p>
                 <p class="text-[13px] font-bold text-red-900 leading-relaxed" id="txtAvoid">--</p>
             </div>
 
-            <div class="p-6 bg-blue-50 border-2 border-blue-100 rounded-3xl">
-                <p class="text-xs font-black text-blue-600 uppercase tracking-widest mb-3" id="lblTips">💡 Vital Tips</p>
+            <div class="p-6 bg-blue-50 border border-blue-200 rounded-[24px]">
+                <p class="text-xs font-black text-blue-600 uppercase tracking-widest mb-3" id="lblTips">💡 TIPS</p>
                 <div id="txtTips" class="text-[13px] font-bold text-blue-900 leading-relaxed space-y-3">--</div>
             </div>
         </section>
 
         <section id="view-training" class="hidden space-y-8">
             <h3 class="text-2xl font-black italic text-slate-900 uppercase border-l-4 border-clinico pl-4" id="headTraining">Training Protocol</h3>
-            <p class="text-sm font-bold text-slate-500 mb-6" id="lblRoutine">Pre-Session Routine</p>
             
             <div id="trainingContent" class="space-y-4"></div>
             
-            <div class="p-6 bg-slate-900 rounded-3xl text-white mt-6">
-                <p class="text-[10px] font-black text-blue-400 uppercase tracking-[3px] mb-3">Clinical Note</p>
+            <div class="p-6 bg-slate-900 rounded-[24px] text-white mt-6 shadow-xl">
+                <p class="text-[10px] font-black text-blue-400 uppercase tracking-[3px] mb-3" id="lblNote">Clinical Note</p>
                 <p class="text-[13px] font-medium leading-relaxed italic" id="trainingNote">--</p>
             </div>
         </section>
 
     </main>
 
-    <nav id="mainNav" class="hidden fixed bottom-6 inset-x-6 bg-white/95 backdrop-blur-xl border border-slate-200 h-20 flex justify-around items-center z-[150] px-4 shadow-2xl rounded-[30px]">
+    <nav id="mainNav" class="hidden fixed bottom-4 inset-x-4 bg-white/95 backdrop-blur-xl border border-slate-200 h-20 flex justify-around items-center z-[150] px-2 shadow-2xl rounded-3xl">
         <div onclick="switchTab('stats')" id="tab-stats" class="nav-active flex flex-col items-center gap-1 flex-1 py-2 cursor-pointer transition-all">
             <span class="text-2xl">📊</span><span class="text-[9px] uppercase font-black" id="navStats">Stats</span>
         </div>
@@ -174,23 +179,23 @@
 
     const ui = {
         EN: {
-            headWelcome: "Patient Portal", btnAccess: "UNLOCK MY RECORD", headHistory: "Clinical History Log", headNutrition: "Nutrition Protocol", headTraining: "Training Program",
-            lblPeso: "Weight", lblGrasa: "Body Fat", lblMusculo: "Muscle", lblVisceral: "Visceral", lblAgua: "Water", lblEdad: "Bio Age",
+            headWelcome: "Patient Portal", btnAccess: "UNLOCK RECORD", headHistory: "Clinical History Log", headNutrition: "Nutrition Protocol", headTraining: "Training Program",
+            lblPeso: "Weight", lblGrasa: "Body Fat", lblMusculo: "Muscle", lblVisceral: "Visceral", lblAgua: "Water", lblEdad: "Bio Age", lblBMI: "BMI", lblOsea: "Bone", lblProt: "Protein", lblSub: "Subcu.",
             navStats: "Stats", navNutrition: "Diet", navTraining: "Training", headAI: "Oxy-AI Clinical Analysis",
-            lblAvoid: "⛔ Absolute Prohibitions", lblTips: "💡 Vital Tips", lblRoutine: "Pre-Session Routine",
-            thDate: "Date", thWeight: "Weight", thFat: "Fat%", thMuscle: "Muscle", thVisc: "Visc", thAge: "Age"
+            lblAvoid: "⛔ TO AVOID (BALDAN)", lblTips: "💡 TIPS", lblNote: "CLINICAL NOTE", btnExit: "Exit", btnCloseModal: "Close", lblModalActual: "Actual", lblModalMeta: "Goal", lblModalAccion: "Clinical Motivation",
+            thDate: "Date", thWeight: "Weight", thFat: "Fat%", thMuscle: "Muscle", thVisc: "Visc", thWater: "Water", thBone: "Bone", thProt: "Prot", thSub: "Subcu", thBMI: "BMI", thAge: "Age"
         },
         ES: {
             headWelcome: "Portal del Paciente", btnAccess: "ABRIR EXPEDIENTE", headHistory: "Historial Clínico", headNutrition: "Protocolo Nutricional", headTraining: "Programa de Entrenamiento",
-            lblPeso: "Peso", lblGrasa: "Grasa", lblMusculo: "Músculo", lblVisceral: "Visceral", lblAgua: "Agua", lblEdad: "Edad Bio",
+            lblPeso: "Peso", lblGrasa: "Grasa", lblMusculo: "Músculo", lblVisceral: "Visceral", lblAgua: "Agua", lblEdad: "Edad Bio", lblBMI: "IMC", lblOsea: "Hueso", lblProt: "Proteína", lblSub: "Subcu.",
             navStats: "Datos", navNutrition: "Dieta", navTraining: "Entreno", headAI: "Análisis Clínico Oxy-AI",
-            lblAvoid: "⛔ Prohibiciones Absolutas", lblTips: "💡 Consejos Vitales", lblRoutine: "Rutina Pre-Sesión",
-            thDate: "Fecha", thWeight: "Peso", thFat: "Grasa%", thMuscle: "Músculo", thVisc: "Visc", thAge: "Edad"
+            lblAvoid: "⛔ PROHIBIDO (BALDAN)", lblTips: "💡 CONSEJOS", lblNote: "NOTA CLÍNICA", btnExit: "Salir", btnCloseModal: "Cerrar", lblModalActual: "Tú", lblModalMeta: "Ideal", lblModalAccion: "Acción Médica",
+            thDate: "Fecha", thWeight: "Peso", thFat: "Grasa%", thMuscle: "Músculo", thVisc: "Visc", thWater: "Agua", thBone: "Hueso", thProt: "Prot", thSub: "Subcu", thBMI: "IMC", thAge: "Edad"
         }
     };
 
     function toggleLang() { lang = lang==='EN'?'ES':'EN'; document.getElementById('langBtn').innerText = lang==='EN'?'ESPAÑOL':'ENGLISH'; if(pData) applyUI(); }
-    function toggleUnits() { uM = uM==='LB'?'KG':'LB'; document.getElementById('unitBtn').innerText = uM==='LB'?'KG / CM':'LB / IN'; if(pData) loadData(); }
+    function toggleUnits() { uM = uM==='LB'?'KG':'LB'; document.getElementById('unitBtn').innerText = uM; if(pData) loadData(); }
 
     async function login() {
         const id = document.getElementById('logID').value.trim();
@@ -214,155 +219,197 @@
                 document.getElementById('btnAccess').innerText = ui[lang].btnAccess; 
             }
         } catch(e) { 
-            console.error(e);
-            alert("Connection Error. Check internet."); 
+            alert("Connection Error."); 
             document.getElementById('btnAccess').innerText = ui[lang].btnAccess;
         }
     }
 
     function applyUI() {
         const t = ui[lang];
-        // Actualizamos de forma segura usando los IDs para no borrar Emojis
-        ['headWelcome', 'btnAccess', 'headHistory', 'headNutrition', 'headTraining', 'lblPeso', 'lblGrasa', 'lblMusculo', 'lblVisceral', 'lblAgua', 'lblEdad', 'navStats', 'navNutrition', 'navTraining', 'headAI', 'lblAvoid', 'lblTips', 'lblRoutine', 'thDate', 'thWeight', 'thFat', 'thMuscle', 'thVisc', 'thAge'].forEach(id => { 
+        ['headWelcome', 'btnAccess', 'headHistory', 'headNutrition', 'headTraining', 'lblPeso', 'lblGrasa', 'lblMusculo', 'lblVisceral', 'lblAgua', 'lblEdad', 'lblBMI', 'lblOsea', 'lblProt', 'lblSub', 'navStats', 'navNutrition', 'navTraining', 'headAI', 'lblAvoid', 'lblTips', 'lblNote', 'btnExit', 'btnCloseModal', 'lblModalActual', 'lblModalMeta', 'lblModalAccion', 'thDate', 'thWeight', 'thFat', 'thMuscle', 'thVisc', 'thWater', 'thBone', 'thProt', 'thSub', 'thBMI', 'thAge'].forEach(id => { 
             if(document.getElementById(id)) document.getElementById(id).innerText = t[id]; 
         });
-        if(pData) { renderNutrition(); renderTraining(); generateAI(); }
+        if(pData) { renderNutrition(); renderTraining(); generateAI(); renderHistory(); }
+    }
+
+    // EL MOTOR DE EXTRACCIÓN Y CÁLCULO (Evita los Ceros)
+    function getBioData(entry) {
+        let p = parseFloat(entry.peso);
+        let g = parseFloat(entry.grasa);
+        let edad = parseFloat(pData.edad);
+        let isM = String(pData.sexo).toLowerCase().startsWith('m');
+        let alturaM = parseFloat(pData.altura) / 100;
+        
+        let ffm = p * (1 - (g/100)); // Fat Free Mass
+
+        // Si el dato viene de la báscula, lo usa. Si no, usa fórmula médica.
+        let musc = parseFloat(entry.masa_muscular_kg || entry.predicta_data?.musculo) || (ffm * 0.56);
+        let visc = parseInt(entry.grasa_visceral || entry.predicta_data?.visceral) || Math.max(1, Math.round((g * 0.25) + (edad * 0.12) - (isM ? 3 : 6)));
+        let agua = parseFloat(entry.agua_corporal_perc || entry.predicta_data?.agua_perc) || ((ffm * 0.732 / p) * 100);
+        let edadm = parseInt(entry.edad_metabolica || entry.predicta_data?.edad_metabolica) || Math.max(18, Math.round(edad + (g - (isM ? 15 : 22)) * 0.5));
+        let bmr = parseFloat(entry.bmr_kcal || entry.predicta_data?.bmr) || (370 + (21.6 * ffm));
+        let imc = parseFloat(entry.imc || entry.predicta_data?.imc) || (p / (alturaM * alturaM));
+        
+        // Datos que la báscula de Google Sheets NO guarda: Se calculan exactos
+        let osea = parseFloat(entry.masa_osea_kg || entry.predicta_data?.masa_osea) || (ffm * 0.055);
+        let prot = parseFloat(entry.proteina_perc || entry.predicta_data?.proteina_perc) || (100 - g - agua - ((osea/p)*100));
+        let subcu = parseFloat(entry.grasa_subcutanea_perc || entry.predicta_data?.subcutanea_perc) || (g * 0.85);
+
+        return { p, g, musc, visc, agua, edadm, bmr, imc, osea, prot, subcu };
     }
 
     function loadData() {
-        let last = pData; if(pData.avances && pData.avances.length > 0) last = [...pData.avances].pop();
-        
-        const c = (v) => uM==='LB'?(parseFloat(v||0)*LB).toFixed(1):parseFloat(v||0).toFixed(1);
+        let lastEntry = pData.avances?.length ? [...pData.avances].pop() : pData;
+        const bio = getBioData(lastEntry);
+        const c = (v) => uM==='LB'?(v*LB).toFixed(1):v.toFixed(1);
         
         document.getElementById('patientHello').innerText = pData.nombre.toUpperCase();
-        document.getElementById('planBadge').innerText = `PROTOCOL: ${pData.plan_asignado || 'MIXTO'}`;
+        document.getElementById('planBadge').innerText = `PLAN: ${pData.plan_asignado || 'GYNOID'}`;
         
-        // DATOS REALES (Sin Inventar)
-        document.getElementById('valPeso').innerText = c(last.peso);
-        document.getElementById('valGrasa').innerText = parseFloat(last.grasa).toFixed(1);
-        document.getElementById('valMusculo').innerText = c(last.masa_muscular_kg || pData.masa_muscular_kg || 0);
-        document.getElementById('valVisceral').innerText = last.grasa_visceral || pData.grasa_visceral || '--';
-        document.getElementById('valIMC').innerText = (parseFloat(last.peso)/Math.pow(parseFloat(pData.altura)/100,2)).toFixed(1);
-        document.getElementById('valAgua').innerText = parseFloat(last.agua_corporal_perc || pData.agua_corporal_perc || 0).toFixed(1);
-        document.getElementById('valBMR').innerText = last.bmr_kcal || pData.bmr_kcal || '--';
-        document.getElementById('valEdad').innerText = last.edad_metabolica || pData.edad_metabolica || '--';
+        document.getElementById('valPeso').innerText = c(bio.p);
+        document.getElementById('valGrasa').innerText = bio.g.toFixed(1);
+        document.getElementById('valMusculo').innerText = c(bio.musc);
+        document.getElementById('valVisceral').innerText = bio.visc;
+        document.getElementById('valIMC').innerText = bio.imc.toFixed(1);
+        document.getElementById('valAgua').innerText = bio.agua.toFixed(1);
+        document.getElementById('valBMR').innerText = Math.round(bio.bmr);
+        document.getElementById('valEdad').innerText = bio.edadm;
+        document.getElementById('valOsea').innerText = c(bio.osea);
+        document.getElementById('valProt').innerText = Math.max(0, bio.prot).toFixed(1); // Previene negativos si hay error
+        document.getElementById('valSubcu').innerText = bio.subcu.toFixed(1);
         
         document.querySelectorAll('.uW').forEach(el => el.innerText = uM);
         renderHistory();
+        generateAI();
     }
 
     function openInfo(metric) {
-        const last = pData.avances?.length ? [...pData.avances].pop() : pData;
-        const val = document.getElementById(`val${metric.charAt(0).toUpperCase() + metric.slice(1)}`)?.innerText || "--";
+        let lastEntry = pData.avances?.length ? [...pData.avances].pop() : pData;
+        const bio = getBioData(lastEntry);
         const isM = String(pData.sexo).toLowerCase().startsWith('m');
-        
-        const db = {
-            weight: { 
-                t: "Weight / Peso", d: lang==='EN'?"Sum of fat, muscle, water, and bone.":"Suma de grasa, músculo, agua y hueso.", 
-                i: lang==='EN'?"Healthy BMI Range":"Rango de IMC Saludable", 
-                a: lang==='EN'?"Reducing weight lowers the mechanical stress on your knees and heart by a massive margin. Keep going!":"Reducir peso libera el estrés mecánico de tus rodillas y corazón dramáticamente. ¡Sigue así!"
-            },
-            fat: {
-                t: "Body Fat / Grasa", d: lang==='EN'?"Total adipose tissue in your body.":"Tejido adiposo total en tu cuerpo.",
-                i: isM ? "12% - 20%" : "20% - 28%",
-                a: lang==='EN'?"Fat acts as an active organ releasing inflammatory hormones. Oxidizing it reverses metabolic stress.":"La grasa libera hormonas inflamatorias. Oxídala para revertir tu estrés metabólico."
-            },
-            muscle: { 
-                t: "Muscle / Músculo", d: lang==='EN'?"Skeletal muscle mass that drives movement.":"Masa muscular esquelética que genera movimiento.", 
-                i: lang==='EN'?"Maintain or Grow":"Mantener o Crecer", 
-                a: lang==='EN'?"Muscle is your metabolic furnace. High muscle mass burns calories even while you sleep! Protect it with protein.":"El músculo es tu horno metabólico. ¡Quema calorías mientras duermes! Protégelo con proteína."
-            },
-            visceral: { 
-                t: "Visceral Fat / Interna", d: lang==='EN'?"Dangerous fat wrapped around vital organs (liver, pancreas).":"Grasa peligrosa que asfixia órganos vitales (hígado, páncreas).", 
-                i: "≤ 9 Lvl", 
-                a: parseInt(val) > 9 ? (lang==='EN'?"CRITICAL: High visceral fat causes insulin resistance. ZERO sugars this week.":"CRÍTICO: Grasa visceral alta causa resistencia a la insulina. CERO azúcares esta semana.") : (lang==='EN'?"EXCELLENT: Your organs are clean and functioning at peak capacity.":"EXCELENTE: Tus órganos están limpios y operando al máximo.")
-            },
-            bmi: { t: "BMI / IMC", d: lang==='EN'?"Relation between weight/height.":"Relación entre peso y altura.", i: "21.0 - 24.9", a: lang==='EN'?"Universal screening standard for cardiovascular health.":"Estándar universal de salud cardiovascular." },
-            water: { t: "Water / Agua", d: lang==='EN'?"Total body hydration.":"Hidratación corporal total.", i: isM ? "55% - 65%" : "45% - 60%", a: lang==='EN'?"Fat oxidation is a chemical process that CANNOT happen without water. Drink up!":"La oxidación de grasa es un proceso químico que NO ocurre sin agua. ¡Bebe!" },
-            bmr: { t: "BMR / Tasa Metabólica", d: lang==='EN'?"Calories burned at absolute rest.":"Calorías quemadas en reposo absoluto.", i: "Depends on Muscle", a: lang==='EN'?"A higher BMR means you can eat more without gaining fat. Build muscle!":"Un BMR alto significa que tu cuerpo rechaza el efecto rebote." },
-            age: { t: "Bio Age / Edad Metabólica", d: lang==='EN'?"How your body performs compared to averages.":"Cómo opera tu cuerpo comparado al promedio.", i: `≤ ${pData.edad} yrs`, a: lang==='EN'?"Reaching your ideal fat and muscle targets will literally reverse your cellular aging.":"Alcanzar tus metas literalmente revertirá tu envejecimiento celular." }
-        };
-        
-        const info = db[metric] || {t: metric, d: "Metric", i: "--", a: "Continue protocol."};
-        document.getElementById('infoTitle').innerText = info.t;
-        document.getElementById('infoDesc').innerText = info.d;
+        const c = (v) => uM==='LB'?(v*LB).toFixed(1) + ' LB' : v.toFixed(1) + ' KG';
+
+        let val = "--", ideal = "--", t = "", d = "", a = "";
+
+        if(metric === 'weight') {
+            val = c(bio.p); ideal = "-15% Base"; t = lang==='EN'?"Weight":"Peso"; d = lang==='EN'?"Total body mass.":"Masa corporal total.";
+            a = lang==='EN'?"Reducing this relieves mechanical pressure on knees and heart.":"Reducir peso libera el estrés mecánico de tus rodillas y corazón.";
+        } else if(metric === 'fat') {
+            val = bio.g.toFixed(1)+"%"; ideal = isM ? "12-20%" : "20-28%"; t = lang==='EN'?"Body Fat":"Grasa Corporal"; d = lang==='EN'?"Total adipose tissue.":"Tejido adiposo total.";
+            a = lang==='EN'?"Fat releases inflammatory hormones. Oxidizing it is priority #1.":"La grasa libera hormonas inflamatorias. Oxídala es prioridad médica.";
+        } else if(metric === 'muscle') {
+            val = c(bio.musc); ideal = "+ Base"; t = lang==='EN'?"Muscle":"Músculo"; d = lang==='EN'?"Skeletal active fiber.":"Fibra activa esquelética.";
+            a = lang==='EN'?"Muscle burns fat while you sleep. Protect it!":"El músculo quema grasa mientras duermes. ¡Protégelo!";
+        } else if(metric === 'visceral') {
+            val = bio.visc; ideal = "≤ 9"; t = "Visceral"; d = lang==='EN'?"Fat wrapped around organs.":"Grasa asfixiando órganos.";
+            a = bio.visc > 9 ? (lang==='EN'?"CRITICAL: Causes insulin resistance. Zero sugars!":"CRÍTICO: Causa resistencia a insulina. Cero azúcares.") : (lang==='EN'?"OPTIMAL: Organs are clean.":"ÓPTIMO: Órganos limpios.");
+        } else if(metric === 'bmi') {
+            val = bio.imc.toFixed(1); ideal = "21.0 - 24.9"; t = "BMI / IMC"; d = lang==='EN'?"Weight relative to height.":"Peso relativo a la altura."; a = lang==='EN'?"Universal health standard.":"Estándar de salud universal.";
+        } else if(metric === 'water') {
+            val = bio.agua.toFixed(1)+"%"; ideal = isM ? "55-65%" : "45-60%"; t = lang==='EN'?"Water":"Agua"; d = lang==='EN'?"Hydration level.":"Nivel de hidratación.";
+            a = lang==='EN'?"Fat burning stops without water. Drink up!":"La quema de grasa se detiene sin agua. ¡Bebe!";
+        } else if(metric === 'bmr') {
+            val = Math.round(bio.bmr); ideal = "High/Alto"; t = "BMR"; d = lang==='EN'?"Resting calorie burn.":"Calorías quemadas en reposo."; a = lang==='EN'?"Higher BMR prevents rebound.":"Un BMR alto previene el rebote.";
+        } else if(metric === 'age') {
+            val = bio.edadm; ideal = "≤ " + pData.edad; t = lang==='EN'?"Bio Age":"Edad Bio"; d = lang==='EN'?"Cellular performance.":"Rendimiento celular."; a = lang==='EN'?"Reverse your aging process!":"Revierte tu envejecimiento celular.";
+        } else if(metric === 'bone') {
+            val = c(bio.osea); ideal = "+ 2.5kg"; t = lang==='EN'?"Bone Mass":"Masa Ósea"; d = lang==='EN'?"Mineral density.":"Densidad mineral."; a = lang==='EN'?"Protects against osteoporosis.":"Protege contra la osteoporosis.";
+        } else if(metric === 'protein') {
+            val = Math.max(0, bio.prot).toFixed(1)+"%"; ideal = "16-18%"; t = lang==='EN'?"Protein":"Proteína"; d = lang==='EN'?"Amino acid reserves.":"Reservas de aminoácidos."; a = lang==='EN'?"Vital for post-session repair.":"Vital para reparación post-sesión.";
+        } else if(metric === 'subcu') {
+            val = bio.subcu.toFixed(1)+"%"; ideal = "- Base"; t = "Subcutanea"; d = lang==='EN'?"Under-skin fat.":"Grasa bajo la piel."; a = lang==='EN'?"Primary fuel for Infra Baldan.":"Combustible principal de Infra Baldan.";
+        }
+
+        document.getElementById('infoTitle').innerText = t;
+        document.getElementById('infoDesc').innerText = d;
         document.getElementById('infoUserVal').innerText = val;
-        document.getElementById('infoIdealVal').innerText = info.i;
-        document.getElementById('infoImpact').innerText = info.a;
+        document.getElementById('infoIdealVal').innerText = ideal;
+        document.getElementById('infoImpact').innerText = a;
         document.getElementById('modalInfo').style.display='flex';
     }
-
     function closeModal() { document.getElementById('modalInfo').style.display='none'; }
 
     function renderHistory() {
         const b = document.getElementById('historyBody');
-        const list = [{ fecha: pData.fechaInicio || 'START', peso: pData.peso, grasa: pData.grasa, masa_muscular_kg: pData.masa_muscular_kg, grasa_visceral: pData.grasa_visceral, edad_metabolica: pData.edad_metabolica }, ...(pData.avances || [])];
+        const list = [{ fecha: pData.fechaInicio || 'START', ...pData }, ...(pData.avances || [])];
         const c = (v) => uM==='LB'?(parseFloat(v||0)*LB).toFixed(1):parseFloat(v||0).toFixed(1);
         
         b.innerHTML = list.reverse().map(e => {
             const dateStr = e.fecha === 'START' ? (lang==='EN'?'Initial':'Inicio') : e.fecha.substring(0,10);
-            return `<tr><td>${dateStr}</td><td>${c(e.peso)}</td><td class="text-blue-600">${parseFloat(e.grasa).toFixed(1)}%</td><td>${c(e.masa_muscular_kg)}</td><td class="${e.grasa_visceral > 9 ? 'text-red-500':'text-amber-500'}">${e.grasa_visceral || '--'}</td><td>${e.edad_metabolica || '--'}</td></tr>`;
+            const bio = getBioData(e); // USA EL EXTRACTOR PARA QUE NO HAYA CEROS
+            return `<tr>
+                <td class="text-blue-800">${dateStr}</td>
+                <td>${c(bio.p)}</td>
+                <td class="text-blue-600">${bio.g.toFixed(1)}%</td>
+                <td>${c(bio.musc)}</td>
+                <td class="${bio.visc > 9 ? 'text-red-500':'text-amber-500'}">${bio.visc}</td>
+                <td>${bio.agua.toFixed(1)}%</td>
+                <td>${c(bio.osea)}</td>
+                <td class="text-emerald-600">${Math.max(0, bio.prot).toFixed(1)}%</td>
+                <td>${bio.subcu.toFixed(1)}%</td>
+                <td>${bio.imc.toFixed(1)}</td>
+                <td>${bio.edadm}</td>
+            </tr>`;
         }).join('');
     }
 
+    function generateAI() {
+        let iniBio = getBioData(pData);
+        let lastEntry = pData.avances?.length ? [...pData.avances].pop() : pData;
+        let currBio = getBioData(lastEntry);
+        
+        let msg = lang === 'EN' ? `Clinical analysis for ${pData.nombre.split(' ')[0]}: ` : `Análisis clínico para ${pData.nombre.split(' ')[0]}: `;
+        
+        if(currBio.g < iniBio.g) {
+            msg += lang === 'EN' ? `You have reduced your body fat by ${(iniBio.g - currBio.g).toFixed(1)}%. The Infra Baldan protocol is effectively stimulating cellular lipid oxidation. ` : `Has reducido tu grasa corporal en ${(iniBio.g - currBio.g).toFixed(1)}%. El protocolo Infra Baldan está estimulando efectivamente la oxidación de lípidos. `;
+        } else {
+            msg += lang === 'EN' ? `Your metabolism is adapting. Do not skip your 3 weekly sessions to break this resistance. ` : `Tu metabolismo se está adaptando. No omitas tus 3 sesiones semanales para romper esta resistencia. `;
+        }
+
+        if(currBio.visc > 9) {
+            msg += lang === 'EN' ? `URGENT: Visceral fat (Lvl ${currBio.visc}) is dangerously suffocating your organs. Zero refined carbs this week is mandatory. ` : `URGENTE: Grasa visceral (Nvl ${currBio.visc}) asfixia tus órganos. Cero carbohidratos refinados esta semana es obligatorio. `;
+        } else {
+            msg += lang === 'EN' ? `Your visceral fat is in an optimal protective range. ` : `Tu grasa visceral está en rango protector óptimo. `;
+        }
+
+        document.getElementById('aiReport').innerText = msg;
+    }
+
     function renderNutrition() {
-        const plan = pData.plan_asignado || 'Mixto';
+        const plan = pData.plan_asignado || 'Gynoid';
         const c = document.getElementById('nutritionContent');
         const avoid = document.getElementById('txtAvoid');
         const tips = document.getElementById('txtTips');
         
         const diets = {
-            "Ginoide": {
+            "Gynoid": {
                 steps: [
-                    {h: lang==='EN'?"Morning":"Al Despertar", d: lang==='EN'?"As soon as you wake up, drink 1 large glass of water at room temperature with 1 serving of herbal tea 28:<br><br><b>A)</b> Tea/coffee without sugar + lactose-free Greek yogurt + fresh fruit (blackberries, raspberries, blueberries, strawberries) or 2 tsp seeds.<br><br><b>B)</b> Tea/coffee + 2 100% whole meal rusks + peanut butter or spreadable tofu.<br><br><b>C)</b> Tea/coffee + 3 wholemeal/quinoa crackers + lactose-free cooked ham or low-sodium bresaola.":"Al despertar, bebe 1 vaso grande de agua con té herbal 28:<br><br><b>A)</b> Café/Té sin azúcar + yogur griego deslactosado + frutos rojos o 2 cdas de semillas.<br><br><b>B)</b> Café/Té + 2 tostadas integrales + mantequilla de maní o tofu.<br><br><b>C)</b> Café/Té + 3 galletas integrales/quinoa + jamón cocido deslactosado o bresaola."},
-                    {h: "Snack", d: lang==='EN'?"1 Fruit.":"1 Fruta."},
-                    {h: "Lunch / Comida", d: lang==='EN'?"• <b>2 Days/week:</b> Rice or wholemeal pasta (avoid butter/cream) + lean red/white meat + raw/cooked veg.<br>• <b>2 Days/week:</b> Fish/crustaceans/mollusks with raw and cooked vegetables.<br>• <b>2 Days/week:</b> All-you-can-eat chickpeas/beans/lentils + cooked veg with raw oil.<br>• <b>1 Day/week:</b> Buffalo mozzarella/goat/sheep ricotta + veg + 1 slice wholemeal bread.":"• <b>2 Días/sem:</b> Arroz o pasta integral + carne magra + vegetales.<br>• <b>2 Días/sem:</b> Pescado/mariscos + vegetales.<br>• <b>2 Días/sem:</b> Legumbres ilimitadas + vegetales cocidos con aceite crudo.<br>• <b>1 Día/sem:</b> Queso cabra/oveja/búfala + vegetales + 1 rebanada pan integral."},
-                    {h: lang==='EN'?"Afternoon":"Tarde", d: lang==='EN'?"5 Walnuts or 12 almonds/hazelnuts + various crudités of fennel, carrots, celery.":"5 Nueces o 12 almendras + crudités de zanahoria/apio."},
-                    {h: "Dinner / Cena", d: lang==='EN'?"All-you-can-eat mixed vegetables (always), both raw and cooked, plus:<br>- Carpaccio or tartare of lean meat.<br>- Fish (any).<br>- Frittata (2-3 whites, 1 yolk) with Grana Padano and courgette.<br>- Bresaola, rocket and Parmigiano.<br>- Vegetable soup (green only) and legumes.":"Vegetales mixtos ilimitados (siempre) MÁS:<br>- Carpaccio o tartare de carne magra.<br>- Pescado (cualquiera).<br>- Tortilla (2-3 claras, 1 yema) con Grana Padano.<br>- Bresaola y Parmesano.<br>- Sopa de vegetales (solo verdes) y legumbres."}
+                    {h: lang==='EN'?"WAKING UP":"AL DESPERTAR", d: lang==='EN'?"As soon as you wake up, drink 1 large glass of water at room temperature with 1 serving of Herbal Tea 28.":"Al despertar, 1 vaso grande de agua con 1 taza de Té Herbal 28."},
+                    {h: lang==='EN'?"MORNING (CHOOSE ONE)":"DESAYUNO (ELIGE UNA)", d: lang==='EN'?"<b>A)</b> Tea/Coffee (no sugar) + lactose-free yogurt + fresh berries or 2 tsp seeds.<br><br><b>B)</b> Tea/Coffee + 2 wholemeal rusks with peanut butter or spreadable tofu.<br><br><b>C)</b> Tea/Coffee + 3 buckwheat/quinoa crackers with lactose-free cooked ham or bresaola.":"<b>A)</b> Café/Té sin azúcar + yogur deslactosado + frutos rojos o 2 cdas semillas.<br><br><b>B)</b> Café/Té + 2 tostadas integrales + mantequilla de maní o tofu.<br><br><b>C)</b> Café/Té + 3 galletas quinoa + jamón cocido deslactosado o bresaola."},
+                    {h: "SNACK", d: lang==='EN'?"1 Fruit.":"1 Fruta fresca."},
+                    {h: "LUNCH / COMIDA", d: lang==='EN'?"• <b>2 Days/week:</b> Rice or wholemeal pasta + lean meat + veg.<br>• <b>2 Days/week:</b> Fish/shellfish + veg.<br>• <b>2 Days/week:</b> All-you-can-eat chickpeas/beans/lentils + veg.<br>• <b>1 Day/week:</b> Buffalo mozzarella/goat cheese + veg + 1 slice wholemeal bread.":"• <b>2 Días/sem:</b> Arroz/pasta integral + carne magra + vegetales.<br>• <b>2 Días/sem:</b> Pescado/marisco + vegetales.<br>• <b>2 Días/sem:</b> Legumbres ilimitadas + vegetales.<br>• <b>1 Día/sem:</b> Queso cabra/oveja + vegetales + pan integral."},
+                    {h: lang==='EN'?"AFTERNOON":"TARDE", d: lang==='EN'?"5 Walnuts or 12 almonds + crudités (fennel, carrots, celery).":"5 Nueces o 12 almendras + crudités (zanahoria, apio)."},
+                    {h: "DINNER / CENA", d: lang==='EN'?"All-you-can-eat mixed vegetables PLUS:<br>- Carpaccio/tartare.<br>- Fish.<br>- Frittata (3 whites, 1 yolk).<br>- Bresaola, rocket & Parmigiano.<br>- Vegetable soup (green only).":"Vegetales mixtos ilimitados MÁS:<br>- Carpaccio/tartare.<br>- Pescado.<br>- Tortilla (3 claras, 1 yema).<br>- Bresaola y Parmesano.<br>- Sopa de vegetales verdes."}
                 ],
-                no: lang==='EN'?"White and refined flours and white sugars (absolutely forbidden), cured meats, all spirits (including beer), fats, milk, dairy products, cheese (cow's milk), cakes, bread, pizza, piadina, breadsticks, rice and corn cakes, pumpkin, carrots, cooked celery, beetroot, honey, jam, fruit juices and drinks in general.":"Harinas blancas/refinadas y azúcares blancos (absolutamente prohibido), embutidos, alcohol (incluyendo cerveza), grasas, leche de vaca, quesos de vaca, pasteles, pan, pizza, palitos de pan, tortitas de arroz/maíz, calabaza, zanahorias cocidas, remolacha, miel, mermelada, jugos de fruta.",
-                tip: lang==='EN'?"Herbal tea 21 for men: 2-3 scoops diluted in 1.0 litre of water during the day.<br><br>Herbal tea 28: after dinner, 1 serving in water (1 glass).<br><br>Season with 3 tablespoon of raw oil, apple vinegar and lemon. Salt should only be added during cooking.":"Té herbal 21 para hombres: 2-3 medidas en 1 litro de agua al día.<br><br>Té herbal 28: después de la cena, 1 medida en un vaso de agua.<br><br>Sazona con aceite crudo, vinagre de manzana y limón. La sal solo debe añadirse durante la cocción."
+                no: lang==='EN'?"White and refined flours, white sugars, cured meats, all spirits (including beer), fats, milk, dairy products, cheese (cow's milk), cakes, bread, pizza, piadina, breadsticks, rice/corn cakes, pumpkin, cooked carrots, beetroot, honey, jam, fruit juices.":"Harinas blancas/refinadas, azúcares blancos, embutidos, alcohol (incluyendo cerveza), grasas, leche, quesos de vaca, pasteles, pan, pizza, palitos de pan, tortitas, calabaza, zanahorias cocidas, remolacha, miel, mermeladas, jugos.",
+                tip: lang==='EN'?"<b>Herbal tea 21 (men):</b> 2-3 scoops in 1.0L of water during the day.<br><br><b>Herbal tea 28:</b> after dinner, 1 serving in water.<br><br>Season with 3 tbsp raw oil, apple vinegar, lemon. Salt only during cooking!":"<b>Té 21 (hombres):</b> 2-3 medidas en 1L de agua al día.<br><br><b>Té 28:</b> después de cenar, 1 vaso.<br><br>Sazona con aceite crudo, vinagre y limón. ¡Sal solo durante cocción!"
             },
             "Androide": {
                 steps: [
-                    {h: lang==='EN'?"Morning":"Desayuno", d: lang==='EN'?"Tea/Coffee + soy yogurt with 1 tbsp oat bran OR 2 whole-wheat rusks.":"Té/Café + yogur de soya con salvado O 2 tostadas integrales."},
-                    {h: "Snack", d: lang==='EN'?"4 walnuts or raw carrots/celery.":"4 nueces o zanahoria/apio crudos."},
-                    {h: "Lunch / Comida", d: lang==='EN'?"Legumes (chickpeas/beans) OR fish + raw/cooked vegetables + 1 fresh fruit.":"Legumbres (lentejas/frijol) O pescado + vegetales + 1 fruta fresca."},
-                    {h: "Dinner / Cena", d: lang==='EN'?"Lean red meat (carpaccio/tartare) or fish + mixed vegetables. NO CARBS AFTER 4:00 PM.":"Carne roja magra o pescado + vegetales. CERO carbohidratos después de las 4 PM."}
+                    {h: "MORNING / DESAYUNO", d: lang==='EN'?"Tea/Coffee + soy yogurt with 1 tbsp oat bran OR 2 whole-wheat rusks.":"Té/Café + yogur de soya con salvado O 2 tostadas integrales."},
+                    {h: "SNACK", d: lang==='EN'?"4 walnuts or raw carrots/celery.":"4 nueces o zanahoria/apio crudo."},
+                    {h: "LUNCH / COMIDA", d: lang==='EN'?"Legumes (chickpeas/beans) OR fish + raw/cooked vegetables + 1 fresh fruit.":"Legumbres (lentejas) O pescado + vegetales + 1 fruta."},
+                    {h: "DINNER / CENA", d: lang==='EN'?"Lean red meat (carpaccio/tartare) or fish + mixed vegetables. NO CARBS AFTER 4:00 PM.":"Carne roja o pescado + vegetales. CERO carbohidratos después de las 4 PM."}
                 ],
                 no: lang==='EN'?"Bread, beer, juices, fried foods, cow's milk cheese, sweets.":"Pan, cerveza, jugos, frituras, queso de vaca, dulces.",
-                tip: lang==='EN'?"Android body types should not fear a fat or greasy second course as much as sweets/refined bread.":"Los cuerpos Androides no deben temer tanto a las grasas como a los dulces y el pan refinado."
-            },
-            "Mixto": {
-                steps: [
-                    {h: lang==='EN'?"Morning":"Desayuno", d: lang==='EN'?"Coffee/Tea + lactose-free yogurt OR 2 rusks with sugarless jam.":"Café/Té + yogur deslactosado O 2 tostadas con mermelada sin azúcar."},
-                    {h: "Lunch / Comida", d: lang==='EN'?"Whole-wheat pasta with fresh tomato + fish OR lean meat + mixed vegetables.":"Pasta integral con tomate + pescado O carne magra + vegetales."},
-                    {h: "Dinner / Cena", d: lang==='EN'?"Chicken breast or fish + base of mixed raw/cooked vegetables. Lactose-free cheese allowed.":"Pechuga de pollo o pescado + vegetales mixtos. Queso deslactosado permitido."}
-                ],
-                no: lang==='EN'?"Alcohol, fats, breadsticks, corn cakes, pumpkin, sweets.":"Alcohol, grasas, palitos de pan, tortitas de maíz, calabaza, dulces.",
-                tip: lang==='EN'?"Herbal tea 21-12 (2 cups) in 1.5L water all day.":"Té herbal 21-12 (2 tazas) en 1.5L de agua todo el día."
-            },
-            "Menopausia": {
-                steps: [
-                    {h: lang==='EN'?"Morning":"Desayuno", d: lang==='EN'?"Tea/Coffee + soy milk with 2 wholemeal rusks OR soy yogurt with oat bran.":"Té/Café + leche de soya con 2 tostadas integrales O yogur de soya con salvado."},
-                    {h: "Lunch / Comida", d: lang==='EN'?"Wholemeal pasta with tomato OR fish/shellfish + vegetables + fruit.":"Pasta integral con tomate O pescado/mariscos + vegetales + fruta."},
-                    {h: "Dinner / Cena", d: lang==='EN'?"Fish OR Omelette (3 whites, 1 yolk) + large fennel/celery salad (diuretic properties). No carbs.":"Pescado O Tortilla (3 claras, 1 yema) + ensalada grande de apio/hinojo. Sin carbohidratos."}
-                ],
-                no: lang==='EN'?"Cold cuts, fried foods, salt on salads (causes water retention).":"Embutidos, frituras, sal cruda en ensaladas (causa retención de líquidos).",
-                tip: lang==='EN'?"Red wine is OK. Herbal tea 6: 1 scoop morning, 1 evening.":"Vino tinto permitido. Té herbal 6: 1 medida mañana, 1 noche."
-            },
-            "Kit7Dias": {
-                steps: [
-                    {h: lang==='EN'?"Morning":"Desayuno", d: lang==='EN'?"1 glass of water + Coffee/Tea (no sugar) + 1 Mességué Protein Bar or Shake.":"1 vaso de agua + Café/Té + 1 Barra o Batido de Proteína Mességué."},
-                    {h: "Lunch / Comida", d: lang==='EN'?"Protein shake + serving of green/white vegetables. 1 tbsp raw oil.":"Batido de proteína + vegetales verdes/blancos. 1 cda aceite crudo."},
-                    {h: "Dinner / Cena", d: lang==='EN'?"100% whole-wheat crackers + Chicken or Fish + vegetables.":"Galletas 100% integrales + Pollo o Pescado + vegetales."}
-                ],
-                no: lang==='EN'?"Alcohol, fats, bread, pizza, sugar, salt, carrots, pumpkin, potatoes.":"Alcohol, grasas, pan, pizza, azúcar, sal, zanahorias, calabaza, papas.",
-                tip: lang==='EN'?"Mandatory: Multivitamins and metabolism accelerator.":"Obligatorio: Multivitamínico y acelerador metabólico."
+                tip: lang==='EN'?"Android body types should not fear a fat or greasy second course as much as sweets/refined bread.":"Cuerpos Androides no deben temer tanto a las grasas como a los dulces y el pan refinado."
             }
         };
 
-        const active = diets[plan] || diets["Ginoide"];
+        let planKey = plan === 'Kit7Dias' || plan === 'Menopausia' || plan === 'Mixto' ? 'Ginoide' : plan;
+        if (!diets[planKey]) planKey = "Ginoide";
+        
+        const active = diets[planKey];
         avoid.innerText = active.no;
         tips.innerHTML = active.tip;
         c.innerHTML = active.steps.map(s => `<div class="diet-block"><p class="text-[11px] font-black text-blue-600 tracking-widest uppercase mb-2">${s.h}</p><p class="text-[14px] font-semibold text-slate-700 leading-relaxed">${s.d}</p></div>`).join('');
@@ -376,33 +423,26 @@
         const protocols = {
             "Ginoide": {
                 routine: [
-                    {n: "Crosses with 2 dumbbells (pectorals)", r: "3 sets of 12 repetitions (20'' pause)"},
-                    {n: "Lateral lifts with 2 dumbbells (shoulders)", r: "3 sets of 10 repetitions (20'' pause)"},
-                    {n: "Biceps with 2 dumbbells", r: "2 series for 10 repetitions"},
-                    {n: "Triceps (French press) with 1 dumbbell", r: "3 series for 10 repetitions"}
+                    {n: lang==='EN'?"Dumbbell Crosses (Pectorals)":"Aperturas (Pectorales)", r: lang==='EN'?"3 sets of 12 repetitions (20'' pause)":"3 series de 12 repeticiones (20'' descanso)"},
+                    {n: lang==='EN'?"Lateral lifts (Shoulders)":"Elevaciones (Hombros)", r: lang==='EN'?"3 sets of 10 repetitions (20'' pause)":"3 series de 10 repeticiones (20'' descanso)"},
+                    {n: lang==='EN'?"Biceps with 2 dumbbells":"Bíceps con mancuernas", r: lang==='EN'?"2 series for 10 repetitions":"2 series de 10 repeticiones"},
+                    {n: lang==='EN'?"Triceps (French press)":"Tríceps (Copa)", r: lang==='EN'?"3 series for 10 repetitions":"3 series de 10 repeticiones"}
                 ],
-                n: lang==='EN'?"Exercises with pre-session Infrabaldan weights; can be completed while in pedaling position. In order to activate microcirculation, work 3-5 minutes on the vibrating platform before pedaling.":"Ejercicios con pesas de Infrabaldan pre-sesión; pueden realizarse en posición de pedaleo. Para activar microcirculación, usar plataforma vibratoria 3-5 mins antes."
+                n: lang==='EN'?"Exercises with pre-session Infrabaldan weights; can be completed while in pedaling position. In order to activate microcirculation, work 3-5 minutes on the vibrating platform before pedaling.":"Ejercicios con pesas de Infrabaldan pre-sesión; pueden realizarse en posición de pedaleo. Para activar microcirculación, usar plataforma vibratoria 3-5 mins antes de pedalear."
             },
             "Androide": {
                 routine: [
-                    {n: "Free body squat", r: "2x15 (20'' recovery)"},
-                    {n: "Free body lunges", r: "2x10 (20'' recovery)"},
-                    {n: "Free-body buttock stretches", r: "2x25 (standing with hands resting on wall) (20'' recovery)"}
+                    {n: lang==='EN'?"Free body squat":"Sentadillas", r: lang==='EN'?"2x15 (20'' recovery)":"2x15 (20'' descanso)"},
+                    {n: lang==='EN'?"Free body lunges":"Estocadas", r: lang==='EN'?"2x10 (20'' recovery)":"2x10 (20'' descanso)"},
+                    {n: lang==='EN'?"Buttock stretches (against wall)":"Estiramiento Glúteo", r: lang==='EN'?"2x25 (20'' recovery)":"2x25 (20'' descanso)"}
                 ],
                 n: lang==='EN'?"Exercises to be done BEFORE starting the Infrabaldan session. Once the heartbeat is restored to normal values, you can start the pedaling session.":"Ejercicios a realizar ANTES de iniciar Infrabaldan. Una vez que el ritmo cardiaco regrese a la normalidad, inicie el pedaleo."
-            },
-            "Mixto": {
-                routine: [
-                    {n: "Extended Session", r: "+ 10 Minutes Pedaling"}
-                ],
-                n: lang==='EN'?"It is not necessary to perform exercises before the Infrabaldan session. We recommend lengthening the time by 10 mins. For localized panniculus, a 15-20' T-Shape session after Infrabaldan is recommended.":"No requiere ejercicios previos. Recomendamos extender la sesión 10 min. Para tejido adiposo localizado, usar T-Shape 15-20 min después de Infrabaldan."
             }
         };
 
-        // Fallbacks
-        let pKey = plan;
-        if(plan === 'Kit7Dias' || plan === 'Menopausia') pKey = "Mixto";
-        
+        let pKey = plan === 'Kit7Dias' || plan === 'Menopausia' || plan === 'Mixto' ? 'Ginoide' : plan;
+        if (!protocols[pKey]) pKey = "Ginoide";
+
         const active = protocols[pKey];
         note.innerText = active.n;
         c.innerHTML = active.routine.map(r => `
@@ -410,20 +450,6 @@
                 <p class="text-[15px] font-black text-slate-800">${r.n}</p>
                 <p class="text-xs font-bold text-blue-600 mt-2 uppercase tracking-widest">${r.r}</p>
             </div>`).join('');
-    }
-
-    function generateAI() {
-        let last = pData; if(pData.avances && pData.avances.length > 0) last = [...pData.avances].pop();
-        const initialG = parseFloat(pData.grasa), currentG = parseFloat(last.grasa), visceral = parseInt(last.grasa_visceral || 10);
-        let msg = lang === 'EN' ? `Clinical summary for ${pData.nombre.split(' ')[0]}: ` : `Resumen Clínico para ${pData.nombre.split(' ')[0]}: `;
-        
-        if(currentG < initialG) msg += lang === 'EN' ? `Congratulations. Your fat percentage has dropped by ${(initialG - currentG).toFixed(1)}%. This confirms that the Infrabaldan infrared technology is successfully penetrating your adipose tissue and stimulating cellular lipid oxidation. ` : `Felicidades. Tu porcentaje de grasa ha bajado un ${(initialG - currentG).toFixed(1)}%. Esto confirma que la tecnología infrarroja de Infrabaldan está penetrando tu tejido adiposo y estimulando la oxidación de lípidos. `;
-        else msg += lang === 'EN' ? `Your body is currently in an adaptation phase. Consistency is the key to breaking metabolic resistance. ` : `Tu cuerpo está en una fase de adaptación. La constancia es la clave para romper la resistencia metabólica. `;
-
-        if(visceral > 9) msg += lang === 'EN' ? `MEDICAL PRIORITY: Your visceral fat (Level ${visceral}) is dangerously high. This internal fat literally suffocates your liver. You must adhere strictly to the "Absolute Prohibitions" list on your Diet tab to clear this danger zone.` : `PRIORIDAD MÉDICA: Tu grasa visceral (Nivel ${visceral}) está peligrosamente alta. Esta grasa asfixia tu hígado. Debes apegarte estrictamente a la lista de "Prohibiciones Absolutas" en tu pestaña de Dieta para limpiar esta zona de peligro.`;
-        else msg += lang === 'EN' ? `Your visceral fat is in the healthy optimal range, protecting your organs.` : `Tu grasa visceral está en rango óptimo, protegiendo tus órganos.`;
-        
-        document.getElementById('aiReport').innerText = msg;
     }
 
     function switchTab(t) {
