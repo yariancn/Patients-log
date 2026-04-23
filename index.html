@@ -16,7 +16,7 @@
         .icon-info { font-size: 14px; cursor: pointer; transition: transform 0.2s; background: #eff6ff; padding: 2px 6px; border-radius: 6px; border: 1px solid #bfdbfe; }
         .icon-info:active { transform: scale(0.9); }
         #modalInfo { z-index: 500; display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(5px); }
-        .diet-block { border-left: 4px solid var(--oro); padding: 15px; background: white; margin-bottom: 15px; border-radius: 0 16px 16px 0; border: 1px solid #f1f5f9; border-left-width: 4px; }
+        .diet-block { border-left: 4px solid var(--oro); padding: 15px; background: white; margin-bottom: 15px; border-radius: 0 16px 16px 0; border-top: 1px solid #f1f5f9; border-right: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; border-left-width: 4px; }
         .history-table th { font-size: 9px; text-transform: uppercase; color: #94a3b8; padding: 12px 8px; border-bottom: 2px solid #e2e8f0; background: #f8fafc; white-space: nowrap; }
         .history-table td { font-size: 11px; font-weight: 700; padding: 14px 8px; border-bottom: 1px solid #f1f5f9; text-align: center; white-space: nowrap; }
     </style>
@@ -136,12 +136,12 @@
             
             <div id="nutritionContent" class="space-y-6"></div>
             
-            <div class="p-6 bg-red-50 border border-red-200 rounded-[24px] space-y-4">
+            <div class="p-6 bg-red-50 border-2 border-red-100 rounded-3xl space-y-4">
                 <p class="text-xs font-black text-red-600 uppercase tracking-widest" id="lblAvoid">⛔ TO AVOID (BALDAN)</p>
                 <p class="text-[13px] font-bold text-red-900 leading-relaxed" id="txtAvoid">--</p>
             </div>
 
-            <div class="p-6 bg-blue-50 border border-blue-200 rounded-[24px]">
+            <div class="p-6 bg-blue-50 border-2 border-blue-100 rounded-3xl">
                 <p class="text-xs font-black text-blue-600 uppercase tracking-widest mb-3" id="lblTips">💡 TIPS</p>
                 <div id="txtTips" class="text-[13px] font-bold text-blue-900 leading-relaxed space-y-3">--</div>
             </div>
@@ -149,10 +149,11 @@
 
         <section id="view-training" class="hidden space-y-8">
             <h3 class="text-2xl font-black italic text-slate-900 uppercase border-l-4 border-clinico pl-4" id="headTraining">Training Protocol</h3>
+            <p class="text-sm font-bold text-slate-500 mb-6" id="lblRoutine">Pre-Session Routine</p>
             
             <div id="trainingContent" class="space-y-4"></div>
             
-            <div class="p-6 bg-slate-900 rounded-[24px] text-white mt-6 shadow-xl">
+            <div class="p-6 bg-slate-900 rounded-3xl text-white mt-6">
                 <p class="text-[10px] font-black text-blue-400 uppercase tracking-[3px] mb-3" id="lblNote">Clinical Note</p>
                 <p class="text-[13px] font-medium leading-relaxed italic" id="trainingNote">--</p>
             </div>
@@ -160,7 +161,7 @@
 
     </main>
 
-    <nav id="mainNav" class="hidden fixed bottom-4 inset-x-4 bg-white/95 backdrop-blur-xl border border-slate-200 h-20 flex justify-around items-center z-[150] px-2 shadow-2xl rounded-3xl">
+    <nav id="mainNav" class="hidden fixed bottom-6 inset-x-6 bg-white/95 backdrop-blur-xl border border-slate-200 h-20 flex justify-around items-center z-[150] px-4 shadow-2xl rounded-[30px]">
         <div onclick="switchTab('stats')" id="tab-stats" class="nav-active flex flex-col items-center gap-1 flex-1 py-2 cursor-pointer transition-all">
             <span class="text-2xl">📊</span><span class="text-[9px] uppercase font-black" id="navStats">Stats</span>
         </div>
@@ -182,29 +183,40 @@
             headWelcome: "Patient Portal", btnAccess: "UNLOCK RECORD", headHistory: "Clinical History Log", headNutrition: "Nutrition Protocol", headTraining: "Training Program",
             lblPeso: "Weight", lblGrasa: "Body Fat", lblMusculo: "Muscle", lblVisceral: "Visceral", lblAgua: "Water", lblEdad: "Bio Age", lblBMI: "BMI", lblOsea: "Bone", lblProt: "Protein", lblSub: "Subcu.",
             navStats: "Stats", navNutrition: "Diet", navTraining: "Training", headAI: "Oxy-AI Clinical Analysis",
-            lblAvoid: "⛔ TO AVOID (BALDAN)", lblTips: "💡 TIPS", lblNote: "CLINICAL NOTE", btnExit: "Exit", btnCloseModal: "Close", lblModalActual: "Actual", lblModalMeta: "Goal", lblModalAccion: "Clinical Motivation",
+            lblAvoid: "⛔ TO AVOID (BALDAN)", lblTips: "💡 TIPS", lblRoutine: "Pre-Session Routine", lblNote: "CLINICAL NOTE", btnExit: "Exit", btnCloseModal: "Close", lblModalActual: "Actual", lblModalMeta: "Goal", lblModalAccion: "Clinical Motivation",
             thDate: "Date", thWeight: "Weight", thFat: "Fat%", thMuscle: "Muscle", thVisc: "Visc", thWater: "Water", thBone: "Bone", thProt: "Prot", thSub: "Subcu", thBMI: "BMI", thAge: "Age"
         },
         ES: {
             headWelcome: "Portal del Paciente", btnAccess: "ABRIR EXPEDIENTE", headHistory: "Historial Clínico", headNutrition: "Protocolo Nutricional", headTraining: "Programa de Entrenamiento",
             lblPeso: "Peso", lblGrasa: "Grasa", lblMusculo: "Músculo", lblVisceral: "Visceral", lblAgua: "Agua", lblEdad: "Edad Bio", lblBMI: "IMC", lblOsea: "Hueso", lblProt: "Proteína", lblSub: "Subcu.",
             navStats: "Datos", navNutrition: "Dieta", navTraining: "Entreno", headAI: "Análisis Clínico Oxy-AI",
-            lblAvoid: "⛔ PROHIBIDO (BALDAN)", lblTips: "💡 CONSEJOS", lblNote: "NOTA CLÍNICA", btnExit: "Salir", btnCloseModal: "Cerrar", lblModalActual: "Tú", lblModalMeta: "Ideal", lblModalAccion: "Acción Médica",
+            lblAvoid: "⛔ PROHIBIDO (BALDAN)", lblTips: "💡 CONSEJOS", lblRoutine: "Rutina Pre-Sesión", lblNote: "NOTA CLÍNICA", btnExit: "Salir", btnCloseModal: "Cerrar", lblModalActual: "Tú", lblModalMeta: "Ideal", lblModalAccion: "Acción Médica",
             thDate: "Fecha", thWeight: "Peso", thFat: "Grasa%", thMuscle: "Músculo", thVisc: "Visc", thWater: "Agua", thBone: "Hueso", thProt: "Prot", thSub: "Subcu", thBMI: "IMC", thAge: "Edad"
         }
     };
 
     function toggleLang() { lang = lang==='EN'?'ES':'EN'; document.getElementById('langBtn').innerText = lang==='EN'?'ESPAÑOL':'ENGLISH'; if(pData) applyUI(); }
-    function toggleUnits() { uM = uM==='LB'?'KG':'LB'; document.getElementById('unitBtn').innerText = uM; if(pData) loadData(); }
+    function toggleUnits() { uM = uM==='LB'?'KG':'LB'; document.getElementById('unitBtn').innerText = uM==='LB'?'KG / CM':'LB / IN'; if(pData) loadData(); }
 
     async function login() {
         const id = document.getElementById('logID').value.trim();
         const name = document.getElementById('logName').value.trim().toLowerCase();
         if(!id || !name) return;
         document.getElementById('btnAccess').innerText = "CONNECTING...";
+        
         try {
             const r = await fetch(`${WEB_APP_URL}?action=obtenerClientes`);
-            const d = await r.json();
+            const texto = await r.text();
+            
+            let d;
+            try {
+                d = JSON.parse(texto);
+            } catch(e) {
+                alert("ERROR DE PERMISOS: Google bloqueó el acceso a la base de datos. Asegúrate de que el Apps Script esté publicado con acceso para 'Cualquier persona' (Anyone).");
+                document.getElementById('btnAccess').innerText = ui[lang].btnAccess;
+                return;
+            }
+
             const m = d.find(p => String(p.id).trim() === id && String(p.nombre).toLowerCase().includes(name));
             if(m) { 
                 pData = m; 
@@ -219,20 +231,19 @@
                 document.getElementById('btnAccess').innerText = ui[lang].btnAccess; 
             }
         } catch(e) { 
-            alert("Connection Error."); 
+            alert("Error de Red. Revisa tu conexión a internet."); 
             document.getElementById('btnAccess').innerText = ui[lang].btnAccess;
         }
     }
 
     function applyUI() {
         const t = ui[lang];
-        ['headWelcome', 'btnAccess', 'headHistory', 'headNutrition', 'headTraining', 'lblPeso', 'lblGrasa', 'lblMusculo', 'lblVisceral', 'lblAgua', 'lblEdad', 'lblBMI', 'lblOsea', 'lblProt', 'lblSub', 'navStats', 'navNutrition', 'navTraining', 'headAI', 'lblAvoid', 'lblTips', 'lblNote', 'btnExit', 'btnCloseModal', 'lblModalActual', 'lblModalMeta', 'lblModalAccion', 'thDate', 'thWeight', 'thFat', 'thMuscle', 'thVisc', 'thWater', 'thBone', 'thProt', 'thSub', 'thBMI', 'thAge'].forEach(id => { 
+        ['headWelcome', 'btnAccess', 'headHistory', 'headNutrition', 'headTraining', 'lblPeso', 'lblGrasa', 'lblMusculo', 'lblVisceral', 'lblAgua', 'lblEdad', 'lblBMI', 'lblOsea', 'lblProt', 'lblSub', 'navStats', 'navNutrition', 'navTraining', 'headAI', 'lblAvoid', 'lblTips', 'lblRoutine', 'lblNote', 'btnExit', 'btnCloseModal', 'lblModalActual', 'lblModalMeta', 'lblModalAccion', 'thDate', 'thWeight', 'thFat', 'thMuscle', 'thVisc', 'thWater', 'thBone', 'thProt', 'thSub', 'thBMI', 'thAge'].forEach(id => { 
             if(document.getElementById(id)) document.getElementById(id).innerText = t[id]; 
         });
         if(pData) { renderNutrition(); renderTraining(); generateAI(); renderHistory(); }
     }
 
-    // EL MOTOR DE EXTRACCIÓN Y CÁLCULO (Evita los Ceros)
     function getBioData(entry) {
         let p = parseFloat(entry.peso);
         let g = parseFloat(entry.grasa);
@@ -240,9 +251,8 @@
         let isM = String(pData.sexo).toLowerCase().startsWith('m');
         let alturaM = parseFloat(pData.altura) / 100;
         
-        let ffm = p * (1 - (g/100)); // Fat Free Mass
+        let ffm = p * (1 - (g/100));
 
-        // Si el dato viene de la báscula, lo usa. Si no, usa fórmula médica.
         let musc = parseFloat(entry.masa_muscular_kg || entry.predicta_data?.musculo) || (ffm * 0.56);
         let visc = parseInt(entry.grasa_visceral || entry.predicta_data?.visceral) || Math.max(1, Math.round((g * 0.25) + (edad * 0.12) - (isM ? 3 : 6)));
         let agua = parseFloat(entry.agua_corporal_perc || entry.predicta_data?.agua_perc) || ((ffm * 0.732 / p) * 100);
@@ -250,7 +260,6 @@
         let bmr = parseFloat(entry.bmr_kcal || entry.predicta_data?.bmr) || (370 + (21.6 * ffm));
         let imc = parseFloat(entry.imc || entry.predicta_data?.imc) || (p / (alturaM * alturaM));
         
-        // Datos que la báscula de Google Sheets NO guarda: Se calculan exactos
         let osea = parseFloat(entry.masa_osea_kg || entry.predicta_data?.masa_osea) || (ffm * 0.055);
         let prot = parseFloat(entry.proteina_perc || entry.predicta_data?.proteina_perc) || (100 - g - agua - ((osea/p)*100));
         let subcu = parseFloat(entry.grasa_subcutanea_perc || entry.predicta_data?.subcutanea_perc) || (g * 0.85);
@@ -264,7 +273,7 @@
         const c = (v) => uM==='LB'?(v*LB).toFixed(1):v.toFixed(1);
         
         document.getElementById('patientHello').innerText = pData.nombre.toUpperCase();
-        document.getElementById('planBadge').innerText = `PLAN: ${pData.plan_asignado || 'GYNOID'}`;
+        document.getElementById('planBadge').innerText = `PLAN: ${pData.plan_asignado || 'GINOIDE'}`;
         
         document.getElementById('valPeso').innerText = c(bio.p);
         document.getElementById('valGrasa').innerText = bio.g.toFixed(1);
@@ -275,7 +284,7 @@
         document.getElementById('valBMR').innerText = Math.round(bio.bmr);
         document.getElementById('valEdad').innerText = bio.edadm;
         document.getElementById('valOsea').innerText = c(bio.osea);
-        document.getElementById('valProt').innerText = Math.max(0, bio.prot).toFixed(1); // Previene negativos si hay error
+        document.getElementById('valProt').innerText = Math.max(0, bio.prot).toFixed(1);
         document.getElementById('valSubcu').innerText = bio.subcu.toFixed(1);
         
         document.querySelectorAll('.uW').forEach(el => el.innerText = uM);
@@ -332,11 +341,11 @@
     function renderHistory() {
         const b = document.getElementById('historyBody');
         const list = [{ fecha: pData.fechaInicio || 'START', ...pData }, ...(pData.avances || [])];
-        const c = (v) => uM==='LB'?(parseFloat(v||0)*LB).toFixed(1):parseFloat(v||0).toFixed(1);
+        const c = (v) => uM==='LB'?(v*LB).toFixed(1):v.toFixed(1);
         
         b.innerHTML = list.reverse().map(e => {
             const dateStr = e.fecha === 'START' ? (lang==='EN'?'Initial':'Inicio') : e.fecha.substring(0,10);
-            const bio = getBioData(e); // USA EL EXTRACTOR PARA QUE NO HAYA CEROS
+            const bio = getBioData(e); 
             return `<tr>
                 <td class="text-blue-800">${dateStr}</td>
                 <td>${c(bio.p)}</td>
@@ -376,33 +385,32 @@
     }
 
     function renderNutrition() {
-        const plan = pData.plan_asignado || 'Gynoid';
+        const plan = pData.plan_asignado || 'Mixto';
         const c = document.getElementById('nutritionContent');
         const avoid = document.getElementById('txtAvoid');
         const tips = document.getElementById('txtTips');
         
         const diets = {
-            "Gynoid": {
+            "Ginoide": {
                 steps: [
-                    {h: lang==='EN'?"WAKING UP":"AL DESPERTAR", d: lang==='EN'?"As soon as you wake up, drink 1 large glass of water at room temperature with 1 serving of Herbal Tea 28.":"Al despertar, 1 vaso grande de agua con 1 taza de Té Herbal 28."},
-                    {h: lang==='EN'?"MORNING (CHOOSE ONE)":"DESAYUNO (ELIGE UNA)", d: lang==='EN'?"<b>A)</b> Tea/Coffee (no sugar) + lactose-free yogurt + fresh berries or 2 tsp seeds.<br><br><b>B)</b> Tea/Coffee + 2 wholemeal rusks with peanut butter or spreadable tofu.<br><br><b>C)</b> Tea/Coffee + 3 buckwheat/quinoa crackers with lactose-free cooked ham or bresaola.":"<b>A)</b> Café/Té sin azúcar + yogur deslactosado + frutos rojos o 2 cdas semillas.<br><br><b>B)</b> Café/Té + 2 tostadas integrales + mantequilla de maní o tofu.<br><br><b>C)</b> Café/Té + 3 galletas quinoa + jamón cocido deslactosado o bresaola."},
+                    {h: lang==='EN'?"MORNING":"AL DESPERTAR", d: lang==='EN'?"As soon as you wake up, drink 1 large glass of water at room temperature with 1 serving of herbal tea 28:<br><br><b>A)</b> Tea/coffee without sugar + lactose-free Greek yogurt + fresh fruit (blackberries, raspberries, blueberries, strawberries) or 2 tsp seeds.<br><br><b>B)</b> Tea/coffee + 2 100% whole meal rusks + peanut butter or spreadable tofu.<br><br><b>C)</b> Tea/coffee + 3 wholemeal/quinoa crackers + lactose-free cooked ham or low-sodium bresaola.":"Al despertar, bebe 1 vaso grande de agua con té herbal 28:<br><br><b>A)</b> Café/Té sin azúcar + yogur griego deslactosado + frutos rojos o 2 cdas de semillas.<br><br><b>B)</b> Café/Té + 2 tostadas integrales + mantequilla de maní o tofu.<br><br><b>C)</b> Café/Té + 3 galletas integrales/quinoa + jamón cocido deslactosado o bresaola."},
                     {h: "SNACK", d: lang==='EN'?"1 Fruit.":"1 Fruta fresca."},
-                    {h: "LUNCH / COMIDA", d: lang==='EN'?"• <b>2 Days/week:</b> Rice or wholemeal pasta + lean meat + veg.<br>• <b>2 Days/week:</b> Fish/shellfish + veg.<br>• <b>2 Days/week:</b> All-you-can-eat chickpeas/beans/lentils + veg.<br>• <b>1 Day/week:</b> Buffalo mozzarella/goat cheese + veg + 1 slice wholemeal bread.":"• <b>2 Días/sem:</b> Arroz/pasta integral + carne magra + vegetales.<br>• <b>2 Días/sem:</b> Pescado/marisco + vegetales.<br>• <b>2 Días/sem:</b> Legumbres ilimitadas + vegetales.<br>• <b>1 Día/sem:</b> Queso cabra/oveja + vegetales + pan integral."},
-                    {h: lang==='EN'?"AFTERNOON":"TARDE", d: lang==='EN'?"5 Walnuts or 12 almonds + crudités (fennel, carrots, celery).":"5 Nueces o 12 almendras + crudités (zanahoria, apio)."},
-                    {h: "DINNER / CENA", d: lang==='EN'?"All-you-can-eat mixed vegetables PLUS:<br>- Carpaccio/tartare.<br>- Fish.<br>- Frittata (3 whites, 1 yolk).<br>- Bresaola, rocket & Parmigiano.<br>- Vegetable soup (green only).":"Vegetales mixtos ilimitados MÁS:<br>- Carpaccio/tartare.<br>- Pescado.<br>- Tortilla (3 claras, 1 yema).<br>- Bresaola y Parmesano.<br>- Sopa de vegetales verdes."}
+                    {h: lang==='EN'?"LUNCH":"COMIDA", d: lang==='EN'?"• <b>2 Days/week:</b> Rice or wholemeal pasta (avoid butter/cream) + lean red/white meat + raw/cooked veg.<br>• <b>2 Days/week:</b> Fish/crustaceans/mollusks with raw and cooked vegetables.<br>• <b>2 Days/week:</b> All-you-can-eat chickpeas/beans/lentils + cooked veg with raw oil.<br>• <b>1 Day/week:</b> Buffalo mozzarella/goat/sheep ricotta + veg + 1 slice wholemeal bread.":"• <b>2 Días/sem:</b> Arroz o pasta integral + carne magra + vegetales.<br>• <b>2 Días/sem:</b> Pescado/mariscos + vegetales.<br>• <b>2 Días/sem:</b> Legumbres ilimitadas + vegetales cocidos con aceite crudo.<br>• <b>1 Día/sem:</b> Queso cabra/oveja/búfala + vegetales + 1 rebanada pan integral."},
+                    {h: lang==='EN'?"AFTERNOON":"TARDE", d: lang==='EN'?"5 Walnuts or 12 almonds/hazelnuts + various crudités of fennel, carrots, celery.":"5 Nueces o 12 almendras + crudités de zanahoria/apio."},
+                    {h: lang==='EN'?"DINNER":"CENA", d: lang==='EN'?"All-you-can-eat mixed vegetables (always), both raw and cooked, plus:<br>- Carpaccio or tartare of lean meat.<br>- Fish (any).<br>- Frittata (2-3 whites, 1 yolk) with Grana Padano and courgette.<br>- Bresaola, rocket and Parmigiano.<br>- Vegetable soup (green only) and legumes.":"Vegetales mixtos ilimitados (siempre) MÁS:<br>- Carpaccio o tartare de carne magra.<br>- Pescado (cualquiera).<br>- Tortilla (2-3 claras, 1 yema) con Grana Padano.<br>- Bresaola y Parmesano.<br>- Sopa de vegetales (solo verdes) y legumbres."}
                 ],
-                no: lang==='EN'?"White and refined flours, white sugars, cured meats, all spirits (including beer), fats, milk, dairy products, cheese (cow's milk), cakes, bread, pizza, piadina, breadsticks, rice/corn cakes, pumpkin, cooked carrots, beetroot, honey, jam, fruit juices.":"Harinas blancas/refinadas, azúcares blancos, embutidos, alcohol (incluyendo cerveza), grasas, leche, quesos de vaca, pasteles, pan, pizza, palitos de pan, tortitas, calabaza, zanahorias cocidas, remolacha, miel, mermeladas, jugos.",
-                tip: lang==='EN'?"<b>Herbal tea 21 (men):</b> 2-3 scoops in 1.0L of water during the day.<br><br><b>Herbal tea 28:</b> after dinner, 1 serving in water.<br><br>Season with 3 tbsp raw oil, apple vinegar, lemon. Salt only during cooking!":"<b>Té 21 (hombres):</b> 2-3 medidas en 1L de agua al día.<br><br><b>Té 28:</b> después de cenar, 1 vaso.<br><br>Sazona con aceite crudo, vinagre y limón. ¡Sal solo durante cocción!"
+                no: lang==='EN'?"White and refined flours and white sugars (absolutely forbidden), cured meats, all spirits (including beer), fats, milk, dairy products, cheese (cow's milk), cakes, bread, pizza, piadina, breadsticks, rice and corn cakes, pumpkin, carrots, cooked celery, beetroot, honey, jam, fruit juices and drinks in general.":"Harinas blancas/refinadas y azúcares blancos (absolutamente prohibido), embutidos, alcohol (incluyendo cerveza), grasas, leche de vaca, quesos de vaca, pasteles, pan, pizza, palitos de pan, tortitas de arroz/maíz, calabaza, zanahorias cocidas, remolacha, miel, mermelada, jugos de fruta.",
+                tip: lang==='EN'?"Herbal tea 21 for men: 2-3 scoops diluted in 1.0 litre of water during the day.<br><br>Herbal tea 28: after dinner, 1 serving in water (1 glass).<br><br>Season with 3 tablespoon of raw oil, apple vinegar and lemon. Salt should only be added during cooking.":"Té herbal 21 para hombres: 2-3 medidas en 1 litro de agua al día.<br><br>Té herbal 28: después de la cena, 1 medida en un vaso de agua.<br><br>Sazona con aceite crudo, vinagre de manzana y limón. La sal solo debe añadirse durante la cocción."
             },
             "Androide": {
                 steps: [
-                    {h: "MORNING / DESAYUNO", d: lang==='EN'?"Tea/Coffee + soy yogurt with 1 tbsp oat bran OR 2 whole-wheat rusks.":"Té/Café + yogur de soya con salvado O 2 tostadas integrales."},
-                    {h: "SNACK", d: lang==='EN'?"4 walnuts or raw carrots/celery.":"4 nueces o zanahoria/apio crudo."},
-                    {h: "LUNCH / COMIDA", d: lang==='EN'?"Legumes (chickpeas/beans) OR fish + raw/cooked vegetables + 1 fresh fruit.":"Legumbres (lentejas) O pescado + vegetales + 1 fruta."},
-                    {h: "DINNER / CENA", d: lang==='EN'?"Lean red meat (carpaccio/tartare) or fish + mixed vegetables. NO CARBS AFTER 4:00 PM.":"Carne roja o pescado + vegetales. CERO carbohidratos después de las 4 PM."}
+                    {h: lang==='EN'?"MORNING":"DESAYUNO", d: lang==='EN'?"Tea/Coffee + soy yogurt with 1 tbsp oat bran OR 2 whole-wheat rusks.":"Té/Café + yogur de soya con salvado O 2 tostadas integrales."},
+                    {h: "SNACK", d: lang==='EN'?"4 walnuts or raw carrots/celery.":"4 nueces o zanahoria/apio crudos."},
+                    {h: lang==='EN'?"LUNCH":"COMIDA", d: lang==='EN'?"Legumes (chickpeas/beans) OR fish + raw/cooked vegetables + 1 fresh fruit.":"Legumbres (lentejas/frijol) O pescado + vegetales + 1 fruta fresca."},
+                    {h: lang==='EN'?"DINNER":"CENA", d: lang==='EN'?"Lean red meat (carpaccio/tartare) or fish + mixed vegetables. NO CARBS AFTER 4:00 PM.":"Carne roja magra o pescado + vegetales. CERO carbohidratos después de las 4 PM."}
                 ],
                 no: lang==='EN'?"Bread, beer, juices, fried foods, cow's milk cheese, sweets.":"Pan, cerveza, jugos, frituras, queso de vaca, dulces.",
-                tip: lang==='EN'?"Android body types should not fear a fat or greasy second course as much as sweets/refined bread.":"Cuerpos Androides no deben temer tanto a las grasas como a los dulces y el pan refinado."
+                tip: lang==='EN'?"Android body types should not fear a fat or greasy second course as much as sweets/refined bread.":"Los cuerpos Androides no deben temer tanto a las grasas como a los dulces y el pan refinado."
             }
         };
 
@@ -423,18 +431,18 @@
         const protocols = {
             "Ginoide": {
                 routine: [
-                    {n: lang==='EN'?"Dumbbell Crosses (Pectorals)":"Aperturas (Pectorales)", r: lang==='EN'?"3 sets of 12 repetitions (20'' pause)":"3 series de 12 repeticiones (20'' descanso)"},
-                    {n: lang==='EN'?"Lateral lifts (Shoulders)":"Elevaciones (Hombros)", r: lang==='EN'?"3 sets of 10 repetitions (20'' pause)":"3 series de 10 repeticiones (20'' descanso)"},
+                    {n: lang==='EN'?"Dumbbell Crosses (Pectorals)":"Aperturas con mancuernas (Pectorales)", r: lang==='EN'?"3 sets of 12 repetitions (20'' pause)":"3 series de 12 repeticiones (20'' descanso)"},
+                    {n: lang==='EN'?"Lateral lifts (Shoulders)":"Elevaciones laterales (Hombros)", r: lang==='EN'?"3 sets of 10 repetitions (20'' pause)":"3 series de 10 repeticiones (20'' descanso)"},
                     {n: lang==='EN'?"Biceps with 2 dumbbells":"Bíceps con mancuernas", r: lang==='EN'?"2 series for 10 repetitions":"2 series de 10 repeticiones"},
-                    {n: lang==='EN'?"Triceps (French press)":"Tríceps (Copa)", r: lang==='EN'?"3 series for 10 repetitions":"3 series de 10 repeticiones"}
+                    {n: lang==='EN'?"Triceps (French press)":"Tríceps (Press francés)", r: lang==='EN'?"3 series for 10 repetitions":"3 series de 10 repeticiones"}
                 ],
-                n: lang==='EN'?"Exercises with pre-session Infrabaldan weights; can be completed while in pedaling position. In order to activate microcirculation, work 3-5 minutes on the vibrating platform before pedaling.":"Ejercicios con pesas de Infrabaldan pre-sesión; pueden realizarse en posición de pedaleo. Para activar microcirculación, usar plataforma vibratoria 3-5 mins antes de pedalear."
+                n: lang==='EN'?"Exercises with pre-session Infrabaldan weights; can be completed while in pedaling position. In order to activate microcirculation, work 3-5 minutes on the vibrating platform before pedaling.":"Ejercicios con pesas de Infrabaldan pre-sesión; pueden realizarse en posición de pedaleo. Para activar microcirculación, usar plataforma vibratoria 3-5 mins antes."
             },
             "Androide": {
                 routine: [
-                    {n: lang==='EN'?"Free body squat":"Sentadillas", r: lang==='EN'?"2x15 (20'' recovery)":"2x15 (20'' descanso)"},
-                    {n: lang==='EN'?"Free body lunges":"Estocadas", r: lang==='EN'?"2x10 (20'' recovery)":"2x10 (20'' descanso)"},
-                    {n: lang==='EN'?"Buttock stretches (against wall)":"Estiramiento Glúteo", r: lang==='EN'?"2x25 (20'' recovery)":"2x25 (20'' descanso)"}
+                    {n: lang==='EN'?"Free body squat":"Sentadillas libres", r: lang==='EN'?"2x15 (20'' recovery)":"2 series de 15 (20'' descanso)"},
+                    {n: lang==='EN'?"Free body lunges":"Estocadas", r: lang==='EN'?"2x10 (20'' recovery)":"2 series de 10 (20'' descanso)"},
+                    {n: lang==='EN'?"Buttock stretches (against wall)":"Estiramiento glúteo en pared", r: lang==='EN'?"2x25 (20'' recovery)":"2 series de 25 (20'' descanso)"}
                 ],
                 n: lang==='EN'?"Exercises to be done BEFORE starting the Infrabaldan session. Once the heartbeat is restored to normal values, you can start the pedaling session.":"Ejercicios a realizar ANTES de iniciar Infrabaldan. Una vez que el ritmo cardiaco regrese a la normalidad, inicie el pedaleo."
             }
