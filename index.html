@@ -3,259 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OXYHYPERBARIC - PORTAL CLÍNICO</title>
+    <title>OXYHYPERBARIC CLINICAL SUITE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --clinico: #1e40af; --oro: #d4af37; --fondo: #f8fafc; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--fondo); color: #0f172a; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--fondo); color: #0f172a; scroll-behavior: smooth; }
         .card-medical { background: white; border-radius: 24px; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
-        .nav-active { color: var(--clinico); border-bottom: 3px solid var(--clinico); font-weight: 900; }
-        .label-tiny { font-size: 9px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 1px; display: flex; items-center; gap: 4px; }
-        .value-med { font-size: 19px; font-weight: 800; color: #1e293b; }
-        .info-dot { cursor: pointer; color: #cbd5e1; font-size: 12px; }
-        #modalInfo { z-index: 200; display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px); }
-        .diet-day { border-left: 4px solid var(--oro); padding: 12px 16px; background: white; margin-bottom: 12px; border-radius: 0 16px 16px 0; }
+        .label-med { font-size: 10px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 6px; }
+        .value-med { font-size: 22px; font-weight: 900; color: #1e293b; }
+        .info-btn { background: #f1f5f9; color: #64748b; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .info-btn:hover { background: var(--clinico); color: white; }
+        #modalInfo { z-index: 500; display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px); }
+        .diet-section { border-left: 4px solid var(--oro); padding-left: 16px; margin-bottom: 24px; }
+        .prohibido-box { background: #fff1f2; border: 1px solid #fecdd3; padding: 15px; border-radius: 16px; color: #9f1239; }
+        .nav-pill { padding: 10px 20px; border-radius: 99px; font-size: 11px; font-weight: 900; text-transform: uppercase; transition: 0.3s; cursor: pointer; }
+        .nav-pill.active { background: var(--clinico); color: white; }
     </style>
 </head>
 <body class="antialiased">
 
     <div id="modalInfo" onclick="closeModal()">
-        <div class="bg-white max-w-sm m-auto mt-[25vh] p-8 rounded-[32px] shadow-2xl relative mx-6" onclick="event.stopPropagation()">
-            <h3 id="infoTitle" class="text-lg font-black text-blue-900 uppercase italic mb-2">Metric</h3>
-            <p id="infoDesc" class="text-sm text-slate-600 leading-relaxed mb-4">Explanation...</p>
+        <div class="bg-white max-w-sm m-auto mt-[15vh] p-8 rounded-[32px] shadow-2xl relative mx-6" onclick="event.stopPropagation()">
+            <h3 id="infoTitle" class="text-xl font-black text-blue-900 uppercase italic mb-2">METRIC</h3>
+            <div class="mb-4">
+                <p class="text-[10px] font-black text-slate-400 uppercase">Description</p>
+                <p id="infoDesc" class="text-sm text-slate-600 font-medium leading-relaxed"></p>
+            </div>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="bg-slate-50 p-3 rounded-xl">
+                    <p class="text-[9px] font-black text-slate-400 uppercase">Your Value</p>
+                    <p id="infoUserVal" class="text-lg font-black text-slate-800">--</p>
+                </div>
+                <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100">
+                    <p class="text-[9px] font-black text-emerald-600 uppercase">Clinical Ideal</p>
+                    <p id="infoIdealVal" class="text-lg font-black text-emerald-700">--</p>
+                </div>
+            </div>
             <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100">
-                <p class="label-tiny text-blue-600 mb-1">Impacto Clínico</p>
-                <p id="infoImpact" class="text-xs font-bold text-blue-900 leading-relaxed">Impact...</p>
+                <p class="text-[10px] font-black text-blue-600 uppercase mb-1">Clinical Action / Motivación</p>
+                <p id="infoAction" class="text-xs font-bold text-blue-900 leading-relaxed italic"></p>
             </div>
-            <button onclick="closeModal()" class="w-full mt-6 bg-slate-900 text-white p-4 rounded-xl font-black text-xs uppercase">Cerrar</button>
+            <button onclick="closeModal()" class="w-full mt-6 bg-slate-900 text-white p-4 rounded-xl font-black text-xs uppercase tracking-widest">Close Record</button>
         </div>
     </div>
 
-    <div class="fixed top-4 right-4 flex gap-2 z-[110]">
-        <button onclick="toggleLanguage()" class="bg-white/80 backdrop-blur-md border border-slate-200 text-[10px] font-black px-4 py-2 rounded-full shadow-sm" id="langBtn">EN</button>
-        <button onclick="toggleUnits()" class="bg-blue-600 text-white text-[10px] font-black px-4 py-2 rounded-full shadow-sm" id="unitBtn">LB</button>
-    </div>
-
-    <div id="loginScreen" class="min-h-screen flex flex-col justify-center px-10">
-        <div class="text-center mb-10">
-            <img src="logo.jpg" alt="Logo" class="h-20 mx-auto mb-4 object-contain" onerror="this.src='https://via.placeholder.com/200x80?text=OXYHYPERBARIC'">
-            <h1 class="text-2xl font-black italic tracking-tighter text-slate-900 uppercase" id="txtWelcome">Patient Portal</h1>
-        </div>
-        <div class="max-w-md mx-auto w-full space-y-3">
-            <input type="text" id="loginID" class="w-full p-5 rounded-2xl border border-slate-200 bg-white shadow-inner font-bold text-center" placeholder="ID">
-            <input type="text" id="loginName" class="w-full p-5 rounded-2xl border border-slate-200 bg-white shadow-inner font-bold text-center" placeholder="NAME / NOMBRE">
-            <button onclick="attemptLogin()" id="btnLogin" class="w-full bg-slate-900 text-white p-5 rounded-2xl font-black uppercase tracking-widest shadow-xl active:scale-95 transition-transform">Access Record</button>
-            <p id="loginError" class="text-red-500 text-[10px] text-center font-black hidden uppercase mt-4">Invalid ID or Name / Datos Incorrectos</p>
-        </div>
-    </div>
-
-    <div id="mainDashboard" class="hidden min-h-screen">
-        <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b border-slate-100 z-50 p-6 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <img src="logo.jpg" class="h-8" onerror="this.style.display='none'">
-                <div>
-                    <p id="patientHello" class="text-lg font-black text-slate-800">--</p>
-                    <div id="planBadge" class="text-[9px] font-black text-blue-600 uppercase">PLAN: --</div>
-                </div>
+    <header class="p-6 bg-white border-b sticky top-0 z-[100] flex justify-between items-center shadow-sm">
+        <div class="flex items-center gap-3">
+            <img src="logo.jpg" class="h-10" onerror="this.src='https://via.placeholder.com/150x50?text=OXYHYPERBARIC'">
+            <div>
+                <h1 id="patientName" class="text-lg font-black text-slate-900 italic leading-none uppercase">--</h1>
+                <p id="patientPlan" class="text-[9px] font-black text-blue-600 uppercase tracking-widest mt-1">--</p>
             </div>
-            <button onclick="location.reload()" class="text-[10px] font-black text-slate-400 uppercase">Exit</button>
-        </header>
+        </div>
+        <div class="flex gap-2">
+            <button onclick="toggleLang()" class="bg-slate-100 text-[10px] font-black px-3 py-2 rounded-lg" id="btnLang">EN</button>
+            <button onclick="toggleUnits()" class="bg-blue-600 text-white text-[10px] font-black px-3 py-2 rounded-lg" id="btnUnit">LB</button>
+        </div>
+    </header>
 
-        <main class="p-6 pb-32 space-y-8">
-            <section id="view-stats" class="space-y-6">
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="card-medical p-5">
-                        <div class="label-tiny">Weight / Peso <span class="info-dot" onclick="showInfo('weight')">ⓘ</span></div>
-                        <p class="value-med mt-1"><span id="valPeso">--</span> <small class="text-[10px] text-slate-400 uppercase unitW">LB</small></p>
-                    </div>
-                    <div class="card-medical p-5">
-                        <div class="label-tiny">Body Fat / Grasa <span class="info-dot" onclick="showInfo('fat')">ⓘ</span></div>
-                        <p class="value-med text-blue-600 mt-1"><span id="valGrasa">--</span> <small class="text-[10px]">%</small></p>
-                    </div>
-                    <div class="card-medical p-5">
-                        <div class="label-tiny">Muscle / Músculo <span class="info-dot" onclick="showInfo('muscle')">ⓘ</span></div>
-                        <p class="value-med mt-1"><span id="valMusculo">--</span> <small class="text-[10px] uppercase unitW">LB</small></p>
-                    </div>
-                    <div class="card-medical p-5 border-amber-100">
-                        <div class="label-tiny text-amber-600">Visceral <span class="info-dot" onclick="showInfo('visceral')">ⓘ</span></div>
-                        <p class="value-med text-amber-600 mt-1">Lvl <span id="valVisceral">--</span></p>
-                    </div>
+    <main class="p-6 pb-20 space-y-10">
+        
+        <div id="loginSection" class="fixed inset-0 bg-white z-[200] flex flex-col justify-center px-10">
+            <div class="text-center mb-10">
+                <img src="logo.jpg" class="h-24 mx-auto mb-6" onerror="this.style.display='none'">
+                <h2 class="text-2xl font-black italic text-blue-900 uppercase">Patient Login</h2>
+            </div>
+            <div class="max-w-md mx-auto w-full space-y-3">
+                <input type="text" id="logID" class="w-full p-5 rounded-2xl border bg-slate-50 font-bold text-center uppercase" placeholder="Enter ID">
+                <input type="text" id="logName" class="w-full p-5 rounded-2xl border bg-slate-50 font-bold text-center uppercase" placeholder="Enter Name">
+                <button onclick="login()" class="w-full bg-slate-900 text-white p-5 rounded-2xl font-black uppercase tracking-widest">Unlock My Health</button>
+                <p id="logErr" class="text-red-500 text-[10px] text-center font-black hidden mt-4">INVALID CREDENTIALS</p>
+            </div>
+        </div>
+
+        <div id="dashSection" class="hidden space-y-10">
+            
+            <section class="grid grid-cols-2 gap-4">
+                <div class="card-medical p-5">
+                    <div class="label-med">Weight <div class="info-btn" onclick="openInfo('weight')">i</div></div>
+                    <p class="value-med mt-2"><span id="valPeso">--</span> <small class="text-[10px] text-slate-400 uW">LB</small></p>
                 </div>
-
-                <div class="card-medical p-6 grid grid-cols-3 gap-y-8 gap-x-2 text-center">
-                    <div><p class="label-tiny justify-center">BMI <span onclick="showInfo('bmi')">ⓘ</span></p><p class="text-sm font-black mt-1" id="valIMC">--</p></div>
-                    <div><p class="label-tiny justify-center">Water/Agua <span onclick="showInfo('water')">ⓘ</span></p><p class="text-sm font-black mt-1 text-blue-500" id="valAgua">--%</p></div>
-                    <div><p class="label-tiny justify-center">BMR <span onclick="showInfo('bmr')">ⓘ</span></p><p class="text-sm font-black mt-1" id="valBMR">--</p></div>
-                    <div><p class="label-tiny justify-center">Bone/Ósea <span onclick="showInfo('bone')">ⓘ</span></p><p class="text-sm font-black mt-1" id="valOsea">--</p></div>
-                    <div><p class="label-tiny justify-center">Protein/Prot. <span onclick="showInfo('protein')">ⓘ</span></p><p class="text-sm font-black mt-1 text-emerald-600" id="valProteina">--%</p></div>
-                    <div><p class="label-tiny justify-center">Subcu. <span onclick="showInfo('subcu')">ⓘ</span></p><p class="text-sm font-black mt-1" id="valSubcu">--%</p></div>
+                <div class="card-medical p-5">
+                    <div class="label-med">Body Fat <div class="info-btn" onclick="openInfo('fat')">i</div></div>
+                    <p class="value-med text-blue-600 mt-2"><span id="valGrasa">--</span> <small class="text-[10px]">%</small></p>
                 </div>
+                <div class="card-medical p-5">
+                    <div class="label-med">Muscle <div class="info-btn" onclick="openInfo('muscle')">i</div></div>
+                    <p class="value-med mt-2"><span id="valMusculo">--</span> <small class="text-[10px] uW">LB</small></p>
+                </div>
+                <div class="card-medical p-5 border-amber-100">
+                    <div class="label-med text-amber-600">Visceral <div class="info-btn" onclick="openInfo('visceral')">i</div></div>
+                    <p class="value-med text-amber-600 mt-2">Lvl <span id="valVisc">--</span></p>
+                </div>
+            </section>
 
-                <div class="card-medical p-6 bg-slate-900 text-white shadow-2xl">
+            <section class="card-medical p-6 grid grid-cols-3 gap-y-10 gap-x-2 text-center">
+                <div><p class="label-med justify-center">BMI <div class="info-btn mx-auto mt-1" onclick="openInfo('bmi')">i</div></p><p class="text-sm font-black mt-1" id="valIMC">--</p></div>
+                <div><p class="label-med justify-center">Water <div class="info-btn mx-auto mt-1" onclick="openInfo('water')">i</div></p><p class="text-sm font-black text-blue-500 mt-1" id="valAgua">--%</p></div>
+                <div><p class="label-med justify-center">BMR <div class="info-btn mx-auto mt-1" onclick="openInfo('bmr')">i</div></p><p class="text-sm font-black mt-1" id="valBMR">--</p></div>
+                <div><p class="label-med justify-center">Bone <div class="info-btn mx-auto mt-1" onclick="openInfo('bone')">i</div></p><p class="text-sm font-black mt-1" id="valOsea">--</p></div>
+                <div><p class="label-med justify-center">Protein <div class="info-btn mx-auto mt-1" onclick="openInfo('protein')">i</div></p><p class="text-sm font-black text-emerald-600 mt-1" id="valProt">--%</p></div>
+                <div><p class="label-med justify-center">Subcu. <div class="info-btn mx-auto mt-1" onclick="openInfo('subcu')">i</div></p><p class="text-sm font-black mt-1" id="valSubcu">--%</p></div>
+            </section>
+
+            <section class="card-medical p-6 bg-slate-900 text-white shadow-2xl relative overflow-hidden">
+                <div class="relative z-10">
                     <div class="flex items-center gap-2 mb-4">
-                        <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-                        <p class="text-[10px] font-black uppercase tracking-[3px] text-blue-300">Oxy-AI Insights</p>
+                        <div class="w-2 h-2 bg-blue-400 rounded-full animate-ping"></div>
+                        <p class="text-[10px] font-black uppercase tracking-[3px] text-blue-300">Predicta AI Medical Analysis</p>
                     </div>
-                    <p id="aiLongMsg" class="text-sm leading-relaxed font-medium text-slate-300 italic">Analizando datos...</p>
-                </div>
-
-                <div class="space-y-4">
-                    <h3 class="text-sm font-black uppercase tracking-widest text-slate-400 px-2">History / Log</h3>
-                    <div id="timelineContainer" class="space-y-3"></div>
+                    <p id="aiReport" class="text-[15px] leading-relaxed font-medium text-slate-200 italic"></p>
                 </div>
             </section>
 
-            <section id="view-nutrition" class="hidden space-y-6">
-                <h3 class="text-2xl font-black italic text-slate-900">Nutrition Plan / Plan Nutricional</h3>
-                <div id="weeklyGuide" class="space-y-4"></div>
+            <section id="nutritionSuite" class="space-y-6">
+                <h3 class="text-2xl font-black italic uppercase text-slate-800">Complete Nutrition Guide</h3>
+                <div id="dietContainer" class="space-y-8">
+                    </div>
+                <div class="prohibido-box">
+                    <p class="text-xs font-black uppercase mb-3">⛔ Absolute Restrictions (Baldan Standards)</p>
+                    <p class="text-[11px] leading-relaxed font-bold" id="txtAvoid">
+                        Avoid: Sugar, white flour, sweets, fried foods, whole dairy, beer, juices, and table salt after cooking. 
+                    </p>
+                </div>
             </section>
 
-            <section id="view-training" class="hidden space-y-6">
-                <h3 class="text-2xl font-black italic text-slate-900">Training / Entrenamiento</h3>
-                <div id="trainingDetails" class="space-y-4"></div>
+            <section id="trainingSuite" class="space-y-6">
+                <h3 class="text-2xl font-black italic uppercase text-slate-800">Pre-Session Protocol</h3>
+                <div class="card-medical p-6 bg-slate-50 border-blue-100">
+                    <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-4">Specific Activation</p>
+                    <div id="trainingText" class="text-sm font-bold text-slate-700 leading-relaxed space-y-4">
+                        </div>
+                </div>
             </section>
 
-            <footer class="pt-10 pb-10 px-4 text-center opacity-40">
-                <p class="text-[8px] font-bold leading-relaxed uppercase tracking-widest">
-                    Disclaimer: This is for tracking only. Consult your Medical Director before changes.
-                </p>
-            </footer>
-        </main>
+            <section class="space-y-4">
+                <h3 class="text-[11px] font-black uppercase tracking-widest text-slate-400">Clinical History Log</h3>
+                <div id="historyList" class="space-y-3"></div>
+            </section>
 
-        <nav class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-lg border-t border-slate-100 h-20 flex justify-around items-center z-[150] px-4 shadow-2xl">
-            <div onclick="switchTab('stats')" id="tab-stats" class="flex flex-col items-center gap-1 nav-active flex-1 py-2">
-                <span class="text-xl">📊</span><span class="text-[9px] uppercase font-black">Record</span>
-            </div>
-            <div onclick="switchTab('nutrition')" id="tab-nutrition" class="flex flex-col items-center gap-1 text-slate-400 flex-1 py-2">
-                <span class="text-xl">🍏</span><span class="text-[9px] uppercase font-black">Plan</span>
-            </div>
-            <div onclick="switchTab('training')" id="tab-training" class="flex flex-col items-center gap-1 text-slate-400 flex-1 py-2">
-                <span class="text-xl">💪</span><span class="text-[9px] uppercase font-black">Work</span>
-            </div>
-        </nav>
-    </div>
+        </div>
+    </main>
 
 <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyuIcI4lN-AMx82_W35BfcGn1szKgnrIbu3YOPAwuhtx3kKAOQ5i-pBWxM0Z2G8oKPz/exec";
-    let patientData = null, unitMode = 'LB', currentLang = 'EN';
-    const LB_F = 2.20462;
+    let pData = null, uM = 'LB', lang = 'EN';
+    const LB = 2.20462;
 
-    async function attemptLogin() {
-        const id = document.getElementById('loginID').value.trim();
-        const name = document.getElementById('loginName').value.trim().toLowerCase();
-        const btn = document.getElementById('btnLogin');
+    const t = {
+        EN: { welcome: "Patient Portal", weight: "Weight", fat: "Body Fat", muscle: "Muscle", visc: "Visceral Fat", water: "Water", bone: "Bone", prot: "Protein", sub: "Subcu", morning: "MORNING", snack: "SNACK", lunch: "LUNCH", dinner: "DINNER", fasting: "FASTING", options: "Menu Options" },
+        ES: { welcome: "Portal del Paciente", weight: "Peso", fat: "Grasa", muscle: "Músculo", visc: "Grasa Visceral", water: "Agua", bone: "Hueso", prot: "Proteína", sub: "Subcu", morning: "MAÑANA", snack: "MERIENDA", lunch: "COMIDA", dinner: "CENA", fasting: "AYUNAS", options: "Opciones de Menú" }
+    };
+
+    async function login() {
+        const id = document.getElementById('logID').value.trim();
+        const name = document.getElementById('logName').value.trim().toLowerCase();
         if(!id || !name) return;
-
-        btn.innerText = "...";
         try {
-            const res = await fetch(`${WEB_APP_URL}?action=obtenerClientes`);
-            const data = await res.json();
-            // VALIDACIÓN RESTAURADA (ID EXACTO Y NOMBRE INCLUIDO)
-            const match = data.find(p => String(p.id).trim() === id && String(p.nombre).toLowerCase().includes(name));
-
-            if(match) {
-                patientData = match;
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('mainDashboard').classList.remove('hidden');
-                loadDashboardData();
-            } else {
-                document.getElementById('loginError').classList.remove('hidden');
-                btn.innerText = "ACCESS RECORD";
-            }
-        } catch(e) { alert("Network Error"); }
+            const r = await fetch(`${WEB_APP_URL}?action=obtenerClientes`);
+            const d = await r.json();
+            const m = d.find(p => String(p.id).trim() === id && String(p.nombre).toLowerCase().includes(name));
+            if(m) { pData = m; document.getElementById('loginSection').style.display='none'; document.getElementById('dashSection').classList.remove('hidden'); setup(); }
+            else { document.getElementById('logErr').classList.remove('hidden'); }
+        } catch(e) { alert("Server Error"); }
     }
 
-    function toggleLanguage() { currentLang = (currentLang === 'EN' ? 'ES' : 'EN'); document.getElementById('langBtn').innerText = currentLang; if(patientData) loadDashboardData(); }
-    function toggleUnits() { unitMode = (unitMode === 'LB' ? 'KG' : 'LB'); document.getElementById('unitBtn').innerText = unitMode; if(patientData) loadDashboardData(); }
+    function setup() {
+        document.getElementById('patientName').innerText = pData.nombre;
+        document.getElementById('patientPlan').innerText = `PROTOCOL: ${pData.plan_asignado || 'GINOID'}`;
+        loadStats(); renderDiet(); renderExercise(); renderHistory();
+    }
 
-    function loadDashboardData() {
-        let last = patientData;
-        if(patientData.avances && patientData.avances.length > 0) last = [...patientData.avances].pop();
-        const pd = last.predicta_data || {};
-
-        document.getElementById('patientHello').innerText = patientData.nombre.toUpperCase();
-        document.getElementById('planBadge').innerText = `PLAN: ${patientData.plan_asignado || 'GINOIDE'}`;
+    function loadStats() {
+        let last = pData; if(pData.avances && pData.avances.length > 0) last = [...pData.avances].pop();
+        const pd = last.predicta_data || pData.predicta_data || {};
         
-        const conv = (v) => unitMode === 'LB' ? (parseFloat(v || 0) * LB_F).toFixed(1) : parseFloat(v || 0).toFixed(1);
+        const c = (v) => uM === 'LB' ? (parseFloat(v || 0) * LB).toFixed(1) : parseFloat(v || 0).toFixed(1);
         
-        document.getElementById('valPeso').innerText = conv(last.peso);
+        document.getElementById('valPeso').innerText = c(last.peso);
         document.getElementById('valGrasa').innerText = parseFloat(last.grasa).toFixed(1);
-        document.getElementById('valMusculo').innerText = conv(last.masa_muscular_kg || pd.musculo);
-        document.getElementById('valVisceral').innerText = last.grasa_visceral || pd.visceral || '--';
-        document.getElementById('valIMC').innerText = last.imc || pd.imc || (parseFloat(last.peso)/Math.pow(patientData.altura/100,2)).toFixed(1);
+        document.getElementById('valMusculo').innerText = c(last.masa_muscular_kg || pd.musculo);
+        document.getElementById('valVisc').innerText = last.grasa_visceral || pd.visceral || '--';
+        document.getElementById('valIMC').innerText = last.imc || pd.imc || (parseFloat(last.peso)/Math.pow(pData.altura/100,2)).toFixed(1);
         document.getElementById('valAgua').innerText = (last.agua_corporal_perc || pd.agua_perc || 0).toFixed(1);
         document.getElementById('valBMR').innerText = last.bmr_kcal || pd.bmr || '--';
-        document.getElementById('valOsea').innerText = conv(last.masa_osea_kg || pd.masa_osea);
-        document.getElementById('valProteina').innerText = (last.proteina_perc || pd.proteina_perc || 0).toFixed(1);
+        document.getElementById('valOsea').innerText = c(last.masa_osea_kg || pd.masa_osea || 0);
+        document.getElementById('valProt').innerText = (last.proteina_perc || pd.proteina_perc || 0).toFixed(1);
         document.getElementById('valSubcu').innerText = (last.grasa_subcutanea_perc || pd.subcutanea_perc || 0).toFixed(1);
         
-        document.querySelectorAll('.unitW').forEach(el => el.innerText = unitMode);
-        renderTimeline(); renderNutrition(); renderTraining(); generateAdvice(last);
+        document.querySelectorAll('.uW').forEach(el => el.innerText = uM);
+        
+        // IA ANALYSIS ELABORADO
+        const initialG = parseFloat(pData.grasa), currentG = parseFloat(last.grasa), visceral = parseInt(last.grasa_visceral || 10);
+        let msg = lang === 'EN' ? `Clinical analysis for ${pData.nombre.split(' ')[0]}: ` : `Análisis clínico para ${pData.nombre.split(' ')[0]}: `;
+        if(currentG < initialG) msg += lang === 'EN' ? `You've achieved a significant fat reduction of ${(initialG - currentG).toFixed(1)}%. This indicates that the Infra Baldan light frequency is effectively triggering lipolysis in your adipose tissue. ` : `Has logrado una reducción real de grasa del ${(initialG - currentG).toFixed(1)}%. Esto indica que la frecuencia de Infra Baldan está activando la lipólisis en tu tejido adiposo. `;
+        if(visceral > 10) msg += lang === 'EN' ? `Warning: Your visceral fat levels remain above the safe clinical threshold (Level 9). This fat chokes organ function and slows your metabolic age. Strictly follow the "Avoid" list this week. ` : `Atención: Tu nivel de grasa visceral sigue arriba del umbral de seguridad (Nivel 9). Esta grasa asfixia tus órganos y frena tu rejuvenecimiento. Sigue la lista de "Evitar" estrictamente esta semana. `;
+        msg += lang === 'EN' ? "Maintain your 3-session weekly rhythm to prevent metabolic plateau." : "Mantén tu ritmo de 3 sesiones semanales para evitar el estancamiento metabólico.";
+        document.getElementById('aiReport').innerText = msg;
     }
 
-    function showInfo(metric) {
-        const info = {
-            weight: ["Total Weight", "Your total mass.", "Locked to Day 1 lean mass to ensure fat loss."],
-            fat: ["Body Fat", "Total adipose tissue.", "Reducing this reverses metabolic stress."],
-            muscle: ["Muscle Mass", "Active fiber.", "Burn calories even at rest. Do not lose this!"],
-            visceral: ["Visceral Fat", "Fat in organs.", "Level 9 or less is critical to prevent Diabetes."],
-            bmi: ["BMI", "Weight/Height ratio.", "High BMI stresses heart and joints."],
-            water: ["Body Water", "Hydration.", "Fat oxidation stops without water."],
-            bmr: ["BMR", "Resting burn.", "Higher BMR prevents weight rebound."],
-            bone: ["Bone Mass", "Mineral density.", "Ensures nutrition supports your frame."],
-            protein: ["Protein %", "Tissue repair.", "Vital for recovery after sessions."],
-            subcu: ["Subcutaneous", "Under-skin fat.", "Primary fuel oxidized in sessions."]
+    function openInfo(metric) {
+        const h = pData;
+        let last = pData; if(pData.avances && pData.avances.length > 0) last = [...pData.avances].pop();
+        const pd = last.predicta_data || {};
+        
+        const db = {
+            weight: { 
+                title: "Weight / Peso", 
+                desc: lang==='EN'?"Your total mass (fat, muscle, water).":"Masa total (grasa, músculo, agua).", 
+                ideal: lang==='EN'?(calcularMeta(h.sexo, h.edad, h.peso, h.grasa)* (uM==='LB'?LB:1)).toFixed(1):calcularMeta(h.sexo, h.edad, h.peso, h.grasa).toFixed(1),
+                impact: lang==='EN'?"Reaching your ideal weight reduces mechanical stress on your heart and joints by 30%.":"Llegar a tu peso ideal reduce el estrés mecánico en tu corazón y rodillas un 30%."
+            },
+            visceral: {
+                title: "Visceral Fat / Interna",
+                desc: lang==='EN'?"Fat surrounding vital organs.":"Grasa rodeando órganos vitales.",
+                ideal: "≤ 9 Lvl",
+                impact: parseInt(last.grasa_visceral || 10) > 9 ? (lang==='EN'?"CRITICAL: Your level is high. This increases diabetes risk. Avoid carbs at night.":"CRÍTICO: Nivel alto. Aumenta riesgo de diabetes. Evita carbohidratos de noche.") : (lang==='EN'?"EXCELLENT: Your organs are clean and functioning at peak capacity.":"EXCELENTE: Tus órganos están limpios y operando al máximo.")
+            },
+            muscle: {
+                title: "Muscle / Músculo",
+                desc: lang==='EN'?"The engine that burns fat.":"El motor que quema grasa.",
+                ideal: lang==='EN'?"+ Baseline":"+ Base",
+                impact: lang==='EN'?"Every pound of muscle you gain burns extra calories even while you sleep.":"Cada libra de músculo que ganas quema calorías extras incluso mientras duermes."
+            },
+            water: {
+                title: "Water / Agua",
+                desc: lang==='EN'?"Hydration level.":"Nivel de hidratación.",
+                ideal: (h.sexo==='Masculino'?'60%':'55%'),
+                impact: lang==='EN'?"Without water, the chemical process of fat oxidation (burning) stops. Drink up!":"Sin agua, el proceso químico de oxidación (quema) de grasa se detiene. ¡Bebe agua!"
+            }
         };
-        document.getElementById('infoTitle').innerText = info[metric][0];
-        document.getElementById('infoDesc').innerText = info[metric][1];
-        document.getElementById('infoImpact').innerText = info[metric][2];
-        document.getElementById('modalInfo').style.display = 'block';
-    }
-    function closeModal() { document.getElementById('modalInfo').style.display = 'none'; }
 
-    function renderTimeline() {
-        const container = document.getElementById('timelineContainer');
+        const info = db[metric] || {title: metric.toUpperCase(), desc: "Clinical Metric", ideal: "Check Manual", impact: "Keep improving!"};
+        document.getElementById('infoTitle').innerText = info.title;
+        document.getElementById('infoDesc').innerText = info.desc;
+        document.getElementById('infoUserVal').innerText = document.getElementById(`val${metric.charAt(0).toUpperCase() + metric.slice(1)}`)?.innerText || "--";
+        document.getElementById('infoIdealVal').innerText = info.ideal;
+        document.getElementById('infoAction').innerText = info.impact;
+        document.getElementById('modalInfo').style.display='block';
+    }
+
+    function calcularMeta(sex, age, weight, fat) {
+        let isM = String(sex).toLowerCase().startsWith('m');
+        let ffm = weight * (1 - (fat/100));
+        let gIdeal = (isM ? 12 : 20) + (Math.max(0, age - 20) * 0.15);
+        return ffm / (1 - (Math.min(gIdeal, 25) / 100));
+    }
+
+    function renderDiet() {
+        const container = document.getElementById('dietContainer');
+        const plan = pData.plan_asignado || 'Gynoid';
+        const protocols = {
+            "Gynoid": [
+                {h: t[lang].fasting, c: lang==='EN'?"1 glass of warm water + 1 cup of Herbal Tea No. 2.":"1 vaso de agua tibia + 1 taza de Té Herbal No. 2."},
+                {h: t[lang].morning, c: lang==='EN'?"Coffee/Tea (no sugar) + Lactose-free or Soy yogurt + 1 tbsp oat bran or spelt flakes.":"Café/Té (sin azúcar) + Yogur deslactosado o de soya + 1 cda de salvado de avena o espelta."},
+                {h: t[lang].snack, c: lang==='EN'?"3-5 Walnuts or 6-8 Almonds or Mixed Berries (Blueberries/Strawberries).":"3-5 Nueces o 6-8 Almendras o Frutos Rojos."},
+                {h: t[lang].lunch, c: lang==='EN'?"Option A: Basmati/Brown Rice (40-60g) + Lean Chicken or Fish + Unlimited Green Veggies. Option B: Wholemeal Pasta (60g) with tomato sauce.":"Opción A: Arroz Basmati (40-60g) + Pollo o Pescado + Vegetales verdes ilimitados. Opción B: Pasta Integral (60g) con tomate."},
+                {h: t[lang].dinner, c: lang==='EN'?"Option A: Chicken leg (no skin) + Grilled Veggies. Option B: Fish (any kind) + 1 small potato.":"Opción A: Muslo de pollo (sin piel) + Vegetales. Opción B: Pescado + 1 papa pequeña."}
+            ],
+            "Android": [
+                {h: t[lang].morning, c: "Green Tea + Soy yogurt + oat bran."},
+                {h: t[lang].snack, c: "4 Walnuts + Raw celery or carrots."},
+                {h: t[lang].lunch, c: "Legumes (Lentils/Beans) + Raw vegetable salad + 1 Fresh Fruit."},
+                {h: t[lang].dinner, c: "Lean red meat (Carpaccio/Tartare) + Mixed vegetables. No carbs after 4:00 PM."}
+            ]
+        };
+        const active = protocols[plan] || protocols["Gynoid"];
+        container.innerHTML = active.map(i => `<div class="diet-section"><p class="text-[10px] font-black text-blue-600 tracking-widest">${i.h}</p><p class="text-sm font-bold text-slate-700 mt-1">${i.c}</p></div>`).join('');
+    }
+
+    function renderExercise() {
+        const container = document.getElementById('trainingText');
+        const plan = pData.plan_asignado || 'Gynoid';
+        const routines = {
+            "Gynoid": lang==='EN' ? 
+                "<p>• <strong>Dumbbell Flyes (Pectorals):</strong> 3 sets of 12 reps (20s rest).</p><p>• <strong>Lateral Lifts (Shoulders):</strong> 3 sets of 10 reps (20s rest).</p><p>• <strong>Biceps:</strong> 2 sets of 10 reps.</p><p>• <strong>Triceps (French Press):</strong> 3 sets of 10 reps.</p><p><em>Complete these on the seat before starting the pedaling session.</em></p>" :
+                "<p>• <strong>Aperturas (Pectorales):</strong> 3 series de 12 (20s descanso).</p><p>• <strong>Elevaciones Laterales:</strong> 3 series de 10 (20s descanso).</p><p>• <strong>Bíceps:</strong> 2 series de 10.</p><p>• <strong>Tríceps:</strong> 3 series de 10.</p><p><em>Realizar en la silla antes de comenzar el pedaleo.</em></p>",
+            "Android": lang==='EN' ?
+                "<p>• <strong>Free Body Squats:</strong> 2 sets of 15 (20s rest).</p><p>• <strong>Free Body Lunges:</strong> 2 sets of 10 (20s rest).</p><p>• <strong>Buttock Stretches:</strong> 2 sets of 25 (hands on wall).</p>" :
+                "<p>• <strong>Sentadillas:</strong> 2 series de 15 (20s descanso).</p><p>• <strong>Estocadas:</strong> 2 series de 10 (20s descanso).</p><p>• <strong>Estiramiento Glúteo:</strong> 2 series de 25 en pared.</p>"
+        };
+        container.innerHTML = routines[plan] || routines["Gynoid"];
+    }
+
+    function renderHistory() {
+        const container = document.getElementById('historyList');
         let html = "";
-        const history = [{ fecha: 'Start', peso: patientData.peso, grasa: patientData.grasa }, ...(patientData.avances || [])];
+        const history = [{ fecha: 'START', peso: pData.peso, grasa: pData.grasa }, ...(pData.avances || [])];
         history.reverse().forEach(e => {
-            const weightVal = unitMode === 'LB' ? (parseFloat(e.peso)*LB_F).toFixed(1) : parseFloat(e.peso).toFixed(1);
-            html += `<div class="card-medical p-4 flex justify-between items-center"><div><p class="label-tiny">${e.fecha === 'Start' ? 'Initial' : e.fecha.substring(0,10)}</p><p class="text-sm font-bold">${weightVal} ${unitMode}</p></div><div class="text-right"><p class="label-tiny">Fat</p><p class="text-sm font-bold text-blue-600">${parseFloat(e.grasa).toFixed(1)}%</p></div></div>`;
+            const w = uM === 'LB' ? (parseFloat(e.peso)*LB).toFixed(1) : parseFloat(e.peso).toFixed(1);
+            html += `<div class="card-medical p-4 flex justify-between items-center"><p class="text-[10px] font-black text-slate-400 uppercase">${e.fecha.substring(0,10)}</p><p class="text-sm font-black text-slate-700">${w} ${uM}</p><p class="text-sm font-black text-blue-600">${parseFloat(e.grasa).toFixed(1)}%</p></div>`;
         });
         container.innerHTML = html;
     }
 
-    function generateAdvice(last) {
-        const msg = currentLang === 'EN' ? 
-            "Your metabolic profile shows active adaptation. Focus on maintaining 3 sessions per week and prioritize hydration to maximize fat oxidation." :
-            "Tu perfil metabólico muestra una adaptación activa. Mantén 3 sesiones semanales y prioriza la hidratación para maximizar la oxidación de grasa.";
-        document.getElementById('aiLongMsg').innerText = msg;
-    }
-
-    function renderNutrition() {
-        const guide = document.getElementById('weeklyGuide');
-        const plan = patientData.plan_asignado || 'Ginoide';
-        const guideData = {
-            "Ginoide": ["Monday: Basmati Rice + Chicken + Greens", "Tuesday: Fish + Steamed Veggies", "Wed-Sun: Alternate Option A and B"],
-            "Androide": ["Monday: Legumes + Raw Salad", "Tuesday: Lean Red Meat + Veggies", "Wed-Sun: Strict No-Carbs at Night"]
-        };
-        const active = guideData[plan] || guideData["Ginoide"];
-        guide.innerHTML = active.map(i => `<div class="diet-day"><p class="text-sm font-bold text-slate-700">${i}</p></div>`).join('');
-    }
-
-    function renderTraining() {
-        const train = document.getElementById('trainingDetails');
-        const plan = patientData.plan_asignado || 'Ginoide';
-        const routine = plan === "Ginoide" ? "3x12 Dumbbell Chest Flyes and Lateral Raises before session." : "2x15 Squats and Lunges before session.";
-        train.innerHTML = `<div class="card-medical p-6 bg-slate-50"><p class="text-[14px] font-medium leading-relaxed">${routine}</p></div>`;
-    }
-
     function switchTab(t) {
-        document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-        document.getElementById(`view-${t}`).classList.remove('hidden');
-        document.querySelectorAll('nav div').forEach(el => el.classList.remove('nav-active', 'text-slate-400'));
-        document.getElementById(`tab-${t}`).classList.add('nav-active');
+        // Implementación simple de scroll a secciones
+        const el = document.getElementById(t + 'Suite');
+        if(el) el.scrollIntoView({behavior: 'smooth', block: 'start'});
     }
+    function closeModal() { document.getElementById('modalInfo').style.display='none'; }
+    function toggleLang() { lang = lang === 'EN' ? 'ES' : 'EN'; document.getElementById('btnLang').innerText = lang; setup(); }
+    function toggleUnits() { uM = uM === 'LB' ? 'KG' : 'LB'; document.getElementById('btnUnit').innerText = uM; setup(); }
 </script>
 </body>
 </html>
