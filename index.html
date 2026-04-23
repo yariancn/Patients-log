@@ -52,19 +52,19 @@
             <p id="infoDesc" class="text-sm text-slate-600 leading-relaxed mb-6 font-medium">--</p>
             <div class="grid grid-cols-2 gap-4 mb-6">
                 <div class="bg-slate-50 p-4 rounded-xl text-center">
-                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest" id="lblModalActual">Actual</p>
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest" id="lblModalActual">ACTUAL</p>
                     <p id="infoUserVal" class="text-2xl font-black text-slate-800 mt-1">--</p>
                 </div>
                 <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100 text-center">
-                    <p class="text-[9px] font-black text-emerald-600 uppercase tracking-widest" id="lblModalMeta">Goal / Ideal</p>
+                    <p class="text-[9px] font-black text-emerald-600 uppercase tracking-widest" id="lblModalMeta">GOAL</p>
                     <p id="infoIdealVal" class="text-xl font-black text-emerald-700 mt-1">--</p>
                 </div>
             </div>
             <div class="bg-blue-50 p-5 rounded-2xl border border-blue-100">
-                <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-2" id="lblModalAccion">Clinical Motivation</p>
+                <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-2" id="lblModalAccion">CLINICAL ACTION</p>
                 <p id="infoImpact" class="text-sm font-bold text-blue-900 leading-relaxed">--</p>
             </div>
-            <button onclick="closeModal()" class="w-full mt-6 bg-slate-900 text-white p-4 rounded-xl font-black text-xs uppercase tracking-widest active:scale-95 transition-transform" id="btnCloseModal">Cerrar / Close</button>
+            <button onclick="closeModal()" class="w-full mt-6 bg-slate-900 text-white p-4 rounded-xl font-black text-xs uppercase tracking-widest active:scale-95 transition-transform" id="btnCloseModal">CLOSE</button>
         </div>
     </div>
 
@@ -81,7 +81,7 @@
         <div class="max-w-md mx-auto w-full space-y-4">
             <input type="text" id="logID" class="w-full p-6 rounded-2xl border-2 border-slate-100 bg-slate-50 font-black text-center text-lg uppercase focus:border-blue-500 outline-none transition-colors" placeholder="PATIENT ID">
             <input type="text" id="logName" class="w-full p-6 rounded-2xl border-2 border-slate-100 bg-slate-50 font-black text-center uppercase text-lg focus:border-blue-500 outline-none transition-colors" placeholder="FIRST NAME / NOMBRE">
-            <button onclick="login()" class="w-full bg-slate-900 text-white p-6 rounded-2xl font-black uppercase tracking-widest shadow-xl active:scale-95 transition-transform" id="btnAccess">Access Record</button>
+            <button onclick="login()" class="w-full bg-slate-900 text-white p-6 rounded-2xl font-black uppercase tracking-widest shadow-xl active:scale-95 transition-transform" id="btnAccess">ACCESS RECORD</button>
             <div id="errorBox" class="hidden bg-red-50 p-4 rounded-xl border border-red-200 mt-4">
                 <p id="logErr" class="text-red-600 text-[11px] text-center font-black uppercase">Error</p>
                 <p id="logErrDetail" class="text-red-500 text-[9px] text-center font-medium mt-1">Details</p>
@@ -127,10 +127,10 @@
                 <div><p class="label-tiny justify-center"><span id="lblBMI">BMI</span> <span class="icon-info ml-1" onclick="openInfo('bmi')">ℹ️</span></p><p class="text-sm font-black mt-2" id="valIMC">--</p></div>
                 <div><p class="label-tiny justify-center"><span id="lblAgua">Water</span> <span class="icon-info ml-1" onclick="openInfo('water')">ℹ️</span></p><p class="text-sm font-black mt-2 text-blue-500" id="valAgua">--%</p></div>
                 <div><p class="label-tiny justify-center"><span id="lblBMR">BMR</span> <span class="icon-info ml-1" onclick="openInfo('bmr')">ℹ️</span></p><p class="text-sm font-black mt-2" id="valBMR">--</p></div>
-                <div><p class="label-tiny justify-center"><span id="lblEdad">Bio Age</span> <span class="icon-info ml-1" onclick="openInfo('age')">ℹ️</span></p><p class="text-sm font-black mt-2 text-emerald-600" id="valEdad">--</p></div>
                 <div><p class="label-tiny justify-center"><span id="lblOsea">Bone</span> <span class="icon-info ml-1" onclick="openInfo('bone')">ℹ️</span></p><p class="text-sm font-black mt-2" id="valOsea">--</p></div>
                 <div><p class="label-tiny justify-center"><span id="lblProt">Protein</span> <span class="icon-info ml-1" onclick="openInfo('protein')">ℹ️</span></p><p class="text-sm font-black text-emerald-600 mt-2" id="valProt">--%</p></div>
-                <div class="col-span-3"><p class="label-tiny justify-center"><span id="lblSub">Subcutaneous</span> <span class="icon-info ml-1" onclick="openInfo('subcu')">ℹ️</span></p><p class="text-sm font-black mt-2" id="valSubcu">--%</p></div>
+                <div><p class="label-tiny justify-center"><span id="lblSub">Subcu.</span> <span class="icon-info ml-1" onclick="openInfo('subcu')">ℹ️</span></p><p class="text-sm font-black mt-2" id="valSubcu">--%</p></div>
+                <div class="col-span-3 border-t pt-4 mt-2"><p class="label-tiny justify-center"><span id="lblEdad">Bio Age</span> <span class="icon-info ml-1" onclick="openInfo('age')">ℹ️</span></p><p class="text-lg font-black mt-2 text-emerald-600" id="valEdad">--</p></div>
             </div>
 
             <div class="card-medical p-8 bg-slate-900 text-white shadow-2xl relative overflow-hidden border-2 border-slate-800">
@@ -192,14 +192,14 @@
             headWelcome: "Patient Portal", btnAccess: "UNLOCK RECORD", headHistory: "Clinical History Log", headNutrition: "Nutrition Protocol", headTraining: "Training Program",
             lblPeso: "Weight", lblGrasa: "Body Fat", lblMusculo: "Muscle", lblVisceral: "Visceral", lblAgua: "Water", lblEdad: "Bio Age", lblBMI: "BMI", lblBMR: "BMR", lblOsea: "Bone", lblProt: "Protein", lblSub: "Subcutaneous",
             navStats: "Stats", navNutrition: "Diet", navTraining: "Training", headAI: "Oxy-AI Clinical Analysis", btnExit: "Exit", btnCloseModal: "Close", 
-            lblModalActual: "Actual / You", lblModalMeta: "Ideal / Goal", lblModalAccion: "Clinical Motivation",
+            lblModalActual: "Actual", lblModalMeta: "Goal", lblModalAccion: "Clinical Motivation",
             thDate: "Date", thWeight: "Weight", thFat: "Fat%", thMuscle: "Muscle", thVisc: "Visc", thWater: "Water", thBone: "Bone", thProt: "Prot", thSub: "Subcu", thBMI: "BMI", thAge: "Age"
         },
         ES: {
             headWelcome: "Portal del Paciente", btnAccess: "ABRIR EXPEDIENTE", headHistory: "Historial Clínico", headNutrition: "Protocolo Nutricional", headTraining: "Programa de Entrenamiento",
-            lblPeso: "Peso", lblGrasa: "Grasa", lblMusculo: "Músculo", lblVisceral: "Visceral", lblAgua: "Agua", lblEdad: "Edad Bio", lblBMI: "IMC", lblBMR: "Tasa Metabólica", lblOsea: "Hueso", lblProt: "Proteína", lblSub: "Subcutánea",
+            lblPeso: "Peso", lblGrasa: "Grasa", lblMusculo: "Músculo", lblVisceral: "Visceral", lblAgua: "Agua", lblEdad: "Edad Bio", lblBMI: "IMC", lblBMR: "TMB", lblOsea: "Hueso", lblProt: "Proteína", lblSub: "Subcutánea",
             navStats: "Datos", navNutrition: "Dieta", navTraining: "Entreno", headAI: "Análisis Clínico Oxy-AI", btnExit: "Salir", btnCloseModal: "Cerrar", 
-            lblModalActual: "Tú / Actual", lblModalMeta: "Meta / Ideal", lblModalAccion: "Motivación Clínica",
+            lblModalActual: "Actual", lblModalMeta: "Ideal", lblModalAccion: "Motivación Clínica",
             thDate: "Fecha", thWeight: "Peso", thFat: "Grasa%", thMuscle: "Músculo", thVisc: "Visc", thWater: "Agua", thBone: "Hueso", thProt: "Prot", thSub: "Subcu", thBMI: "IMC", thAge: "Edad"
         }
     };
@@ -234,8 +234,8 @@
                 applyUI(); 
                 loadData(); 
             } else { 
-                document.getElementById('logErr').innerText = "Access Denied. Check ID/Name.";
-                document.getElementById('logErrDetail').innerText = "No match found in database.";
+                document.getElementById('logErr').innerText = "Access Denied.";
+                document.getElementById('logErrDetail').innerText = "No match found for that ID & Name.";
                 document.getElementById('errorBox').classList.remove('hidden'); 
                 document.getElementById('btnAccess').innerText = ui[lang].btnAccess; 
             }
@@ -249,45 +249,40 @@
 
     function applyUI() {
         const t = ui[lang];
+        // Aplicar textos usando encadenamiento opcional para prevenir colapsos
         ['headWelcome', 'btnAccess', 'headHistory', 'headNutrition', 'headTraining', 'lblPeso', 'lblGrasa', 'lblMusculo', 'lblVisceral', 'lblAgua', 'lblEdad', 'lblBMI', 'lblBMR', 'lblOsea', 'lblProt', 'lblSub', 'navStats', 'navNutrition', 'navTraining', 'headAI', 'btnExit', 'btnCloseModal', 'lblModalActual', 'lblModalMeta', 'lblModalAccion', 'thDate', 'thWeight', 'thFat', 'thMuscle', 'thVisc', 'thWater', 'thBone', 'thProt', 'thSub', 'thBMI', 'thAge'].forEach(id => { 
-            if(document.getElementById(id)) {
-                // Si el elemento tiene un SPAN (como el icono de Info), solo reemplazamos el texto antes del span
-                if(document.getElementById(id).childNodes[0].nodeType === 3) {
-                    document.getElementById(id).childNodes[0].nodeValue = t[id] + " ";
-                } else {
-                    document.getElementById(id).innerText = t[id];
-                }
+            const el = document.getElementById(id);
+            if(el) {
+                // Si tiene el icono (como los de la biometría), cambia solo el texto del principio
+                if(el.childNodes[0].nodeType === 3) el.childNodes[0].nodeValue = t[id] + " ";
+                else el.innerText = t[id];
             }
         });
         if(pData) { renderNutrition(); renderTraining(); generateAI(); renderHistory(); }
     }
 
-    // FÓRMULAS DE BIOIMPEDANCIA CLÍNICAS (Rellenan lo que falta del Excel)
+    // FÓRMULAS DE BIOIMPEDANCIA CLÍNICAS (Rellenan lo que falta del Excel para no mostrar ceros)
     function calcBio(entry) {
-        let p = parseFloat(entry.peso) || 0;
-        let g = parseFloat(entry.grasa) || 0;
-        let edad = parseFloat(pData.edad) || 30;
-        let isM = String(pData.sexo).toLowerCase().startsWith('m');
-        let altM = (parseFloat(pData.altura) || 170) / 100;
+        let p = parseFloat(entry?.peso) || 0;
+        let g = parseFloat(entry?.grasa) || 0;
+        let edad = parseFloat(pData?.edad) || 30;
+        let isM = String(pData?.sexo).toLowerCase().startsWith('m');
+        let altM = (parseFloat(pData?.altura) || 170) / 100;
         
         let ffm = p * (1 - (g/100)); 
 
-        let musc = parseFloat(entry.masa_muscular_kg) || (ffm * 0.56);
-        let visc = parseInt(entry.grasa_visceral) || Math.max(1, Math.round((g * 0.25) + (edad * 0.12) - (isM ? 3 : 6)));
-        
-        // Agua: En base a masa magra
-        let aguaPerc = parseFloat(entry.agua_corporal_perc) || ((ffm * 0.732 / p) * 100);
+        let musc = parseFloat(entry?.masa_muscular_kg) || (ffm * 0.56);
+        let visc = parseInt(entry?.grasa_visceral) || Math.max(1, Math.round((g * 0.25) + (edad * 0.12) - (isM ? 3 : 6)));
+        let aguaPerc = parseFloat(entry?.agua_corporal_perc) || ((ffm * 0.732 / p) * 100);
         let aguaKg = p * (aguaPerc / 100);
-        
-        let edadm = parseInt(entry.edad_metabolica) || Math.max(18, Math.round(edad + (g - (isM ? 15 : 22)) * 0.5));
-        let bmr = parseFloat(entry.bmr_kcal) || (370 + (21.6 * ffm));
+        let edadm = parseInt(entry?.edad_metabolica) || Math.max(18, Math.round(edad + (g - (isM ? 15 : 22)) * 0.5));
+        let bmr = parseFloat(entry?.bmr_kcal) || (370 + (21.6 * ffm));
         let imc = p / (altM * altM);
         
-        // Hueso, Proteína y Subcutánea (Se calculan científicamente si no existen)
-        let oseaKg = parseFloat(entry.masa_osea_kg) || (ffm * 0.055);
+        let oseaKg = parseFloat(entry?.masa_osea_kg) || (ffm * 0.055);
         let protKg = ffm - aguaKg - oseaKg;
-        let protPerc = parseFloat(entry.proteina_perc) || ((protKg / p) * 100);
-        let subcu = parseFloat(entry.grasa_subcutanea_perc) || (g * 0.85);
+        let protPerc = parseFloat(entry?.proteina_perc) || ((protKg / p) * 100);
+        let subcu = parseFloat(entry?.grasa_subcutanea_perc) || (g * 0.85);
 
         return { p, g, musc, visc, agua: aguaPerc, edadm, bmr, imc, osea: oseaKg, prot: Math.max(0, protPerc), subcu };
     }
@@ -296,11 +291,8 @@
         let p1 = parseFloat(pData.peso) || 0;
         let g1 = parseFloat(pData.grasa) || 0;
         let isM = String(pData.sexo).toLowerCase().startsWith('m');
-        let edad = parseFloat(pData.edad) || 30;
-        
-        let ffm1 = p1 * (1 - (g1/100)); // Masa Magra del Día 1
-        let gIdeal = (isM ? 15 : 23); // Meta estándar ajustada
-        
+        let ffm1 = p1 * (1 - (g1/100)); 
+        let gIdeal = isM ? 15 : 23; 
         return ffm1 / (1 - (gIdeal/100));
     }
 
@@ -312,17 +304,17 @@
         document.getElementById('patientHello').innerText = pData.nombre.toUpperCase();
         document.getElementById('planBadge').innerText = `PLAN: ${pData.plan_asignado || 'GINOIDE'}`;
         
-        document.getElementById('valPeso').innerText = c(bio.p);
-        document.getElementById('valGrasa').innerText = bio.g.toFixed(1);
-        document.getElementById('valMusculo').innerText = c(bio.musc);
-        document.getElementById('valVisceral').innerText = bio.visc;
-        document.getElementById('valIMC').innerText = bio.imc.toFixed(1);
-        document.getElementById('valAgua').innerText = bio.agua.toFixed(1);
-        document.getElementById('valBMR').innerText = Math.round(bio.bmr);
-        document.getElementById('valEdad').innerText = bio.edadm;
-        document.getElementById('valOsea').innerText = c(bio.osea);
-        document.getElementById('valProt').innerText = bio.prot.toFixed(1);
-        document.getElementById('valSubcu').innerText = bio.subcu.toFixed(1);
+        document.getElementById('valPeso')?.setAttribute('data-val', c(bio.p)); document.getElementById('valPeso').innerText = c(bio.p);
+        document.getElementById('valGrasa')?.setAttribute('data-val', bio.g.toFixed(1)); document.getElementById('valGrasa').innerText = bio.g.toFixed(1);
+        document.getElementById('valMusculo')?.setAttribute('data-val', c(bio.musc)); document.getElementById('valMusculo').innerText = c(bio.musc);
+        document.getElementById('valVisceral')?.setAttribute('data-val', bio.visc); document.getElementById('valVisceral').innerText = bio.visc;
+        document.getElementById('valIMC')?.setAttribute('data-val', bio.imc.toFixed(1)); document.getElementById('valIMC').innerText = bio.imc.toFixed(1);
+        document.getElementById('valAgua')?.setAttribute('data-val', bio.agua.toFixed(1)); document.getElementById('valAgua').innerText = bio.agua.toFixed(1);
+        document.getElementById('valBMR')?.setAttribute('data-val', Math.round(bio.bmr)); document.getElementById('valBMR').innerText = Math.round(bio.bmr);
+        document.getElementById('valEdad')?.setAttribute('data-val', bio.edadm); document.getElementById('valEdad').innerText = bio.edadm;
+        document.getElementById('valOsea')?.setAttribute('data-val', c(bio.osea)); document.getElementById('valOsea').innerText = c(bio.osea);
+        document.getElementById('valProt')?.setAttribute('data-val', bio.prot.toFixed(1)); document.getElementById('valProt').innerText = bio.prot.toFixed(1);
+        document.getElementById('valSubcu')?.setAttribute('data-val', bio.subcu.toFixed(1)); document.getElementById('valSubcu').innerText = bio.subcu.toFixed(1);
         
         document.querySelectorAll('.uW').forEach(el => el.innerText = uM);
         renderHistory();
@@ -330,45 +322,48 @@
     }
 
     function openInfo(metric) {
-        let lastEntry = pData.avances?.length ? [...pData.avances].pop() : pData;
-        const bio = calcBio(lastEntry);
+        const bio1 = calcBio(pData); 
         const isM = String(pData.sexo).toLowerCase().startsWith('m');
         const c = (v) => uM==='LB'?(v*LB).toFixed(1) + ' LB' : v.toFixed(1) + ' KG';
+        
+        // Extrae el valor actual que está impreso en la tarjeta
+        const el = document.getElementById(`val${metric.charAt(0).toUpperCase() + metric.slice(1)}`);
+        const val = el ? el.getAttribute('data-val') : "--";
 
-        let val = "--", ideal = "--", t = "", d = "", a = "";
+        let ideal = "--", t = "", d = "", a = "";
 
         if(metric === 'weight') {
-            val = c(bio.p); ideal = c(getIdealWeight()); t = lang==='EN'?"Weight":"Peso"; d = lang==='EN'?"Total body mass.":"Masa corporal total.";
-            a = lang==='EN'?"Your goal weight is permanently locked to your Day 1 lean mass to guarantee that you only lose fat. Reaching this weight relieves 30% of mechanical pressure on your knees.":"Tu peso ideal está calculado y anclado a tu masa magra del Día 1 para garantizar que solo pierdas grasa. Lograr este peso reduce un 30% la presión mecánica de tus rodillas.";
+            ideal = c(getIdealWeight()); t = lang==='EN'?"Weight":"Peso"; d = lang==='EN'?"Total body mass.":"Masa corporal total.";
+            a = lang==='EN'?"Your goal weight is permanently locked to your Day 1 lean mass to guarantee that you only lose fat. Reaching this weight relieves 30% of mechanical pressure on your knees.":"Tu peso ideal está anclado a tu masa magra del Día 1 para garantizar que solo pierdas grasa. Lograr este peso reduce un 30% la presión mecánica de tus rodillas.";
         } else if(metric === 'fat') {
-            val = bio.g.toFixed(1)+"%"; ideal = isM ? "12-20%" : "20-28%"; t = lang==='EN'?"Body Fat":"Grasa Corporal"; d = lang==='EN'?"Total adipose tissue.":"Tejido adiposo total.";
+            ideal = isM ? "12-20%" : "20-28%"; t = lang==='EN'?"Body Fat":"Grasa Corporal"; d = lang==='EN'?"Total adipose tissue.":"Tejido adiposo total.";
             a = lang==='EN'?"Fat releases inflammatory hormones. Oxidizing it is a clinical priority.":"La grasa libera hormonas inflamatorias. Oxídala es prioridad médica.";
         } else if(metric === 'muscle') {
-            val = c(bio.musc); ideal = "+ Base"; t = lang==='EN'?"Muscle":"Músculo"; d = lang==='EN'?"Skeletal active fiber.":"Fibra activa esquelética.";
-            a = lang==='EN'?"Muscle is your metabolic furnace. It burns calories while you sleep. Protect it!":"El músculo es tu horno metabólico. ¡Quema calorías mientras duermes! Protégelo.";
+            ideal = c(bio1.musc); t = lang==='EN'?"Muscle":"Músculo"; d = lang==='EN'?"Skeletal active fiber.":"Fibra activa esquelética.";
+            a = lang==='EN'?"Muscle is your metabolic furnace. It burns calories while you sleep. Your goal is to protect your Day 1 baseline.":"El músculo es tu horno metabólico. Quema calorías mientras duermes. Tu meta es proteger tu base del Día 1.";
         } else if(metric === 'visceral') {
-            val = bio.visc; ideal = "≤ 9"; t = "Visceral"; d = lang==='EN'?"Fat wrapped around organs.":"Grasa asfixiando órganos vitales.";
-            a = bio.visc > 9 ? (lang==='EN'?"CRITICAL: Causes insulin resistance. Zero sugars!":"CRÍTICO: Causa resistencia a insulina. Cero azúcares.") : (lang==='EN'?"OPTIMAL: Organs are clean.":"ÓPTIMO: Órganos limpios.");
+            ideal = "≤ 9 Lvl"; t = "Visceral"; d = lang==='EN'?"Fat wrapped around organs.":"Grasa asfixiando órganos vitales.";
+            a = parseInt(val) > 9 ? (lang==='EN'?"CRITICAL: Causes insulin resistance. Zero sugars!":"CRÍTICO: Causa resistencia a la insulina. ¡Cero azúcares!") : (lang==='EN'?"OPTIMAL: Organs are clean.":"ÓPTIMO: Órganos limpios.");
         } else if(metric === 'bmi') {
-            val = bio.imc.toFixed(1); ideal = "21.0 - 24.9"; t = "BMI / IMC"; d = lang==='EN'?"Weight relative to height.":"Relación peso a altura."; a = lang==='EN'?"Universal health standard.":"Estándar de salud universal.";
+            ideal = "21.0 - 24.9"; t = "BMI / IMC"; d = lang==='EN'?"Weight relative to height.":"Relación peso a altura."; a = lang==='EN'?"Universal cardiovascular standard.":"Estándar de salud cardiovascular.";
         } else if(metric === 'water') {
-            val = bio.agua.toFixed(1)+"%"; ideal = isM ? "55-65%" : "45-60%"; t = lang==='EN'?"Water":"Agua"; d = lang==='EN'?"Total hydration level.":"Nivel de hidratación celular.";
-            a = lang==='EN'?"Fat burning is a chemical process that STOPS without water. Drink!":"La quema de grasa se detiene sin agua. ¡Bebe!";
+            ideal = isM ? "55-65%" : "45-60%"; t = lang==='EN'?"Water":"Agua"; d = lang==='EN'?"Total hydration level.":"Nivel de hidratación celular.";
+            a = lang==='EN'?"Fat burning is a chemical process that STOPS without water. Drink!":"La quema de grasa se detiene sin agua. ¡Bebe abundante agua!";
         } else if(metric === 'bmr') {
-            val = Math.round(bio.bmr); ideal = "High/Alto"; t = "BMR"; d = lang==='EN'?"Resting calorie burn.":"Calorías quemadas en reposo."; a = lang==='EN'?"Higher BMR prevents rebound.":"Un BMR alto previene el rebote.";
+            ideal = "High/Alto"; t = "BMR"; d = lang==='EN'?"Resting calorie burn.":"Calorías quemadas en reposo."; a = lang==='EN'?"Higher BMR prevents weight rebound.":"Un BMR alto previene el temido rebote de peso.";
         } else if(metric === 'age') {
-            val = bio.edadm; ideal = "≤ " + pData.edad; t = lang==='EN'?"Bio Age":"Edad Bio"; d = lang==='EN'?"Cellular performance.":"Rendimiento celular."; a = lang==='EN'?"Reverse your aging process!":"Revierte tu envejecimiento celular.";
+            ideal = "≤ " + pData.edad; t = lang==='EN'?"Bio Age":"Edad Bio"; d = lang==='EN'?"Cellular performance.":"Rendimiento metabólico celular."; a = lang==='EN'?"Reaching your targets reverses your aging process.":"Alcanzar tus metas revierte el envejecimiento celular.";
         } else if(metric === 'bone') {
-            val = c(bio.osea); ideal = "+ 2.5kg"; t = lang==='EN'?"Bone Mass":"Masa Ósea"; d = lang==='EN'?"Mineral density.":"Densidad mineral."; a = lang==='EN'?"Protects against osteoporosis.":"Protege contra la osteoporosis.";
+            ideal = c(bio1.osea); t = lang==='EN'?"Bone Mass":"Masa Ósea"; d = lang==='EN'?"Mineral density.":"Densidad mineral."; a = lang==='EN'?"Protects your skeletal frame during weight loss.":"Protege tu estructura ósea durante la pérdida de peso.";
         } else if(metric === 'protein') {
-            val = bio.prot.toFixed(1)+"%"; ideal = "16-18%"; t = lang==='EN'?"Protein":"Proteína"; d = lang==='EN'?"Amino acid reserves.":"Reservas de aminoácidos."; a = lang==='EN'?"Vital for post-session tissue repair.":"Vital para reparación tisular post-sesión.";
+            ideal = "16-18%"; t = lang==='EN'?"Protein":"Proteína"; d = lang==='EN'?"Amino acid reserves.":"Reservas de aminoácidos."; a = lang==='EN'?"Vital for post-session tissue repair.":"Vital para reparación de tejido celular post-sesión.";
         } else if(metric === 'subcu') {
-            val = bio.subcu.toFixed(1)+"%"; ideal = "- Base"; t = "Subcutanea"; d = lang==='EN'?"Under-skin fat.":"Grasa bajo la piel."; a = lang==='EN'?"Primary fuel for Infra Baldan.":"Combustible principal de Infra Baldan.";
+            ideal = "< 20%"; t = "Subcutanea"; d = lang==='EN'?"Under-skin fat.":"Grasa bajo la piel."; a = lang==='EN'?"Primary fuel utilized during Infra Baldan.":"Combustible primario usado durante Infra Baldan.";
         }
 
         document.getElementById('infoTitle').innerText = t;
         document.getElementById('infoDesc').innerText = d;
-        document.getElementById('infoUserVal').innerText = val;
+        document.getElementById('infoUserVal').innerText = val + (metric === 'weight' || metric === 'muscle' || metric === 'bone' ? " " + uM : "");
         document.getElementById('infoIdealVal').innerText = ideal;
         document.getElementById('infoImpact').innerText = a;
         document.getElementById('modalInfo').style.display='flex';
@@ -388,7 +383,7 @@
                 <td>${c(bio.p)}</td>
                 <td class="text-blue-600">${bio.g.toFixed(1)}%</td>
                 <td>${c(bio.musc)}</td>
-                <td class="${bio.visc > 9 ? 'text-red-500':'text-amber-500'}">${bio.visc}</td>
+                <td class="${bio.visc > 9 ? 'text-red-500 font-black':'text-amber-500'}">${bio.visc}</td>
                 <td>${bio.agua.toFixed(1)}%</td>
                 <td>${c(bio.osea)}</td>
                 <td class="text-emerald-600">${bio.prot.toFixed(1)}%</td>
@@ -407,15 +402,15 @@
         let msg = lang === 'EN' ? `Clinical analysis for ${pData.nombre.split(' ')[0]}: ` : `Análisis clínico para ${pData.nombre.split(' ')[0]}: `;
         
         if(currBio.g < iniBio.g) {
-            msg += lang === 'EN' ? `You have reduced your body fat by ${(iniBio.g - currBio.g).toFixed(1)}%. The Infra Baldan protocol is effectively stimulating cellular lipid oxidation. ` : `Has reducido tu grasa corporal en ${(iniBio.g - currBio.g).toFixed(1)}%. El protocolo Infra Baldan está estimulando efectivamente la oxidación de lípidos. `;
+            msg += lang === 'EN' ? `You have reduced your body fat by ${(iniBio.g - currBio.g).toFixed(1)}%. The Infra Baldan protocol is effectively stimulating cellular lipid oxidation. ` : `Has reducido tu grasa corporal en ${(iniBio.g - currBio.g).toFixed(1)}%. El protocolo Infra Baldan está estimulando efectivamente la oxidación de lípidos en tus células. `;
         } else {
-            msg += lang === 'EN' ? `Your metabolism is adapting. Do not skip your 3 weekly sessions to break this resistance. ` : `Tu metabolismo se está adaptando. No omitas tus 3 sesiones semanales para romper esta resistencia. `;
+            msg += lang === 'EN' ? `Your metabolism is in an adaptation phase. Do not skip your 3 weekly sessions to break this resistance. ` : `Tu metabolismo está en fase de adaptación. No omitas tus 3 sesiones semanales para romper esta resistencia de tu cuerpo. `;
         }
 
         if(currBio.visc > 9) {
-            msg += lang === 'EN' ? `URGENT: Visceral fat (Lvl ${currBio.visc}) is dangerously suffocating your organs. Zero refined carbs this week is mandatory. ` : `URGENTE: Grasa visceral (Nvl ${currBio.visc}) asfixia tus órganos. Cero carbohidratos refinados esta semana es obligatorio. `;
+            msg += lang === 'EN' ? `URGENT: Visceral fat (Lvl ${currBio.visc}) is dangerously suffocating your organs. Zero refined carbs this week is mandatory. ` : `URGENTE: La grasa visceral (Nivel ${currBio.visc}) asfixia tus órganos. Cero carbohidratos refinados esta semana es un mandato clínico. `;
         } else {
-            msg += lang === 'EN' ? `Your visceral fat is in an optimal protective range. ` : `Tu grasa visceral está en rango protector óptimo. `;
+            msg += lang === 'EN' ? `Your visceral fat is in an optimal protective range. ` : `Tu grasa visceral está en un rango óptimo de protección. `;
         }
 
         document.getElementById('aiReport').innerText = msg;
@@ -437,13 +432,13 @@
                 <p class="diet-txt">5 Walnuts or 12 almonds or hazelnuts + various crudités of fennel, carrots, cucumber, celery, etc.</p>
                 <p class="diet-title">DINNER</p>
                 <p class="diet-txt">All-you-can-eat mixed vegetables (always), both raw and cooked, plus:<br>- Carpaccio or tartare of lean meat with parmesan flakes (e.g.: roast beef)<br>- Fish (any)<br>- Frittata or omelette made with 2-3 egg whites, 1 egg yolk and 1 tablespoon Grana Padano and courgette<br>- Bresaola, rocket and Parmigiano or Grana Padano<br>- Cooked ham with lactose-free stracchino and 2 whole-grain crackers<br>- Vegetable soup (green only) and legumes, like beans, chickpeas or lentils with Parmigiano flakes.</p>
-                <div class="bg-red-50 border-l-4 border-red-500 p-4 mt-6">
+                <div class="bg-red-50 border-l-4 border-red-500 p-5 mt-8 rounded-xl shadow-sm">
                     <p class="diet-title !text-red-700 mt-0">TO AVOID</p>
-                    <p class="diet-txt !text-red-900 !mb-0 text-[12px]">White and refined flours and white sugars (absolutely forbidden), cured meats, all spirits (including beer), fats, milk, dairy products, cheese (cow’s milk), cakes, bread (100% wholemeal or quinoa or buckwheat) pizza, piadina, breadsticks, rice and corn cakes, pumpkin, carrots, cooked celery, beetroot, honey, jam, fruit juices and drinks in general, including those labeled "sugarless".</p>
+                    <p class="diet-txt !text-red-900 !mb-0 text-[13px]">White and refined flours and white sugars (absolutely forbidden), cured meats, all spirits (including beer), fats, milk, dairy products, cheese (cow’s milk), cakes, bread (100% wholemeal or quinoa or buckwheat; or low-sugar flours, even better, chickpea or lupin flour) pizza, piadina, breadsticks, rice and corn cakes, pumpkin, carrots, cooked celery, beetroot, honey, jam, fruit juices and drinks in general, including those labeled "sugarless".</p>
                 </div>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-4 rounded-xl shadow-sm">
                     <p class="diet-title mt-0">TIPS & HERBAL TEAS</p>
-                    <p class="diet-txt !mb-0 text-[12px]"><b>Herbal tea 21 for men:</b> 2-3 scoops diluted in 1.0 litre of water during the day.<br><b>Herbal tea 28:</b> after dinner, 1 serving in water (1 glass).<br><br>Remember to alternate as much as possible. Season with 3 tablespoon of raw oil, apple vinegar and lemon, and a variety of spices. Salt should only be added only during cooking.</p>
+                    <p class="diet-txt !mb-0 text-[13px]"><b>Herbal tea 21 for men:</b> 2-3 scoops diluted in 1.0 litre of water during the day.<br><b>Herbal tea 28:</b> after dinner, 1 serving in water (1 glass).<br><br>Remember to alternate as much as possible. Season with 3 tablespoon of raw oil, apple vinegar and lemon, and a variety of spices. Salt should only be added only during cooking.</p>
                 </div>
             `,
             "Androide": `
@@ -455,13 +450,13 @@
                 <p class="diet-txt">Legumes (chickpeas/beans) OR fish + raw/cooked vegetables + 1 fresh fruit.</p>
                 <p class="diet-title">DINNER</p>
                 <p class="diet-txt">Lean red meat (carpaccio/tartare) or fish + mixed vegetables. NO CARBS AFTER 4:00 PM.</p>
-                <div class="bg-red-50 border-l-4 border-red-500 p-4 mt-6">
+                <div class="bg-red-50 border-l-4 border-red-500 p-5 mt-8 rounded-xl shadow-sm">
                     <p class="diet-title !text-red-700 mt-0">TO AVOID</p>
-                    <p class="diet-txt !text-red-900 !mb-0 text-[12px]">White and refined flours and white sugars (absolutely forbidden), cured meats, all spirits (including beer), fats, milk, dairy products, cheese (cow’s milk), cakes, bread, pizza, piadina, breadsticks, rice and corn cakes, pumpkin, carrots, cooked celery, beetroot, honey, jam, fruit juices and drinks in general.</p>
+                    <p class="diet-txt !text-red-900 !mb-0 text-[13px]">White and refined flours and white sugars (absolutely forbidden), cured meats, all spirits (including beer), fats, milk, dairy products, cheese (cow’s milk), cakes, bread, pizza, piadina, breadsticks, rice and corn cakes, pumpkin, carrots, cooked celery, beetroot, honey, jam, fruit juices and drinks in general.</p>
                 </div>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-4 rounded-xl shadow-sm">
                     <p class="diet-title mt-0">TIPS</p>
-                    <p class="diet-txt !mb-0 text-[12px]">Android body types should not fear a fat or greasy second course as much as sweets/breadsticks/refined bread/very sugary fruit, etc.</p>
+                    <p class="diet-txt !mb-0 text-[13px]">Android body types should not fear a fat or greasy second course as much as sweets/breadsticks/refined bread/very sugary fruit, etc.</p>
                 </div>
             `
         };
@@ -469,7 +464,7 @@
         const dietsES = {
             "Ginoide": `
                 <p class="diet-title">MAÑANA</p>
-                <p class="diet-txt">Al despertar, bebe 1 vaso grande de agua a temperatura ambiente con 1 porción de té herbal 28:<br><br>A) Té o café sin azúcar + yogur griego deslactosado o yogur natural deslactosado o yogur de soja (todos deben ser blancos), añadiendo fruta fresca... recomendamos moras, frambuesas, arándanos o fresas (ya que tienen bajo contenido de azúcar), o simplemente añade 2 cucharaditas de semillas de girasol, chía, lino o calabaza;<br><br>B) Té o café sin azúcar, con 2 rebanadas de pan tostado 100% integral, de centeno, trigo sarraceno o quinoa... con mantequilla o crema de mantequilla de maní orgánica sin azúcar añadido o tofu para untar spalmatofu;<br><br>C) Té o café sin azúcar con 3 galletas integrales, de trigo sarraceno o quinoa... o amaranto... con jamón cocido sin gluten o sin lactosa, o bresaola baja en sodio, o carpaccio de bresaola.</p>
+                <p class="diet-txt">Al despertar, bebe 1 vaso grande de agua a temperatura ambiente con 1 porción de té herbal 28:<br><br>A) Té o café sin azúcar + yogur griego deslactosado o yogur natural deslactosado o yogur de soja (todos deben ser blancos), añadiendo fruta fresca... recomendamos moras, frambuesas, arándanos o fresas (ya que tienen bajo contenido de azúcar), o simplemente añade 2 cucharaditas de semillas de girasol, chía, lino o calabaza;<br><br>B) Té o café sin azúcar, con 2 rebanadas de pan tostado 100% integral, de centeno, trigo sarraceno o quinoa... con mantequilla de maní orgánica sin azúcar añadido o tofu para untar spalmatofu;<br><br>C) Té o café sin azúcar con 3 galletas integrales, de trigo sarraceno o quinoa... o amaranto... con jamón cocido sin gluten o sin lactosa, o bresaola baja en sodio, o carpaccio de bresaola.</p>
                 <p class="diet-title">MERIENDA</p>
                 <p class="diet-txt">1 Fruta.</p>
                 <p class="diet-title">COMIDA</p>
@@ -478,13 +473,13 @@
                 <p class="diet-txt">5 Nueces o 12 almendras o avellanas + varias crudités de hinojo, zanahorias, pepino, apio, etc.</p>
                 <p class="diet-title">CENA</p>
                 <p class="diet-txt">Verduras mixtas a discreción (siempre), tanto crudas como cocidas, más:<br>- Carpaccio o tartar de carne magra con hojuelas de parmesano (ej: roast beef)<br>- Pescado (cualquiera)<br>- Frittata o tortilla hecha con 2-3 claras de huevo, 1 yema y 1 cucharada de Grana Padano y calabacín<br>- Bresaola, rúcula y Parmigiano o Grana Padano<br>- Jamón cocido con stracchino sin lactosa y 2 galletas integrales<br>- Sopa de verduras (solo verdes) y legumbres, como frijoles, garbanzos o lentejas con hojuelas de Parmigiano.</p>
-                <div class="bg-red-50 border-l-4 border-red-500 p-4 mt-6">
+                <div class="bg-red-50 border-l-4 border-red-500 p-5 mt-8 rounded-xl shadow-sm">
                     <p class="diet-title !text-red-700 mt-0">PROHIBIDO</p>
-                    <p class="diet-txt !text-red-900 !mb-0 text-[12px]">Harinas blancas y refinadas y azúcares blancos (absolutamente prohibido), embutidos, todos los licores (incluyendo cerveza), grasas, leche, productos lácteos, queso (de leche de vaca), pasteles, pan, pizza, piadina, palitos de pan, tortas de arroz y maíz, calabaza, zanahorias cocidas, apio cocido, remolacha, miel, mermelada, jugos de frutas y bebidas en general, incluyendo las etiquetadas como "sin azúcar".</p>
+                    <p class="diet-txt !text-red-900 !mb-0 text-[13px]">Harinas blancas y refinadas y azúcares blancos (absolutamente prohibido), embutidos, todos los licores (incluyendo cerveza), grasas, leche, productos lácteos, queso (de leche de vaca), pasteles, pan (100% integral o de quinoa o trigo sarraceno; o harinas bajas en azúcar, aún mejor, harina de garbanzo o altramuz) pizza, piadina, palitos de pan, tortas de arroz y maíz, calabaza, zanahorias cocidas, apio cocido, remolacha, miel, mermelada, jugos de frutas y bebidas en general, incluyendo las etiquetadas como "sin azúcar".</p>
                 </div>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-4 rounded-xl shadow-sm">
                     <p class="diet-title mt-0">CONSEJOS Y TÉS HERBALES</p>
-                    <p class="diet-txt !mb-0 text-[12px]"><b>Té herbal 21 para hombres:</b> 2-3 medidas diluidas en 1.0 litro de agua durante el día.<br><b>Té herbal 28:</b> después de la cena, 1 porción en agua (1 vaso).<br><br>Recuerda alternar lo más posible. Sazona con 3 cucharadas de aceite crudo, vinagre de manzana y limón, y una variedad de especias. La sal solo debe añadirse durante la cocción.</p>
+                    <p class="diet-txt !mb-0 text-[13px]"><b>Té herbal 21 para hombres:</b> 2-3 medidas diluidas en 1.0 litro de agua durante el día.<br><b>Té herbal 28:</b> después de la cena, 1 porción en agua (1 vaso).<br><br>Recuerda alternar lo más posible. Sazona con 3 cucharadas de aceite crudo, vinagre de manzana y limón, y una variedad de especias. La sal solo debe añadirse durante la cocción.</p>
                 </div>
             `,
             "Androide": `
@@ -496,13 +491,13 @@
                 <p class="diet-txt">Legumbres (garbanzos/frijoles) O pescado + verduras crudas/cocidas + 1 fruta fresca.</p>
                 <p class="diet-title">CENA</p>
                 <p class="diet-txt">Carne roja magra (carpaccio/tartar) o pescado + verduras mixtas. NO CARBOHIDRATOS DESPUÉS DE LAS 4:00 PM.</p>
-                <div class="bg-red-50 border-l-4 border-red-500 p-4 mt-6">
+                <div class="bg-red-50 border-l-4 border-red-500 p-5 mt-8 rounded-xl shadow-sm">
                     <p class="diet-title !text-red-700 mt-0">PROHIBIDO</p>
-                    <p class="diet-txt !text-red-900 !mb-0 text-[12px]">Harinas blancas y refinadas y azúcares blancos, embutidos, todos los licores, grasas, leche, productos lácteos, queso (de leche de vaca), pasteles, pan, pizza, piadina, palitos de pan, tortas de arroz y maíz, calabaza, zanahorias cocidas, apio cocido, remolacha, miel, mermelada, jugos de frutas.</p>
+                    <p class="diet-txt !text-red-900 !mb-0 text-[13px]">Harinas blancas y refinadas y azúcares blancos (absolutamente prohibido), embutidos, todos los licores (incluyendo cerveza), grasas, leche, productos lácteos, queso (de leche de vaca), pasteles, pan, pizza, piadina, palitos de pan, tortas de arroz y maíz, calabaza, zanahorias cocidas, apio cocido, remolacha, miel, mermelada, jugos de frutas y bebidas en general.</p>
                 </div>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-4 rounded-xl shadow-sm">
                     <p class="diet-title mt-0">CONSEJOS</p>
-                    <p class="diet-txt !mb-0 text-[12px]">Los tipos de cuerpo Androide no deben temer a un segundo plato graso tanto como a los dulces/palitos de pan/pan refinado/fruta muy azucarada, etc.</p>
+                    <p class="diet-txt !mb-0 text-[13px]">Los tipos de cuerpo Androide no deben temer a un segundo plato graso tanto como a los dulces, palitos de pan, pan refinado, fruta muy azucarada, etc.</p>
                 </div>
             `
         };
@@ -525,8 +520,8 @@
                 <p class="diet-txt">• lateral lifts with 2 dumbbells (shoulders, always on the I.B. seat), 3 sets of 10 repetitions and with 20” pause between one series and the other</p>
                 <p class="diet-txt">• biceps with 2 dumbbells (always in the same position), 2 series for 10 repetitions</p>
                 <p class="diet-txt">• triceps with 1 dumbbell at a time (“French press”). Same position as above, 3 series for 10 repetitions</p>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
-                    <p class="diet-txt !mb-0 text-[12px]">In order to activate microcirculation from the start of the workout session, it would be optimal to work for 3-5 minutes on the vibrating platform (for those who already have one at the Institute), before starting the pedaling session. Otherwise, we suggest starting directly with the pedaling routine.</p>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-6 rounded-xl shadow-sm">
+                    <p class="diet-txt !mb-0 text-[13px]">In order to activate microcirculation from the start of the workout session, it would be optimal to work for 3-5 minutes on the vibrating platform (for those who already have one at the Institute), before starting the pedaling session. Otherwise, we suggest starting directly with the pedaling routine.</p>
                 </div>
             `,
             "Androide": `
@@ -535,8 +530,8 @@
                 <p class="diet-txt">• 2x15 free body squat (with 20” recovery between drill series)</p>
                 <p class="diet-txt">• 2x10 free body lunges (20” recovery, as above)</p>
                 <p class="diet-txt">• 2x25 free-body buttock stretches standing with hands resting on the wall (20” recovery, as above)</p>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
-                    <p class="diet-txt !mb-0 text-[12px]">Once the heartbeat is restored to normal values, you can start the Infrabaldan session.</p>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-6 rounded-xl shadow-sm">
+                    <p class="diet-txt !mb-0 text-[13px]">Once the heartbeat is restored to normal values, you can start the Infrabaldan session.</p>
                 </div>
             `
         };
@@ -549,8 +544,8 @@
                 <p class="diet-txt">• elevaciones laterales con 2 mancuernas (hombros, siempre en el asiento I.B.), 3 series de 10 repeticiones y con pausa de 20” entre una serie y otra</p>
                 <p class="diet-txt">• bíceps con 2 mancuernas (siempre en la misma posición), 2 series de 10 repeticiones</p>
                 <p class="diet-txt">• tríceps con 1 mancuerna a la vez (“Press francés”). Misma posición anterior, 3 series de 10 repeticiones</p>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
-                    <p class="diet-txt !mb-0 text-[12px]">Para activar la microcirculación desde el inicio de la sesión de entrenamiento, sería óptimo trabajar de 3 a 5 minutos en la plataforma vibratoria (para quienes ya tienen una en el Instituto), antes de comenzar la sesión de pedaleo. De lo contrario, sugerimos comenzar directamente con la rutina de pedaleo.</p>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-6 rounded-xl shadow-sm">
+                    <p class="diet-txt !mb-0 text-[13px]">Para activar la microcirculación desde el inicio de la sesión de entrenamiento, sería óptimo trabajar de 3 a 5 minutos en la plataforma vibratoria (para quienes ya tienen una en el Instituto), antes de comenzar la sesión de pedaleo. De lo contrario, sugerimos comenzar directamente con la rutina de pedaleo.</p>
                 </div>
             `,
             "Androide": `
@@ -559,8 +554,8 @@
                 <p class="diet-txt">• 2x15 sentadillas libres (con recuperación de 20” entre series)</p>
                 <p class="diet-txt">• 2x10 estocadas libres (recuperación de 20”, como arriba)</p>
                 <p class="diet-txt">• 2x25 estiramientos de glúteos libres de pie con las manos apoyadas en la pared (recuperación de 20”, como arriba)</p>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
-                    <p class="diet-txt !mb-0 text-[12px]">Una vez que el ritmo cardíaco vuelva a sus valores normales, puedes comenzar la sesión de Infrabaldan.</p>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-6 rounded-xl shadow-sm">
+                    <p class="diet-txt !mb-0 text-[13px]">Una vez que el ritmo cardíaco vuelva a sus valores normales, puedes comenzar la sesión de Infrabaldan.</p>
                 </div>
             `
         };
