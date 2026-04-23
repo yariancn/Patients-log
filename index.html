@@ -52,19 +52,19 @@
             <p id="infoDesc" class="text-sm text-slate-600 leading-relaxed mb-6 font-medium">--</p>
             <div class="grid grid-cols-2 gap-4 mb-6">
                 <div class="bg-slate-50 p-4 rounded-xl text-center">
-                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest" id="lblModalActual">ACTUAL</p>
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest" id="lblModalActual">Actual</p>
                     <p id="infoUserVal" class="text-2xl font-black text-slate-800 mt-1">--</p>
                 </div>
                 <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100 text-center">
-                    <p class="text-[9px] font-black text-emerald-600 uppercase tracking-widest" id="lblModalMeta">GOAL</p>
+                    <p class="text-[9px] font-black text-emerald-600 uppercase tracking-widest" id="lblModalMeta">Goal / Ideal</p>
                     <p id="infoIdealVal" class="text-xl font-black text-emerald-700 mt-1">--</p>
                 </div>
             </div>
             <div class="bg-blue-50 p-5 rounded-2xl border border-blue-100">
-                <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-2" id="lblModalAccion">CLINICAL ACTION</p>
+                <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-2" id="lblModalAccion">Clinical Motivation</p>
                 <p id="infoImpact" class="text-sm font-bold text-blue-900 leading-relaxed">--</p>
             </div>
-            <button onclick="closeModal()" class="w-full mt-6 bg-slate-900 text-white p-4 rounded-xl font-black text-xs uppercase tracking-widest active:scale-95 transition-transform" id="btnCloseModal">CLOSE</button>
+            <button onclick="closeModal()" class="w-full mt-6 bg-slate-900 text-white p-4 rounded-xl font-black text-xs uppercase tracking-widest active:scale-95 transition-transform" id="btnCloseModal">Cerrar / Close</button>
         </div>
     </div>
 
@@ -81,7 +81,7 @@
         <div class="max-w-md mx-auto w-full space-y-4">
             <input type="text" id="logID" class="w-full p-6 rounded-2xl border-2 border-slate-100 bg-slate-50 font-black text-center text-lg uppercase focus:border-blue-500 outline-none transition-colors" placeholder="PATIENT ID">
             <input type="text" id="logName" class="w-full p-6 rounded-2xl border-2 border-slate-100 bg-slate-50 font-black text-center uppercase text-lg focus:border-blue-500 outline-none transition-colors" placeholder="FIRST NAME / NOMBRE">
-            <button onclick="login()" class="w-full bg-slate-900 text-white p-6 rounded-2xl font-black uppercase tracking-widest shadow-xl active:scale-95 transition-transform" id="btnAccess">ACCESS RECORD</button>
+            <button onclick="login()" class="w-full bg-slate-900 text-white p-6 rounded-2xl font-black uppercase tracking-widest shadow-xl active:scale-95 transition-transform" id="btnAccess">Access Record</button>
             <div id="errorBox" class="hidden bg-red-50 p-4 rounded-xl border border-red-200 mt-4">
                 <p id="logErr" class="text-red-600 text-[11px] text-center font-black uppercase">Error</p>
                 <p id="logErrDetail" class="text-red-500 text-[9px] text-center font-medium mt-1">Details</p>
@@ -94,7 +94,10 @@
             <img src="logo.jpg" class="h-8" onerror="this.style.display='none'">
             <div>
                 <p id="patientHello" class="text-xl font-black text-slate-900 uppercase italic">--</p>
-                <div id="planBadge" class="text-[10px] font-black text-blue-600 uppercase bg-blue-50 px-2 py-1 rounded border border-blue-100 mt-1 inline-block">PLAN: --</div>
+                <div class="flex gap-2 mt-1">
+                    <span id="planBadge" class="text-[9px] font-black text-blue-600 uppercase bg-blue-50 px-2 py-1 rounded border border-blue-100">PLAN: --</span>
+                    <span id="sessionBadge" class="text-[9px] font-black text-emerald-600 uppercase bg-emerald-50 px-2 py-1 rounded border border-emerald-100">SESSION --</span>
+                </div>
             </div>
         </div>
         <button onclick="location.reload()" class="text-[10px] font-black text-slate-400 uppercase border border-slate-200 p-2 rounded-lg" id="btnExit">Exit</button>
@@ -123,14 +126,29 @@
                 </div>
             </div>
 
+            <div id="bannerRegained" class="card-medical p-6 bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200 shadow-sm flex items-center justify-between hidden">
+                <div>
+                    <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest flex items-center gap-2"><span id="lblCellular">Cellular Rejuvenation</span> <span class="icon-info" onclick="openInfo('age')">ℹ️</span></p>
+                    <p class="text-3xl font-black text-emerald-800 mt-1 leading-none"><span id="valYearsRegained">0</span> <span class="text-lg uppercase" id="lblYears">Yrs Regained</span></p>
+                </div>
+                <div class="text-5xl opacity-80">🧬</div>
+            </div>
+
+            <div id="bannerNormalAge" class="card-medical p-6 bg-slate-50 border-slate-200 flex items-center justify-between hidden">
+                <div>
+                    <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2"><span id="lblBioAgeNorm">Metabolic Age</span> <span class="icon-info" onclick="openInfo('age')">ℹ️</span></p>
+                    <p class="text-2xl font-black text-slate-800 mt-1"><span id="valCurrentBioAge">--</span> <span class="text-sm uppercase text-slate-400" id="lblYrsNorm">Years</span></p>
+                </div>
+                <div class="text-4xl opacity-50">⏱️</div>
+            </div>
+
             <div class="card-medical p-5 grid grid-cols-3 gap-y-8 gap-x-2 text-center">
-                <div><p class="label-tiny justify-center"><span id="lblBMI">BMI</span> <span class="icon-info ml-1" onclick="openInfo('bmi')">ℹ️</span></p><p class="text-sm font-black mt-2" id="valIMC">--</p></div>
-                <div><p class="label-tiny justify-center"><span id="lblAgua">Water</span> <span class="icon-info ml-1" onclick="openInfo('water')">ℹ️</span></p><p class="text-sm font-black mt-2 text-blue-500" id="valAgua">--%</p></div>
-                <div><p class="label-tiny justify-center"><span id="lblBMR">BMR</span> <span class="icon-info ml-1" onclick="openInfo('bmr')">ℹ️</span></p><p class="text-sm font-black mt-2" id="valBMR">--</p></div>
-                <div><p class="label-tiny justify-center"><span id="lblOsea">Bone</span> <span class="icon-info ml-1" onclick="openInfo('bone')">ℹ️</span></p><p class="text-sm font-black mt-2" id="valOsea">--</p></div>
-                <div><p class="label-tiny justify-center"><span id="lblProt">Protein</span> <span class="icon-info ml-1" onclick="openInfo('protein')">ℹ️</span></p><p class="text-sm font-black text-emerald-600 mt-2" id="valProt">--%</p></div>
-                <div><p class="label-tiny justify-center"><span id="lblSub">Subcu.</span> <span class="icon-info ml-1" onclick="openInfo('subcu')">ℹ️</span></p><p class="text-sm font-black mt-2" id="valSubcu">--%</p></div>
-                <div class="col-span-3 border-t pt-4 mt-2"><p class="label-tiny justify-center"><span id="lblEdad">Bio Age</span> <span class="icon-info ml-1" onclick="openInfo('age')">ℹ️</span></p><p class="text-lg font-black mt-2 text-emerald-600" id="valEdad">--</p></div>
+                <div><p class="label-tiny justify-center"><span id="lblBMI">BMI</span> <span class="icon-info ml-1" onclick="openInfo('bmi')">ℹ️</span></p><p class="text-[15px] font-black mt-2 text-slate-700" id="valIMC">--</p></div>
+                <div><p class="label-tiny justify-center"><span id="lblAgua">Water</span> <span class="icon-info ml-1" onclick="openInfo('water')">ℹ️</span></p><p class="text-[15px] font-black mt-2 text-blue-600" id="valAgua">--%</p></div>
+                <div><p class="label-tiny justify-center"><span id="lblBMR">BMR</span> <span class="icon-info ml-1" onclick="openInfo('bmr')">ℹ️</span></p><p class="text-[15px] font-black mt-2 text-slate-700" id="valBMR">--</p></div>
+                <div><p class="label-tiny justify-center"><span id="lblOsea">Bone</span> <span class="icon-info ml-1" onclick="openInfo('bone')">ℹ️</span></p><p class="text-[15px] font-black mt-2 text-slate-700" id="valOsea">--</p></div>
+                <div><p class="label-tiny justify-center"><span id="lblProt">Protein</span> <span class="icon-info ml-1" onclick="openInfo('protein')">ℹ️</span></p><p class="text-[15px] font-black text-emerald-600 mt-2" id="valProt">--%</p></div>
+                <div><p class="label-tiny justify-center"><span id="lblSub">Subcu.</span> <span class="icon-info ml-1" onclick="openInfo('subcu')">ℹ️</span></p><p class="text-[15px] font-black mt-2 text-slate-700" id="valSubcu">--%</p></div>
             </div>
 
             <div class="card-medical p-8 bg-slate-900 text-white shadow-2xl relative overflow-hidden border-2 border-slate-800">
@@ -190,16 +208,18 @@
     const ui = {
         EN: {
             headWelcome: "Patient Portal", btnAccess: "UNLOCK RECORD", headHistory: "Clinical History Log", headNutrition: "Nutrition Protocol", headTraining: "Training Program",
-            lblPeso: "Weight", lblGrasa: "Body Fat", lblMusculo: "Muscle", lblVisceral: "Visceral", lblAgua: "Water", lblEdad: "Bio Age", lblBMI: "BMI", lblBMR: "BMR", lblOsea: "Bone", lblProt: "Protein", lblSub: "Subcutaneous",
+            lblPeso: "Weight", lblGrasa: "Body Fat", lblMusculo: "Muscle", lblVisceral: "Visceral", lblAgua: "Water", lblBMI: "BMI", lblBMR: "BMR", lblOsea: "Bone", lblProt: "Protein", lblSub: "Subcutaneous",
             navStats: "Stats", navNutrition: "Diet", navTraining: "Training", headAI: "Oxy-AI Clinical Analysis", btnExit: "Exit", btnCloseModal: "Close", 
-            lblModalActual: "Actual", lblModalMeta: "Goal", lblModalAccion: "Clinical Motivation",
+            lblModalActual: "Actual / You", lblModalMeta: "Ideal / Goal", lblModalAccion: "Clinical Motivation",
+            lblCellular: "Cellular Rejuvenation", lblYears: "YRS REGAINED", lblBioAgeNorm: "Metabolic Age", lblYrsNorm: "Years",
             thDate: "Date", thWeight: "Weight", thFat: "Fat%", thMuscle: "Muscle", thVisc: "Visc", thWater: "Water", thBone: "Bone", thProt: "Prot", thSub: "Subcu", thBMI: "BMI", thAge: "Age"
         },
         ES: {
             headWelcome: "Portal del Paciente", btnAccess: "ABRIR EXPEDIENTE", headHistory: "Historial Clínico", headNutrition: "Protocolo Nutricional", headTraining: "Programa de Entrenamiento",
-            lblPeso: "Peso", lblGrasa: "Grasa", lblMusculo: "Músculo", lblVisceral: "Visceral", lblAgua: "Agua", lblEdad: "Edad Bio", lblBMI: "IMC", lblBMR: "TMB", lblOsea: "Hueso", lblProt: "Proteína", lblSub: "Subcutánea",
+            lblPeso: "Peso", lblGrasa: "Grasa", lblMusculo: "Músculo", lblVisceral: "Visceral", lblAgua: "Agua", lblBMI: "IMC", lblBMR: "TMB", lblOsea: "Hueso", lblProt: "Proteína", lblSub: "Subcutánea",
             navStats: "Datos", navNutrition: "Dieta", navTraining: "Entreno", headAI: "Análisis Clínico Oxy-AI", btnExit: "Salir", btnCloseModal: "Cerrar", 
-            lblModalActual: "Actual", lblModalMeta: "Ideal", lblModalAccion: "Motivación Clínica",
+            lblModalActual: "Tú / Actual", lblModalMeta: "Meta / Ideal", lblModalAccion: "Motivación Clínica",
+            lblCellular: "Rejuvenecimiento Celular", lblYears: "AÑOS RECUPERADOS", lblBioAgeNorm: "Edad Metabólica", lblYrsNorm: "Años",
             thDate: "Fecha", thWeight: "Peso", thFat: "Grasa%", thMuscle: "Músculo", thVisc: "Visc", thWater: "Agua", thBone: "Hueso", thProt: "Prot", thSub: "Subcu", thBMI: "IMC", thAge: "Edad"
         }
     };
@@ -218,7 +238,6 @@
             const r = await fetch(`${WEB_APP_URL}?action=obtenerClientes`);
             if(!r.ok) throw new Error("HTTP Error " + r.status);
             const textData = await r.text();
-            
             let d;
             try { d = JSON.parse(textData); } catch(jsonErr) {
                 throw new Error("Permisos en Google Apps Script bloqueados.");
@@ -234,8 +253,8 @@
                 applyUI(); 
                 loadData(); 
             } else { 
-                document.getElementById('logErr').innerText = "Access Denied.";
-                document.getElementById('logErrDetail').innerText = "No match found for that ID & Name.";
+                document.getElementById('logErr').innerText = "Access Denied. Check ID/Name.";
+                document.getElementById('logErrDetail').innerText = "No match found in database.";
                 document.getElementById('errorBox').classList.remove('hidden'); 
                 document.getElementById('btnAccess').innerText = ui[lang].btnAccess; 
             }
@@ -249,11 +268,9 @@
 
     function applyUI() {
         const t = ui[lang];
-        // Aplicar textos usando encadenamiento opcional para prevenir colapsos
-        ['headWelcome', 'btnAccess', 'headHistory', 'headNutrition', 'headTraining', 'lblPeso', 'lblGrasa', 'lblMusculo', 'lblVisceral', 'lblAgua', 'lblEdad', 'lblBMI', 'lblBMR', 'lblOsea', 'lblProt', 'lblSub', 'navStats', 'navNutrition', 'navTraining', 'headAI', 'btnExit', 'btnCloseModal', 'lblModalActual', 'lblModalMeta', 'lblModalAccion', 'thDate', 'thWeight', 'thFat', 'thMuscle', 'thVisc', 'thWater', 'thBone', 'thProt', 'thSub', 'thBMI', 'thAge'].forEach(id => { 
+        ['headWelcome', 'btnAccess', 'headHistory', 'headNutrition', 'headTraining', 'lblPeso', 'lblGrasa', 'lblMusculo', 'lblVisceral', 'lblAgua', 'lblBMI', 'lblBMR', 'lblOsea', 'lblProt', 'lblSub', 'navStats', 'navNutrition', 'navTraining', 'headAI', 'btnExit', 'btnCloseModal', 'lblModalActual', 'lblModalMeta', 'lblModalAccion', 'lblCellular', 'lblYears', 'lblBioAgeNorm', 'lblYrsNorm', 'thDate', 'thWeight', 'thFat', 'thMuscle', 'thVisc', 'thWater', 'thBone', 'thProt', 'thSub', 'thBMI', 'thAge'].forEach(id => { 
             const el = document.getElementById(id);
             if(el) {
-                // Si tiene el icono (como los de la biometría), cambia solo el texto del principio
                 if(el.childNodes[0].nodeType === 3) el.childNodes[0].nodeValue = t[id] + " ";
                 else el.innerText = t[id];
             }
@@ -261,7 +278,6 @@
         if(pData) { renderNutrition(); renderTraining(); generateAI(); renderHistory(); }
     }
 
-    // FÓRMULAS DE BIOIMPEDANCIA CLÍNICAS (Rellenan lo que falta del Excel para no mostrar ceros)
     function calcBio(entry) {
         let p = parseFloat(entry?.peso) || 0;
         let g = parseFloat(entry?.grasa) || 0;
@@ -303,6 +319,7 @@
         
         document.getElementById('patientHello').innerText = pData.nombre.toUpperCase();
         document.getElementById('planBadge').innerText = `PLAN: ${pData.plan_asignado || 'GINOIDE'}`;
+        document.getElementById('sessionBadge').innerText = `SESSION #${(pData.avances?.length || 0) + 1}`;
         
         document.getElementById('valPeso')?.setAttribute('data-val', c(bio.p)); document.getElementById('valPeso').innerText = c(bio.p);
         document.getElementById('valGrasa')?.setAttribute('data-val', bio.g.toFixed(1)); document.getElementById('valGrasa').innerText = bio.g.toFixed(1);
@@ -311,11 +328,27 @@
         document.getElementById('valIMC')?.setAttribute('data-val', bio.imc.toFixed(1)); document.getElementById('valIMC').innerText = bio.imc.toFixed(1);
         document.getElementById('valAgua')?.setAttribute('data-val', bio.agua.toFixed(1)); document.getElementById('valAgua').innerText = bio.agua.toFixed(1);
         document.getElementById('valBMR')?.setAttribute('data-val', Math.round(bio.bmr)); document.getElementById('valBMR').innerText = Math.round(bio.bmr);
-        document.getElementById('valEdad')?.setAttribute('data-val', bio.edadm); document.getElementById('valEdad').innerText = bio.edadm;
         document.getElementById('valOsea')?.setAttribute('data-val', c(bio.osea)); document.getElementById('valOsea').innerText = c(bio.osea);
         document.getElementById('valProt')?.setAttribute('data-val', bio.prot.toFixed(1)); document.getElementById('valProt').innerText = bio.prot.toFixed(1);
         document.getElementById('valSubcu')?.setAttribute('data-val', bio.subcu.toFixed(1)); document.getElementById('valSubcu').innerText = bio.subcu.toFixed(1);
         
+        // LÓGICA DE REJUVENECIMIENTO
+        let iniBio = calcBio(pData);
+        let ageDiff = iniBio.edadm - bio.edadm;
+        
+        document.getElementById('valCurrentBioAge').innerText = bio.edadm;
+        document.getElementById('valCurrentBioAge').setAttribute('data-val', bio.edadm);
+
+        if(ageDiff > 0) {
+            document.getElementById('bannerRegained').classList.remove('hidden');
+            document.getElementById('bannerNormalAge').classList.add('hidden');
+            document.getElementById('valYearsRegained').innerText = ageDiff;
+            document.getElementById('valYearsRegained').setAttribute('data-val', bio.edadm);
+        } else {
+            document.getElementById('bannerRegained').classList.add('hidden');
+            document.getElementById('bannerNormalAge').classList.remove('hidden');
+        }
+
         document.querySelectorAll('.uW').forEach(el => el.innerText = uM);
         renderHistory();
         generateAI();
@@ -326,9 +359,13 @@
         const isM = String(pData.sexo).toLowerCase().startsWith('m');
         const c = (v) => uM==='LB'?(v*LB).toFixed(1) + ' LB' : v.toFixed(1) + ' KG';
         
-        // Extrae el valor actual que está impreso en la tarjeta
-        const el = document.getElementById(`val${metric.charAt(0).toUpperCase() + metric.slice(1)}`);
-        const val = el ? el.getAttribute('data-val') : "--";
+        let elVal = document.getElementById(`val${metric.charAt(0).toUpperCase() + metric.slice(1)}`);
+        // Manejo especial para la edad porque puede estar en 2 lugares distintos
+        if(metric === 'age') {
+            elVal = document.getElementById('valYearsRegained').parentElement.parentElement.parentElement.classList.contains('hidden') ? 
+                    document.getElementById('valCurrentBioAge') : document.getElementById('valYearsRegained');
+        }
+        const val = elVal ? elVal.getAttribute('data-val') : "--";
 
         let ideal = "--", t = "", d = "", a = "";
 
@@ -339,13 +376,13 @@
             ideal = isM ? "12-20%" : "20-28%"; t = lang==='EN'?"Body Fat":"Grasa Corporal"; d = lang==='EN'?"Total adipose tissue.":"Tejido adiposo total.";
             a = lang==='EN'?"Fat releases inflammatory hormones. Oxidizing it is a clinical priority.":"La grasa libera hormonas inflamatorias. Oxídala es prioridad médica.";
         } else if(metric === 'muscle') {
-            ideal = c(bio1.musc); t = lang==='EN'?"Muscle":"Músculo"; d = lang==='EN'?"Skeletal active fiber.":"Fibra activa esquelética.";
+            ideal = "≥ " + c(bio1.musc); t = lang==='EN'?"Muscle":"Músculo"; d = lang==='EN'?"Skeletal active fiber.":"Fibra activa esquelética.";
             a = lang==='EN'?"Muscle is your metabolic furnace. It burns calories while you sleep. Your goal is to protect your Day 1 baseline.":"El músculo es tu horno metabólico. Quema calorías mientras duermes. Tu meta es proteger tu base del Día 1.";
         } else if(metric === 'visceral') {
             ideal = "≤ 9 Lvl"; t = "Visceral"; d = lang==='EN'?"Fat wrapped around organs.":"Grasa asfixiando órganos vitales.";
-            a = parseInt(val) > 9 ? (lang==='EN'?"CRITICAL: Causes insulin resistance. Zero sugars!":"CRÍTICO: Causa resistencia a la insulina. ¡Cero azúcares!") : (lang==='EN'?"OPTIMAL: Organs are clean.":"ÓPTIMO: Órganos limpios.");
+            a = parseInt(val) > 9 ? (lang==='EN'?"CRITICAL: Causes insulin resistance. Zero sugars!":"CRÍTICO: Causa resistencia a insulina. Cero azúcares.") : (lang==='EN'?"OPTIMAL: Organs are clean.":"ÓPTIMO: Órganos limpios.");
         } else if(metric === 'bmi') {
-            ideal = "21.0 - 24.9"; t = "BMI / IMC"; d = lang==='EN'?"Weight relative to height.":"Relación peso a altura."; a = lang==='EN'?"Universal cardiovascular standard.":"Estándar de salud cardiovascular.";
+            ideal = "21.0 - 24.9"; t = "BMI / IMC"; d = lang==='EN'?"Weight relative to height.":"Relación peso a altura."; a = lang==='EN'?"Universal health standard.":"Estándar de salud universal.";
         } else if(metric === 'water') {
             ideal = isM ? "55-65%" : "45-60%"; t = lang==='EN'?"Water":"Agua"; d = lang==='EN'?"Total hydration level.":"Nivel de hidratación celular.";
             a = lang==='EN'?"Fat burning is a chemical process that STOPS without water. Drink!":"La quema de grasa se detiene sin agua. ¡Bebe abundante agua!";
@@ -354,7 +391,7 @@
         } else if(metric === 'age') {
             ideal = "≤ " + pData.edad; t = lang==='EN'?"Bio Age":"Edad Bio"; d = lang==='EN'?"Cellular performance.":"Rendimiento metabólico celular."; a = lang==='EN'?"Reaching your targets reverses your aging process.":"Alcanzar tus metas revierte el envejecimiento celular.";
         } else if(metric === 'bone') {
-            ideal = c(bio1.osea); t = lang==='EN'?"Bone Mass":"Masa Ósea"; d = lang==='EN'?"Mineral density.":"Densidad mineral."; a = lang==='EN'?"Protects your skeletal frame during weight loss.":"Protege tu estructura ósea durante la pérdida de peso.";
+            ideal = "≥ " + c(bio1.osea); t = lang==='EN'?"Bone Mass":"Masa Ósea"; d = lang==='EN'?"Mineral density.":"Densidad mineral."; a = lang==='EN'?"Protects your skeletal frame during weight loss.":"Protege tu estructura ósea durante la pérdida de peso.";
         } else if(metric === 'protein') {
             ideal = "16-18%"; t = lang==='EN'?"Protein":"Proteína"; d = lang==='EN'?"Amino acid reserves.":"Reservas de aminoácidos."; a = lang==='EN'?"Vital for post-session tissue repair.":"Vital para reparación de tejido celular post-sesión.";
         } else if(metric === 'subcu') {
@@ -408,7 +445,7 @@
         }
 
         if(currBio.visc > 9) {
-            msg += lang === 'EN' ? `URGENT: Visceral fat (Lvl ${currBio.visc}) is dangerously suffocating your organs. Zero refined carbs this week is mandatory. ` : `URGENTE: La grasa visceral (Nivel ${currBio.visc}) asfixia tus órganos. Cero carbohidratos refinados esta semana es un mandato clínico. `;
+            msg += lang === 'EN' ? `URGENT: Visceral fat (Lvl ${currBio.visc}) is dangerously suffocating your organs. Zero refined carbs this week is a clinical mandate. ` : `URGENTE: La grasa visceral (Nivel ${currBio.visc}) asfixia tus órganos. Cero carbohidratos refinados esta semana es un mandato clínico. `;
         } else {
             msg += lang === 'EN' ? `Your visceral fat is in an optimal protective range. ` : `Tu grasa visceral está en un rango óptimo de protección. `;
         }
@@ -475,11 +512,11 @@
                 <p class="diet-txt">Verduras mixtas a discreción (siempre), tanto crudas como cocidas, más:<br>- Carpaccio o tartar de carne magra con hojuelas de parmesano (ej: roast beef)<br>- Pescado (cualquiera)<br>- Frittata o tortilla hecha con 2-3 claras de huevo, 1 yema y 1 cucharada de Grana Padano y calabacín<br>- Bresaola, rúcula y Parmigiano o Grana Padano<br>- Jamón cocido con stracchino sin lactosa y 2 galletas integrales<br>- Sopa de verduras (solo verdes) y legumbres, como frijoles, garbanzos o lentejas con hojuelas de Parmigiano.</p>
                 <div class="bg-red-50 border-l-4 border-red-500 p-5 mt-8 rounded-xl shadow-sm">
                     <p class="diet-title !text-red-700 mt-0">PROHIBIDO</p>
-                    <p class="diet-txt !text-red-900 !mb-0 text-[13px]">Harinas blancas y refinadas y azúcares blancos (absolutamente prohibido), embutidos, todos los licores (incluyendo cerveza), grasas, leche, productos lácteos, queso (de leche de vaca), pasteles, pan (100% integral o de quinoa o trigo sarraceno; o harinas bajas en azúcar, aún mejor, harina de garbanzo o altramuz) pizza, piadina, palitos de pan, tortas de arroz y maíz, calabaza, zanahorias cocidas, apio cocido, remolacha, miel, mermelada, jugos de frutas y bebidas en general, incluyendo las etiquetadas como "sin azúcar".</p>
+                    <p class="diet-txt !text-red-900 !mb-0 text-[12px]">Harinas blancas y refinadas y azúcares blancos (absolutamente prohibido), embutidos, todos los licores (incluyendo cerveza), grasas, leche, productos lácteos, queso (de leche de vaca), pasteles, pan (100% integral o de quinoa o trigo sarraceno; o harinas bajas en azúcar, aún mejor, harina de garbanzo o altramuz) pizza, piadina, palitos de pan, tortas de arroz y maíz, calabaza, zanahorias cocidas, apio cocido, remolacha, miel, mermelada, jugos de frutas y bebidas en general, incluyendo las etiquetadas como "sin azúcar".</p>
                 </div>
                 <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-4 rounded-xl shadow-sm">
                     <p class="diet-title mt-0">CONSEJOS Y TÉS HERBALES</p>
-                    <p class="diet-txt !mb-0 text-[13px]"><b>Té herbal 21 para hombres:</b> 2-3 medidas diluidas en 1.0 litro de agua durante el día.<br><b>Té herbal 28:</b> después de la cena, 1 porción en agua (1 vaso).<br><br>Recuerda alternar lo más posible. Sazona con 3 cucharadas de aceite crudo, vinagre de manzana y limón, y una variedad de especias. La sal solo debe añadirse durante la cocción.</p>
+                    <p class="diet-txt !mb-0 text-[12px]"><b>Té herbal 21 para hombres:</b> 2-3 medidas diluidas en 1.0 litro de agua durante el día.<br><b>Té herbal 28:</b> después de la cena, 1 porción en agua (1 vaso).<br><br>Recuerda alternar lo más posible. Sazona con 3 cucharadas de aceite crudo, vinagre de manzana y limón, y una variedad de especias. La sal solo debe añadirse durante la cocción.</p>
                 </div>
             `,
             "Androide": `
@@ -520,8 +557,8 @@
                 <p class="diet-txt">• lateral lifts with 2 dumbbells (shoulders, always on the I.B. seat), 3 sets of 10 repetitions and with 20” pause between one series and the other</p>
                 <p class="diet-txt">• biceps with 2 dumbbells (always in the same position), 2 series for 10 repetitions</p>
                 <p class="diet-txt">• triceps with 1 dumbbell at a time (“French press”). Same position as above, 3 series for 10 repetitions</p>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-6 rounded-xl shadow-sm">
-                    <p class="diet-txt !mb-0 text-[13px]">In order to activate microcirculation from the start of the workout session, it would be optimal to work for 3-5 minutes on the vibrating platform (for those who already have one at the Institute), before starting the pedaling session. Otherwise, we suggest starting directly with the pedaling routine.</p>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
+                    <p class="diet-txt !mb-0 text-[12px]">In order to activate microcirculation from the start of the workout session, it would be optimal to work for 3-5 minutes on the vibrating platform (for those who already have one at the Institute), before starting the pedaling session. Otherwise, we suggest starting directly with the pedaling routine.</p>
                 </div>
             `,
             "Androide": `
@@ -530,8 +567,8 @@
                 <p class="diet-txt">• 2x15 free body squat (with 20” recovery between drill series)</p>
                 <p class="diet-txt">• 2x10 free body lunges (20” recovery, as above)</p>
                 <p class="diet-txt">• 2x25 free-body buttock stretches standing with hands resting on the wall (20” recovery, as above)</p>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-6 rounded-xl shadow-sm">
-                    <p class="diet-txt !mb-0 text-[13px]">Once the heartbeat is restored to normal values, you can start the Infrabaldan session.</p>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
+                    <p class="diet-txt !mb-0 text-[12px]">Once the heartbeat is restored to normal values, you can start the Infrabaldan session.</p>
                 </div>
             `
         };
@@ -544,8 +581,8 @@
                 <p class="diet-txt">• elevaciones laterales con 2 mancuernas (hombros, siempre en el asiento I.B.), 3 series de 10 repeticiones y con pausa de 20” entre una serie y otra</p>
                 <p class="diet-txt">• bíceps con 2 mancuernas (siempre en la misma posición), 2 series de 10 repeticiones</p>
                 <p class="diet-txt">• tríceps con 1 mancuerna a la vez (“Press francés”). Misma posición anterior, 3 series de 10 repeticiones</p>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-6 rounded-xl shadow-sm">
-                    <p class="diet-txt !mb-0 text-[13px]">Para activar la microcirculación desde el inicio de la sesión de entrenamiento, sería óptimo trabajar de 3 a 5 minutos en la plataforma vibratoria (para quienes ya tienen una en el Instituto), antes de comenzar la sesión de pedaleo. De lo contrario, sugerimos comenzar directamente con la rutina de pedaleo.</p>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
+                    <p class="diet-txt !mb-0 text-[12px]">Para activar la microcirculación desde el inicio de la sesión de entrenamiento, sería óptimo trabajar de 3 a 5 minutos en la plataforma vibratoria (para quienes ya tienen una en el Instituto), antes de comenzar la sesión de pedaleo. De lo contrario, sugerimos comenzar directamente con la rutina de pedaleo.</p>
                 </div>
             `,
             "Androide": `
@@ -554,8 +591,8 @@
                 <p class="diet-txt">• 2x15 sentadillas libres (con recuperación de 20” entre series)</p>
                 <p class="diet-txt">• 2x10 estocadas libres (recuperación de 20”, como arriba)</p>
                 <p class="diet-txt">• 2x25 estiramientos de glúteos libres de pie con las manos apoyadas en la pared (recuperación de 20”, como arriba)</p>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-6 rounded-xl shadow-sm">
-                    <p class="diet-txt !mb-0 text-[13px]">Una vez que el ritmo cardíaco vuelva a sus valores normales, puedes comenzar la sesión de Infrabaldan.</p>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
+                    <p class="diet-txt !mb-0 text-[12px]">Una vez que el ritmo cardíaco vuelva a sus valores normales, puedes comenzar la sesión de Infrabaldan.</p>
                 </div>
             `
         };
