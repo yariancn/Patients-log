@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OXYHYPERBARIC - CLINICAL PORTAL</title>
+    <title>OXYHYPERBARIC - PORTAL CLÍNICO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
@@ -25,10 +25,10 @@
             <h3 id="infoTitle" class="text-lg font-black text-blue-900 uppercase italic mb-2">Metric</h3>
             <p id="infoDesc" class="text-sm text-slate-600 leading-relaxed mb-4">Explanation...</p>
             <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100">
-                <p class="label-tiny text-blue-600 mb-1">Your Personal Impact</p>
+                <p class="label-tiny text-blue-600 mb-1">Impacto Clínico</p>
                 <p id="infoImpact" class="text-xs font-bold text-blue-900 leading-relaxed">Impact...</p>
             </div>
-            <button onclick="closeModal()" class="w-full mt-6 bg-slate-900 text-white p-4 rounded-xl font-black text-xs uppercase">Understood</button>
+            <button onclick="closeModal()" class="w-full mt-6 bg-slate-900 text-white p-4 rounded-xl font-black text-xs uppercase">Cerrar</button>
         </div>
     </div>
 
@@ -44,9 +44,9 @@
         </div>
         <div class="max-w-md mx-auto w-full space-y-3">
             <input type="text" id="loginID" class="w-full p-5 rounded-2xl border border-slate-200 bg-white shadow-inner font-bold text-center" placeholder="ID">
-            <input type="text" id="loginName" class="w-full p-5 rounded-2xl border border-slate-200 bg-white shadow-inner font-bold text-center" placeholder="NAME">
+            <input type="text" id="loginName" class="w-full p-5 rounded-2xl border border-slate-200 bg-white shadow-inner font-bold text-center" placeholder="NAME / NOMBRE">
             <button onclick="attemptLogin()" id="btnLogin" class="w-full bg-slate-900 text-white p-5 rounded-2xl font-black uppercase tracking-widest shadow-xl active:scale-95 transition-transform">Access Record</button>
-            <p id="loginError" class="text-red-500 text-[10px] text-center font-black hidden uppercase">Access Denied</p>
+            <p id="loginError" class="text-red-500 text-[10px] text-center font-black hidden uppercase mt-4">Invalid ID or Name / Datos Incorrectos</p>
         </div>
     </div>
 
@@ -63,76 +63,75 @@
         </header>
 
         <main class="p-6 pb-32 space-y-8">
-            
             <section id="view-stats" class="space-y-6">
                 <div class="grid grid-cols-2 gap-4">
                     <div class="card-medical p-5">
-                        <div class="label-tiny" id="lblPeso">Weight <span class="info-dot" onclick="showInfo('weight')">ⓘ</span></div>
+                        <div class="label-tiny">Weight / Peso <span class="info-dot" onclick="showInfo('weight')">ⓘ</span></div>
                         <p class="value-med mt-1"><span id="valPeso">--</span> <small class="text-[10px] text-slate-400 uppercase unitW">LB</small></p>
                     </div>
                     <div class="card-medical p-5">
-                        <div class="label-tiny" id="lblGrasa">Body Fat <span class="info-dot" onclick="showInfo('fat')">ⓘ</span></div>
+                        <div class="label-tiny">Body Fat / Grasa <span class="info-dot" onclick="showInfo('fat')">ⓘ</span></div>
                         <p class="value-med text-blue-600 mt-1"><span id="valGrasa">--</span> <small class="text-[10px]">%</small></p>
                     </div>
                     <div class="card-medical p-5">
-                        <div class="label-tiny" id="lblMusculo">Muscle <span class="info-dot" onclick="showInfo('muscle')">ⓘ</span></div>
+                        <div class="label-tiny">Muscle / Músculo <span class="info-dot" onclick="showInfo('muscle')">ⓘ</span></div>
                         <p class="value-med mt-1"><span id="valMusculo">--</span> <small class="text-[10px] uppercase unitW">LB</small></p>
                     </div>
                     <div class="card-medical p-5 border-amber-100">
-                        <div class="label-tiny text-amber-600" id="lblVisceral">Visceral <span class="info-dot" onclick="showInfo('visceral')">ⓘ</span></div>
+                        <div class="label-tiny text-amber-600">Visceral <span class="info-dot" onclick="showInfo('visceral')">ⓘ</span></div>
                         <p class="value-med text-amber-600 mt-1">Lvl <span id="valVisceral">--</span></p>
                     </div>
                 </div>
 
                 <div class="card-medical p-6 grid grid-cols-3 gap-y-8 gap-x-2 text-center">
                     <div><p class="label-tiny justify-center">BMI <span onclick="showInfo('bmi')">ⓘ</span></p><p class="text-sm font-black mt-1" id="valIMC">--</p></div>
-                    <div><p class="label-tiny justify-center" id="lblAgua">Water <span onclick="showInfo('water')">ⓘ</span></p><p class="text-sm font-black mt-1 text-blue-500" id="valAgua">--%</p></div>
+                    <div><p class="label-tiny justify-center">Water/Agua <span onclick="showInfo('water')">ⓘ</span></p><p class="text-sm font-black mt-1 text-blue-500" id="valAgua">--%</p></div>
                     <div><p class="label-tiny justify-center">BMR <span onclick="showInfo('bmr')">ⓘ</span></p><p class="text-sm font-black mt-1" id="valBMR">--</p></div>
-                    <div><p class="label-tiny justify-center" id="lblOsea">Bone <span onclick="showInfo('bone')">ⓘ</span></p><p class="text-sm font-black mt-1" id="valOsea">--</p></div>
-                    <div><p class="label-tiny justify-center" id="lblProt">Protein <span onclick="showInfo('protein')">ⓘ</span></p><p class="text-sm font-black mt-1 text-emerald-600" id="valProteina">--%</p></div>
-                    <div><p class="label-tiny justify-center" id="lblSub">Subcu. <span onclick="showInfo('subcu')">ⓘ</span></p><p class="text-sm font-black mt-1" id="valSubcu">--%</p></div>
+                    <div><p class="label-tiny justify-center">Bone/Ósea <span onclick="showInfo('bone')">ⓘ</span></p><p class="text-sm font-black mt-1" id="valOsea">--</p></div>
+                    <div><p class="label-tiny justify-center">Protein/Prot. <span onclick="showInfo('protein')">ⓘ</span></p><p class="text-sm font-black mt-1 text-emerald-600" id="valProteina">--%</p></div>
+                    <div><p class="label-tiny justify-center">Subcu. <span onclick="showInfo('subcu')">ⓘ</span></p><p class="text-sm font-black mt-1" id="valSubcu">--%</p></div>
                 </div>
 
-                <div class="card-medical p-6 bg-slate-900 text-white shadow-2xl shadow-blue-900/20">
+                <div class="card-medical p-6 bg-slate-900 text-white shadow-2xl">
                     <div class="flex items-center gap-2 mb-4">
                         <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-                        <p class="text-[10px] font-black uppercase tracking-[3px] text-blue-300">Oxy-AI Personalized Analysis</p>
+                        <p class="text-[10px] font-black uppercase tracking-[3px] text-blue-300">Oxy-AI Insights</p>
                     </div>
-                    <p id="aiLongMsg" class="text-sm leading-relaxed font-medium text-slate-300 italic">Processing clinical data...</p>
+                    <p id="aiLongMsg" class="text-sm leading-relaxed font-medium text-slate-300 italic">Analizando datos...</p>
                 </div>
 
                 <div class="space-y-4">
-                    <h3 class="text-sm font-black uppercase tracking-widest text-slate-400 px-2" id="txtHistory">Session Log</h3>
+                    <h3 class="text-sm font-black uppercase tracking-widest text-slate-400 px-2">History / Log</h3>
                     <div id="timelineContainer" class="space-y-3"></div>
                 </div>
             </section>
 
             <section id="view-nutrition" class="hidden space-y-6">
-                <h3 class="text-2xl font-black italic text-slate-900" id="txtNutritionTitle">Weekly Rotation Plan</h3>
+                <h3 class="text-2xl font-black italic text-slate-900">Nutrition Plan / Plan Nutricional</h3>
                 <div id="weeklyGuide" class="space-y-4"></div>
             </section>
 
             <section id="view-training" class="hidden space-y-6">
-                <h3 class="text-2xl font-black italic text-slate-900" id="txtTrainingTitle">Pre-Session Exercises</h3>
+                <h3 class="text-2xl font-black italic text-slate-900">Training / Entrenamiento</h3>
                 <div id="trainingDetails" class="space-y-4"></div>
             </section>
 
             <footer class="pt-10 pb-10 px-4 text-center opacity-40">
                 <p class="text-[8px] font-bold leading-relaxed uppercase tracking-widest">
-                    Medical Disclaimer: This information is for tracking purposes only. Consult with your Medical Director before making significant changes to your prescribed treatment at Oxyhyperbaric.
+                    Disclaimer: This is for tracking only. Consult your Medical Director before changes.
                 </p>
             </footer>
         </main>
 
         <nav class="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-lg border-t border-slate-100 h-20 flex justify-around items-center z-[150] px-4 shadow-2xl">
             <div onclick="switchTab('stats')" id="tab-stats" class="flex flex-col items-center gap-1 nav-active flex-1 py-2">
-                <span class="text-xl">📊</span><span class="text-[9px] uppercase font-black" id="navStats">Record</span>
+                <span class="text-xl">📊</span><span class="text-[9px] uppercase font-black">Record</span>
             </div>
             <div onclick="switchTab('nutrition')" id="tab-nutrition" class="flex flex-col items-center gap-1 text-slate-400 flex-1 py-2">
-                <span class="text-xl">🍏</span><span class="text-[9px] uppercase font-black" id="navNutrition">Nutrition</span>
+                <span class="text-xl">🍏</span><span class="text-[9px] uppercase font-black">Plan</span>
             </div>
             <div onclick="switchTab('training')" id="tab-training" class="flex flex-col items-center gap-1 text-slate-400 flex-1 py-2">
-                <span class="text-xl">💪</span><span class="text-[9px] uppercase font-black" id="navTraining">Training</span>
+                <span class="text-xl">💪</span><span class="text-[9px] uppercase font-black">Work</span>
             </div>
         </nav>
     </div>
@@ -142,57 +141,41 @@
     let patientData = null, unitMode = 'LB', currentLang = 'EN';
     const LB_F = 2.20462;
 
-    const translations = {
-        EN: {
-            txtWelcome: "Patient Portal", btnLogin: "Access Record", lblPeso: "Weight", lblGrasa: "Body Fat", lblMusculo: "Muscle",
-            lblVisceral: "Visceral", lblAgua: "Water", lblOsea: "Bone", lblProt: "Protein", lblSub: "Subcu.", txtStatusTitle: "Clinical Biometrics",
-            txtHistory: "Session Log", txtNutritionTitle: "Weekly Plan", txtTrainingTitle: "Pre-Session Routine",
-            navStats: "Record", navNutrition: "Plan", navTraining: "Training"
-        },
-        ES: {
-            txtWelcome: "Portal del Paciente", btnLogin: "Entrar al Expediente", lblPeso: "Peso", lblGrasa: "Grasa", lblMusculo: "Músculo",
-            lblVisceral: "Visceral", lblAgua: "Agua", lblOsea: "Ósea", lblProt: "Proteína", lblSub: "Subcutánea", txtStatusTitle: "Biometría Clínica",
-            txtHistory: "Historial de Sesiones", txtNutritionTitle: "Plan Semanal", txtTrainingTitle: "Rutina Pre-Sesión",
-            navStats: "Expediente", navNutrition: "Plan", navTraining: "Entreno"
-        }
-    };
-
-    function toggleLanguage() { currentLang = (currentLang === 'EN' ? 'ES' : 'EN'); document.getElementById('langBtn').innerText = currentLang; applyLanguage(); }
-    function toggleUnits() { unitMode = (unitMode === 'LB' ? 'KG' : 'LB'); document.getElementById('unitBtn').innerText = unitMode; if(patientData) loadDashboardData(); }
-
-    function applyLanguage() {
-        const t = translations[currentLang];
-        Object.keys(t).forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerText = t[id]; });
-        if(patientData) { renderNutrition(); renderTraining(); generateDetailedAdvice(); renderTimeline(); }
-    }
-
     async function attemptLogin() {
         const id = document.getElementById('loginID').value.trim();
         const name = document.getElementById('loginName').value.trim().toLowerCase();
+        const btn = document.getElementById('btnLogin');
         if(!id || !name) return;
-        document.getElementById('btnLogin').innerText = "...";
+
+        btn.innerText = "...";
         try {
             const res = await fetch(`${WEB_APP_URL}?action=obtenerClientes`);
             const data = await res.json();
+            // VALIDACIÓN RESTAURADA (ID EXACTO Y NOMBRE INCLUIDO)
             const match = data.find(p => String(p.id).trim() === id && String(p.nombre).toLowerCase().includes(name));
-            if(match) { patientData = match; loadDashboard(); } 
-            else { document.getElementById('loginError').classList.remove('hidden'); document.getElementById('btnLogin').innerText = translations[currentLang].btnLogin; }
-        } catch(e) { alert("Error"); }
+
+            if(match) {
+                patientData = match;
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainDashboard').classList.remove('hidden');
+                loadDashboardData();
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+                btn.innerText = "ACCESS RECORD";
+            }
+        } catch(e) { alert("Network Error"); }
     }
 
-    function loadDashboard() {
-        document.getElementById('loginScreen').classList.add('hidden');
-        document.getElementById('mainDashboard').classList.remove('hidden');
-        applyLanguage(); loadDashboardData();
-    }
+    function toggleLanguage() { currentLang = (currentLang === 'EN' ? 'ES' : 'EN'); document.getElementById('langBtn').innerText = currentLang; if(patientData) loadDashboardData(); }
+    function toggleUnits() { unitMode = (unitMode === 'LB' ? 'KG' : 'LB'); document.getElementById('unitBtn').innerText = unitMode; if(patientData) loadDashboardData(); }
 
     function loadDashboardData() {
         let last = patientData;
         if(patientData.avances && patientData.avances.length > 0) last = [...patientData.avances].pop();
         const pd = last.predicta_data || {};
 
-        document.getElementById('patientHello').innerText = patientData.nombre.split(' ')[0].toUpperCase();
-        document.getElementById('planBadge').innerText = `PLAN: ${patientData.plan_asignado || 'Ginoide'}`;
+        document.getElementById('patientHello').innerText = patientData.nombre.toUpperCase();
+        document.getElementById('planBadge').innerText = `PLAN: ${patientData.plan_asignado || 'GINOIDE'}`;
         
         const conv = (v) => unitMode === 'LB' ? (parseFloat(v || 0) * LB_F).toFixed(1) : parseFloat(v || 0).toFixed(1);
         
@@ -208,36 +191,25 @@
         document.getElementById('valSubcu').innerText = (last.grasa_subcutanea_perc || pd.subcutanea_perc || 0).toFixed(1);
         
         document.querySelectorAll('.unitW').forEach(el => el.innerText = unitMode);
-        renderTimeline(); generateDetailedAdvice();
+        renderTimeline(); renderNutrition(); renderTraining(); generateAdvice(last);
     }
 
     function showInfo(metric) {
-        const t = currentLang === 'EN' ? {
-            weight: ["Total Weight", "Your total body mass.", "Your target is locked to your Day 1 lean mass to ensure fat loss."],
-            fat: ["Body Fat %", "Total adipose tissue.", "Reducing this reverses inflammation and metabolic stress."],
-            muscle: ["Muscle Mass", "Skeletal muscle fiber.", "Essential to burn calories even at rest. Don't lose this!"],
-            visceral: ["Visceral Fat", "Fat surrounding organs.", "Level 9 or less is critical to prevent Type 2 Diabetes."],
-            bmi: ["BMI", "Weight relative to height.", "High BMI puts mechanical stress on your heart and knees."],
-            water: ["Body Water", "Total hydration.", "Fat oxidation stops without proper cellular hydration."],
-            bmr: ["BMR", "Resting calorie burn.", "A higher BMR makes it harder to regain lost weight."],
-            bone: ["Bone Mass", "Mineral bone density.", "We monitor this to ensure nutrition is supporting your frame."],
-            protein: ["Protein %", "Amino acid availability.", "Necessary for tissue repair after Infra Baldan sessions."],
-            subcu: ["Subcutaneous Fat", "Fat under the skin.", "The primary energy source oxidized during your sessions."]
-        } : {
-            weight: ["Peso Total", "Masa total de tu cuerpo.", "Tu meta está anclada a tu masa magra del Día 1."],
-            fat: ["% Grasa Corporal", "Tejido adiposo total.", "Reducirlo revierte la inflamación metabólica."],
-            muscle: ["Masa Muscular", "Fibra muscular activa.", "Es tu horno metabólico. Protege este valor."],
-            visceral: ["Grasa Visceral", "Grasa interna en órganos.", "Nivel 9 o menos es crítico para prevenir Diabetes."],
-            bmi: ["IMC", "Relación peso/altura.", "Un IMC alto estresa mecánicamente corazón y rodillas."],
-            water: ["Agua Corporal", "Hidratación total.", "Sin agua, la oxidación de grasa se detiene."],
-            bmr: ["Tasa Metabólica", "Calorías en reposo.", "Un BMR alto evita el efecto rebote."],
-            bone: ["Masa Ósea", "Densidad mineral.", "Asegura que tu nutrición soporta tu estructura."],
-            protein: ["Proteína %", "Disponibilidad de aminoácidos.", "Vital para reparar tejidos tras la sesión."],
-            subcu: ["Grasa Subcutánea", "Grasa bajo la piel.", "Combustible principal usado en tu sesión."]
+        const info = {
+            weight: ["Total Weight", "Your total mass.", "Locked to Day 1 lean mass to ensure fat loss."],
+            fat: ["Body Fat", "Total adipose tissue.", "Reducing this reverses metabolic stress."],
+            muscle: ["Muscle Mass", "Active fiber.", "Burn calories even at rest. Do not lose this!"],
+            visceral: ["Visceral Fat", "Fat in organs.", "Level 9 or less is critical to prevent Diabetes."],
+            bmi: ["BMI", "Weight/Height ratio.", "High BMI stresses heart and joints."],
+            water: ["Body Water", "Hydration.", "Fat oxidation stops without water."],
+            bmr: ["BMR", "Resting burn.", "Higher BMR prevents weight rebound."],
+            bone: ["Bone Mass", "Mineral density.", "Ensures nutrition supports your frame."],
+            protein: ["Protein %", "Tissue repair.", "Vital for recovery after sessions."],
+            subcu: ["Subcutaneous", "Under-skin fat.", "Primary fuel oxidized in sessions."]
         };
-        document.getElementById('infoTitle').innerText = t[metric][0];
-        document.getElementById('infoDesc').innerText = t[metric][1];
-        document.getElementById('infoImpact').innerText = t[metric][2];
+        document.getElementById('infoTitle').innerText = info[metric][0];
+        document.getElementById('infoDesc').innerText = info[metric][1];
+        document.getElementById('infoImpact').innerText = info[metric][2];
         document.getElementById('modalInfo').style.display = 'block';
     }
     function closeModal() { document.getElementById('modalInfo').style.display = 'none'; }
@@ -247,65 +219,35 @@
         let html = "";
         const history = [{ fecha: 'Start', peso: patientData.peso, grasa: patientData.grasa }, ...(patientData.avances || [])];
         history.reverse().forEach(e => {
-            const d = e.fecha === 'Start' ? (currentLang === 'EN' ? 'Initial' : 'Inicio') : new Date(e.fecha).toLocaleDateString();
             const weightVal = unitMode === 'LB' ? (parseFloat(e.peso)*LB_F).toFixed(1) : parseFloat(e.peso).toFixed(1);
-            html += `<div class="card-medical p-5 flex justify-between items-center"><div class="flex items-center gap-3"><div class="timeline-dot"></div><div><p class="label-tiny">${d}</p><p class="text-md font-black text-slate-700">${weightVal} ${unitMode}</p></div></div><div class="text-right"><p class="label-tiny">${translations[currentLang].lblGrasa}</p><p class="text-md font-black text-blue-600">${parseFloat(e.grasa).toFixed(1)}%</p></div></div>`;
+            html += `<div class="card-medical p-4 flex justify-between items-center"><div><p class="label-tiny">${e.fecha === 'Start' ? 'Initial' : e.fecha.substring(0,10)}</p><p class="text-sm font-bold">${weightVal} ${unitMode}</p></div><div class="text-right"><p class="label-tiny">Fat</p><p class="text-sm font-bold text-blue-600">${parseFloat(e.grasa).toFixed(1)}%</p></div></div>`;
         });
         container.innerHTML = html;
     }
 
-    function generateDetailedAdvice() {
-        let last = patientData; if(patientData.avances && patientData.avances.length > 0) last = [...patientData.avances].pop();
-        const initialG = parseFloat(patientData.grasa), currentG = parseFloat(last.grasa), visceral = parseInt(last.grasa_visceral || 10);
-        let msg = currentLang === 'EN' 
-            ? `Your biometrics indicate that your metabolism is currently in an ${currentG < initialG ? 'active fat-burning' : 'adaptation'} phase. `
-            : `Tu biometría indica que tu metabolismo está en fase ${currentG < initialG ? 'activa de quema' : 'de adaptación'}. `;
-        
-        if(visceral > 10) msg += currentLang === 'EN' 
-            ? "Your visceral fat level is above the safety threshold, which may slow down cellular oxygenation. Focus on avoiding processed sugars entirely this week. " 
-            : "Tu grasa visceral supera el umbral de seguridad, lo que limita la oxigenación celular. Evita azúcares procesados esta semana. ";
-        
-        msg += currentLang === 'EN' 
-            ? "Remember, Infra Baldan frequencies are most effective when your body is properly hydrated. Maintain your 3 sessions per week to keep the lipolysis engine running."
-            : "Recuerda, Infra Baldan es más efectivo con hidratación óptima. Mantén tus 3 sesiones semanales para no detener el motor de la lipólisis.";
-        
+    function generateAdvice(last) {
+        const msg = currentLang === 'EN' ? 
+            "Your metabolic profile shows active adaptation. Focus on maintaining 3 sessions per week and prioritize hydration to maximize fat oxidation." :
+            "Tu perfil metabólico muestra una adaptación activa. Mantén 3 sesiones semanales y prioriza la hidratación para maximizar la oxidación de grasa.";
         document.getElementById('aiLongMsg').innerText = msg;
     }
 
     function renderNutrition() {
         const guide = document.getElementById('weeklyGuide');
         const plan = patientData.plan_asignado || 'Ginoide';
-        const t = currentLang === 'EN' ? 
-            {mon:"Monday", tue:"Tuesday", wed:"Wednesday", thu:"Thursday", fri:"Friday", sat:"Saturday", sun:"Sunday", morning:"Morning", lunch:"Lunch", dinner:"Dinner", snack:"Snack"} : 
-            {mon:"Lunes", tue:"Martes", wed:"Miércoles", thu:"Jueves", fri:"Viernes", sat:"Sábado", sun:"Domingo", morning:"Mañana", lunch:"Comida", dinner:"Cena", snack:"Snack"};
-        
-        const content = {
-            "Ginoide": [
-                {d: t.mon, m: t.morning, c: "Tea/Coffee + Lactose-free yogurt + oat bran.", l: t.lunch, lc: "Basmati Rice (60g) + Chicken + Green Veggies.", dnr: t.dinner, dc: "Fish + Steamed Veggies."},
-                {d: t.tue, m: t.morning, c: "Tea + 2 wholemeal rusks.", l: t.lunch, lc: "Legumes (Lentils) + Raw Veggies.", dnr: t.dinner, dc: "Chicken Breast + Mixed Salad."},
-                {d: "...", m: "Rotation", c: "Alternate between options A, B and C from your clinical manual."}
-            ]
+        const guideData = {
+            "Ginoide": ["Monday: Basmati Rice + Chicken + Greens", "Tuesday: Fish + Steamed Veggies", "Wed-Sun: Alternate Option A and B"],
+            "Androide": ["Monday: Legumes + Raw Salad", "Tuesday: Lean Red Meat + Veggies", "Wed-Sun: Strict No-Carbs at Night"]
         };
-        const active = content[plan] || content["Ginoide"];
-        guide.innerHTML = active.map(i => `
-            <div class="diet-day">
-                <p class="label-tiny text-blue-800">${i.d}</p>
-                <p class="text-xs mt-2"><strong>${i.m}:</strong> ${i.c}</p>
-                ${i.lc ? `<p class="text-xs mt-1"><strong>${i.l}:</strong> ${i.lc}</p>` : ''}
-                ${i.dc ? `<p class="text-xs mt-1"><strong>${dnr}:</strong> ${i.dc}</p>` : ''}
-            </div>
-        `).join('');
+        const active = guideData[plan] || guideData["Ginoide"];
+        guide.innerHTML = active.map(i => `<div class="diet-day"><p class="text-sm font-bold text-slate-700">${i}</p></div>`).join('');
     }
 
     function renderTraining() {
         const train = document.getElementById('trainingDetails');
         const plan = patientData.plan_asignado || 'Ginoide';
-        const protocols = {
-            "Ginoide": "3 Sets x 12 Reps: Dumbbell Chest Flyes, Lateral Raises, Biceps/Triceps. Perform before pedaling.",
-            "Androide": "2 Sets x 15 Squats + 2 Sets x 10 Lunges + Wall Glute stretches. High intensity pre-session.",
-            "Mixto": "No pre-session exercises. Add 10 mins to your Infra Baldan session."
-        };
-        train.innerHTML = `<div class="card-medical p-6 bg-slate-50"><p class="label-tiny accent-gold mb-3">BALDAN TRAINING SCHEMA</p><p class="text-[14px] font-medium leading-relaxed">${protocols[plan] || protocols["Ginoide"]}</p></div>`;
+        const routine = plan === "Ginoide" ? "3x12 Dumbbell Chest Flyes and Lateral Raises before session." : "2x15 Squats and Lunges before session.";
+        train.innerHTML = `<div class="card-medical p-6 bg-slate-50"><p class="text-[14px] font-medium leading-relaxed">${routine}</p></div>`;
     }
 
     function switchTab(t) {
@@ -313,7 +255,6 @@
         document.getElementById(`view-${t}`).classList.remove('hidden');
         document.querySelectorAll('nav div').forEach(el => el.classList.remove('nav-active', 'text-slate-400'));
         document.getElementById(`tab-${t}`).classList.add('nav-active');
-        window.scrollTo(0,0);
     }
 </script>
 </body>
