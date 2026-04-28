@@ -30,7 +30,7 @@
         .diet-title { font-size: 11px; font-weight: 900; color: var(--clinico); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; margin-top: 16px;}
     </style>
 </head>
-<body class="antialiased pb-28">
+<body class="antialiased pb-28 overflow-x-hidden">
 
     <script>
         const manifestData = {
@@ -45,6 +45,30 @@
         const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
         document.getElementById('dynamic-manifest').href = URL.createObjectURL(manifestBlob);
     </script>
+
+    <div id="pwaBanner" class="hidden fixed bottom-0 inset-x-0 bg-slate-900 border-t-4 border-blue-600 text-white p-5 z-[9999] rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.3)] pb-8 transition-transform duration-500 transform translate-y-full">
+        <div class="flex justify-between items-start gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-white p-1 rounded-xl"><img src="logo.jpg" class="h-10 object-contain rounded-lg" onerror="this.style.display='none'"></div>
+                <div>
+                    <p class="text-[13px] font-black italic tracking-wider text-white" id="pwaTitle">OXYHYPERBARIC APP</p>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-blue-400 mt-1" id="pwaDesc">Install your clinical record</p>
+                </div>
+            </div>
+            <button onclick="dismissPwaBanner()" class="text-white opacity-50 hover:opacity-100 font-black text-xl p-2">✕</button>
+        </div>
+        
+        <div id="pwaActionAndroid" class="hidden mt-5">
+            <button onclick="installPWA()" id="btnInstallPwa" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black uppercase tracking-widest text-[12px] py-4 rounded-xl shadow-lg active:scale-95 transition-transform">INSTALL APP</button>
+        </div>
+        
+        <div id="pwaActionIOS" class="hidden mt-5 bg-slate-800 p-4 rounded-xl text-center border border-slate-700 relative overflow-hidden">
+            <p id="txtIosPwa" class="text-[12px] font-medium leading-relaxed z-10 relative">
+                To install: Tap the <span class="font-bold text-blue-300">Share</span> icon below <br>and select <span class="font-bold text-blue-300">Add to Home Screen</span>.
+            </p>
+            <div class="text-3xl mt-3 animate-bounce z-10 relative">👇</div>
+        </div>
+    </div>
 
     <div id="modalInfo" onclick="closeModal()" class="flex flex-col justify-center items-center">
         <div class="bg-white w-[90%] max-w-sm p-8 rounded-[32px] shadow-2xl relative" onclick="event.stopPropagation()">
@@ -275,6 +299,15 @@
                 else el.innerText = t[id];
             }
         });
+
+        // Actualizar textos del banner PWA
+        if(document.getElementById('pwaTitle')) {
+            document.getElementById('pwaTitle').innerText = lang === 'EN' ? "OXYHYPERBARIC APP" : "APP OXYHYPERBARIC";
+            document.getElementById('pwaDesc').innerText = lang === 'EN' ? "Install your clinical record" : "Instala tu expediente clínico";
+            document.getElementById('btnInstallPwa').innerText = lang === 'EN' ? "INSTALL APP" : "INSTALAR APP";
+            document.getElementById('txtIosPwa').innerHTML = lang === 'EN' ? "To install: Tap the <span class='font-bold text-blue-300'>Share</span> icon below <br>and select <span class='font-bold text-blue-300'>Add to Home Screen</span>." : "Para instalar: Toca el icono de <span class='font-bold text-blue-300'>Compartir</span> abajo <br>y selecciona <span class='font-bold text-blue-300'>Agregar a Inicio</span>.";
+        }
+
         if(pData) { renderNutrition(); renderTraining(); generateAI(); renderHistory(); }
     }
 
@@ -332,7 +365,6 @@
         document.getElementById('valProt')?.setAttribute('data-val', bio.prot.toFixed(1)); document.getElementById('valProt').innerText = bio.prot.toFixed(1);
         document.getElementById('valSubcu')?.setAttribute('data-val', bio.subcu.toFixed(1)); document.getElementById('valSubcu').innerText = bio.subcu.toFixed(1);
         
-        // LÓGICA DE REJUVENECIMIENTO
         let iniBio = calcBio(pData);
         let ageDiff = iniBio.edadm - bio.edadm;
         
@@ -360,7 +392,6 @@
         const c = (v) => uM==='LB'?(v*LB).toFixed(1) + ' LB' : v.toFixed(1) + ' KG';
         
         let elVal = document.getElementById(`val${metric.charAt(0).toUpperCase() + metric.slice(1)}`);
-        // Manejo especial para la edad porque puede estar en 2 lugares distintos
         if(metric === 'age') {
             elVal = document.getElementById('valYearsRegained').parentElement.parentElement.parentElement.classList.contains('hidden') ? 
                     document.getElementById('valCurrentBioAge') : document.getElementById('valYearsRegained');
@@ -371,7 +402,7 @@
 
         if(metric === 'weight') {
             ideal = c(getIdealWeight()); t = lang==='EN'?"Weight":"Peso"; d = lang==='EN'?"Total body mass.":"Masa corporal total.";
-            a = lang==='EN'?"Your goal weight is permanently locked to your Day 1 lean mass to guarantee that you only lose fat. Reaching this weight relieves 30% of mechanical pressure on your knees.":"Tu peso ideal está anclado a tu masa magra del Día 1 para garantizar que solo pierdas grasa. Lograr este peso reduce un 30% la presión mecánica de tus rodillas.";
+            a = lang==='EN'?"Your goal weight is permanently locked to your Day 1 lean mass to guarantee that you only lose fat. Reaching this weight relieves 30% of mechanical pressure on your knees.":"Tu peso ideal está calculado y anclado a tu masa magra del Día 1 para garantizar que solo pierdas grasa. Lograr este peso reduce un 30% la presión mecánica de tus rodillas.";
         } else if(metric === 'fat') {
             ideal = isM ? "12-20%" : "20-28%"; t = lang==='EN'?"Body Fat":"Grasa Corporal"; d = lang==='EN'?"Total adipose tissue.":"Tejido adiposo total.";
             a = lang==='EN'?"Fat releases inflammatory hormones. Oxidizing it is a clinical priority.":"La grasa libera hormonas inflamatorias. Oxídala es prioridad médica.";
@@ -441,7 +472,8 @@
         if(currBio.g < iniBio.g) {
             msg += lang === 'EN' ? `You have reduced your body fat by ${(iniBio.g - currBio.g).toFixed(1)}%. The Infra Baldan protocol is effectively stimulating cellular lipid oxidation. ` : `Has reducido tu grasa corporal en ${(iniBio.g - currBio.g).toFixed(1)}%. El protocolo Infra Baldan está estimulando efectivamente la oxidación de lípidos en tus células. `;
         } else {
-            msg += lang === 'EN' ? `Your metabolism is in an adaptation phase. Do not skip your 3 weekly sessions to break this resistance. ` : `Tu metabolismo está en fase de adaptación. No omitas tus 3 sesiones semanales para romper esta resistencia de tu cuerpo. `;
+            // AQUÍ ESTÁ LA CORRECCIÓN DE 3 A 2 SESIONES
+            msg += lang === 'EN' ? `Your metabolism is in an adaptation phase. Do not skip your 2 weekly sessions to break this resistance. ` : `Tu metabolismo está en fase de adaptación. No omitas tus 2 sesiones semanales para romper esta resistencia de tu cuerpo. `;
         }
 
         if(currBio.visc > 9) {
@@ -597,7 +629,7 @@
             `
         };
 
-        let pKey = plan;
+        let pKey = pData.plan_asignado || 'Ginoide';
         if (!protocolsEN[pKey]) pKey = "Ginoide";
         
         document.getElementById('trainingContent').innerHTML = lang === 'EN' ? protocolsEN[pKey] : protocolsES[pKey];
@@ -621,6 +653,67 @@
         document.getElementById(`tab-${t}`).classList.add('nav-active');
         window.scrollTo(0,0);
     }
+
+    // ==========================================
+    // LÓGICA DE INSTALACIÓN PWA (SMART BANNER)
+    // ==========================================
+    let deferredPrompt;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        if (!window.matchMedia('(display-mode: standalone)').matches && !navigator.standalone) {
+            showPwaBanner('android');
+        }
+    });
+
+    function showPwaBanner(os) {
+        const banner = document.getElementById('pwaBanner');
+        banner.classList.remove('hidden');
+        setTimeout(() => { banner.classList.remove('translate-y-full'); }, 50);
+        
+        if (os === 'android') {
+            document.getElementById('pwaActionAndroid').classList.remove('hidden');
+            document.getElementById('pwaActionIOS').classList.add('hidden');
+        } else if (os === 'ios') {
+            document.getElementById('pwaActionAndroid').classList.add('hidden');
+            document.getElementById('pwaActionIOS').classList.remove('hidden');
+        }
+    }
+
+    function dismissPwaBanner() {
+        document.getElementById('pwaBanner').classList.add('translate-y-full');
+        setTimeout(() => { document.getElementById('pwaBanner').classList.add('hidden'); }, 300);
+    }
+
+    async function installPWA() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                dismissPwaBanner();
+            }
+            deferredPrompt = null;
+        }
+    }
+
+    window.addEventListener('load', () => {
+        // Detectar si es iOS y si NO está ya instalado (standalone)
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+        
+        if (isIOS && !isStandalone) {
+            setTimeout(() => { showPwaBanner('ios'); }, 1000);
+        }
+
+        // Registrar Service Worker "Dummy" (Requisito para Android)
+        if ('serviceWorker' in navigator) {
+            const swCode = "self.addEventListener('fetch', function(event) {});";
+            const blob = new Blob([swCode], {type: 'application/javascript'});
+            const swUrl = URL.createObjectURL(blob);
+            navigator.serviceWorker.register(swUrl).catch(console.error);
+        }
+    });
 </script>
 </body>
 </html>
