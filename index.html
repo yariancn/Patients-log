@@ -90,7 +90,7 @@
         </div>
     </div>
 
-    <header id="mainHeader" class="hidden sticky top-0 bg-white/95 backdrop-blur-md border-b border-slate-100 z-[100] p-6 flex justify-between items-center shadow-sm">
+    <header id="mainHeader" class="hidden sticky top-0 bg-white/95 backdrop-blur-md border-b border-slate-100 z-[100] p-5 pr-28 flex justify-between items-center shadow-sm">
         <div class="flex items-center gap-3">
             <img src="logo.jpg" class="h-8" onerror="this.style.display='none'">
             <div>
@@ -207,7 +207,7 @@
     const ui = {
         EN: {
             headWelcome: "Patient Portal", btnAccess: "UNLOCK RECORD", headHistory: "Clinical History Log", headNutrition: "Nutrition Protocol", headTraining: "Training Program",
-            lblPeso: "Weight", lblGrasa: "Body Fat", lblMusculo: "Muscle", lblVisceral: "Visceral", lblAgua: "Water", lblBMI: "BMI", lblBMR: "BMR", lblOsea: "Bone", lblProt: "Protein", lblSub: "Subcutaneous",
+            lblPeso: "Weight", lblGrasa: "Body Fat", lblMusculo: "Muscle", lblVisceral: "Visceral", lblAgua: "Water", lblBMI: "BMI", lblBMR: "BMR", lblOsea: "Bone", lblProt: "Protein", lblSub: "Subcu.",
             navStats: "Stats", navNutrition: "Diet", navTraining: "Training", headAI: "Oxy-AI Clinical Analysis", btnExit: "Exit", btnCloseModal: "Close", 
             lblModalInicio: "Day 1", lblModalActual: "Today", lblModalMeta: "Goal", lblModalAccion: "Clinical Insight",
             lblCellular: "Cellular Rejuvenation", lblYears: "YRS REGAINED", lblBioAgeNorm: "Metabolic Age", lblYrsNorm: "Years",
@@ -215,7 +215,7 @@
         },
         ES: {
             headWelcome: "Portal del Paciente", btnAccess: "ABRIR EXPEDIENTE", headHistory: "Historial Clínico", headNutrition: "Protocolo Nutricional", headTraining: "Programa de Entrenamiento",
-            lblPeso: "Peso", lblGrasa: "Grasa", lblMusculo: "Músculo", lblVisceral: "Visceral", lblAgua: "Agua", lblBMI: "IMC", lblBMR: "TMB", lblOsea: "Hueso", lblProt: "Proteína", lblSub: "Subcutánea",
+            lblPeso: "Peso", lblGrasa: "Grasa", lblMusculo: "Músculo", lblVisceral: "Visceral", lblAgua: "Agua", lblBMI: "IMC", lblBMR: "TMB", lblOsea: "Hueso", lblProt: "Proteína", lblSub: "Subcu.",
             navStats: "Datos", navNutrition: "Dieta", navTraining: "Entreno", headAI: "Análisis Clínico Oxy-AI", btnExit: "Salir", btnCloseModal: "Cerrar", 
             lblModalInicio: "Día 1", lblModalActual: "Hoy", lblModalMeta: "Ideal", lblModalAccion: "Motivación Clínica",
             lblCellular: "Rejuvenecimiento Celular", lblYears: "AÑOS RECUPERADOS", lblBioAgeNorm: "Edad Metabólica", lblYrsNorm: "Años",
@@ -249,8 +249,10 @@
                 document.getElementById('mainHeader').classList.remove('hidden');
                 document.getElementById('mainContent').classList.remove('hidden');
                 document.getElementById('mainNav').classList.remove('hidden');
-                applyUI(); 
+                
+                // ORDEN DE EJECUCIÓN CORREGIDO: PRIMERO CALCULAMOS, LUEGO TRADUCIMOS
                 loadData(); 
+                applyUI(); 
             } else { 
                 document.getElementById('logErr').innerText = "Access Denied. Check ID/Name.";
                 document.getElementById('logErrDetail').innerText = "No match found in database.";
@@ -277,7 +279,14 @@
                 }
             }
         });
-        if(pData) { renderNutrition(); renderTraining(); generateAI(); renderHistory(); }
+        
+        // SOLO RENDERIZAR COMPONENTES DINÁMICOS SI YA TENEMOS DATOS (Seguro anti-crashes)
+        if(pData && gCurrBio) { 
+            renderNutrition(); 
+            renderTraining(); 
+            generateAI(); 
+            renderHistory(); 
+        }
     }
 
     function calcBio(entry) {
@@ -345,8 +354,6 @@
         }
 
         document.querySelectorAll('.uW').forEach(el => el.innerText = uM);
-        renderHistory();
-        generateAI();
     }
 
     function openInfo(metric) {
