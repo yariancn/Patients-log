@@ -21,79 +21,56 @@
         .nav-active { color: var(--clinico); border-bottom: 4px solid var(--clinico); font-weight: 900; }
         .label-tiny { font-size: 10px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center; width: 100%; }
         .value-med { font-size: 22px; font-weight: 900; color: #1e293b; }
-        .icon-info { font-size: 16px; cursor: pointer; transition: transform 0.2s; color: var(--clinico); }
+        .icon-info { font-size: 14px; cursor: pointer; transition: transform 0.2s; color: var(--clinico); background: #eff6ff; padding: 4px 8px; border-radius: 8px; border: 1px solid #bfdbfe; display: flex; align-items: center; justify-content: center;}
         .icon-info:active { transform: scale(0.8); }
         #modalInfo { z-index: 500; display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(5px); }
         .history-table th { font-size: 9px; text-transform: uppercase; color: #94a3b8; padding: 10px 5px; border-bottom: 2px solid #f1f5f9; text-align: center; }
         .history-table td { font-size: 11px; font-weight: 700; padding: 12px 5px; border-bottom: 1px solid #f8fafc; text-align: center; }
         .diet-txt { font-size: 14px; font-weight: 600; color: #334155; line-height: 1.6; margin-bottom: 12px; }
         .diet-title { font-size: 11px; font-weight: 900; color: var(--clinico); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; margin-top: 16px;}
+        .progress-pill { width: 100%; text-align: center; padding: 8px; border-radius: 12px; font-weight: 900; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px;}
     </style>
 </head>
-<body class="antialiased pb-28 overflow-x-hidden">
+<body class="antialiased pb-28">
 
     <script>
-        const manifestData = {
-            "name": "Oxyhyperbaric Clinical Portal",
-            "short_name": "OxyPortal",
-            "start_url": ".",
-            "display": "standalone",
-            "background_color": "#f8fafc",
-            "theme_color": "#1e40af",
-            "icons": [{"src": "logo.jpg", "sizes": "192x192", "type": "image/jpeg"}]
-        };
+        const manifestData = { "name": "Oxyhyperbaric Clinical Portal", "short_name": "OxyPortal", "start_url": ".", "display": "standalone", "background_color": "#f8fafc", "theme_color": "#1e40af", "icons": [{"src": "logo.jpg", "sizes": "192x192", "type": "image/jpeg"}] };
         const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
         document.getElementById('dynamic-manifest').href = URL.createObjectURL(manifestBlob);
     </script>
 
-    <div id="pwaBanner" class="hidden fixed bottom-0 inset-x-0 bg-slate-900 border-t-4 border-blue-600 text-white p-5 z-[9999] rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.3)] pb-8 transition-transform duration-500 transform translate-y-full">
-        <div class="flex justify-between items-start gap-4">
-            <div class="flex items-center gap-3">
-                <div class="bg-white p-1 rounded-xl"><img src="logo.jpg" class="h-10 object-contain rounded-lg" onerror="this.style.display='none'"></div>
-                <div>
-                    <p class="text-[13px] font-black italic tracking-wider text-white" id="pwaTitle">OXYHYPERBARIC APP</p>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-blue-400 mt-1" id="pwaDesc">Install your clinical record</p>
-                </div>
-            </div>
-            <button onclick="dismissPwaBanner()" class="text-white opacity-50 hover:opacity-100 font-black text-xl p-2">✕</button>
-        </div>
-        
-        <div id="pwaActionAndroid" class="hidden mt-5">
-            <button onclick="installPWA()" id="btnInstallPwa" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black uppercase tracking-widest text-[12px] py-4 rounded-xl shadow-lg active:scale-95 transition-transform">INSTALL APP</button>
-        </div>
-        
-        <div id="pwaActionIOS" class="hidden mt-5 bg-slate-800 p-4 rounded-xl text-center border border-slate-700 relative overflow-hidden">
-            <p id="txtIosPwa" class="text-[12px] font-medium leading-relaxed z-10 relative">
-                To install: Tap the <span class="font-bold text-blue-300">Share</span> icon below <br>and select <span class="font-bold text-blue-300">Add to Home Screen</span>.
-            </p>
-            <div class="text-3xl mt-3 animate-bounce z-10 relative">👇</div>
-        </div>
-    </div>
-
     <div id="modalInfo" onclick="closeModal()" class="flex flex-col justify-center items-center">
-        <div class="bg-white w-[90%] max-w-sm p-8 rounded-[32px] shadow-2xl relative" onclick="event.stopPropagation()">
-            <h3 id="infoTitle" class="text-xl font-black text-blue-900 uppercase italic mb-2">METRIC</h3>
-            <p id="infoDesc" class="text-sm text-slate-600 leading-relaxed mb-6 font-medium">--</p>
-            <div class="grid grid-cols-2 gap-4 mb-6">
-                <div class="bg-slate-50 p-4 rounded-xl text-center">
-                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest" id="lblModalActual">Actual</p>
-                    <p id="infoUserVal" class="text-2xl font-black text-slate-800 mt-1">--</p>
+        <div class="bg-white w-[95%] max-w-md p-6 rounded-[32px] shadow-2xl relative" onclick="event.stopPropagation()">
+            <h3 id="infoTitle" class="text-xl font-black text-blue-900 uppercase italic mb-1">METRIC</h3>
+            <p id="infoDesc" class="text-[11px] text-slate-500 font-bold uppercase tracking-widest mb-6">--</p>
+            
+            <div class="grid grid-cols-3 gap-2 mb-4">
+                <div class="bg-slate-50 p-3 rounded-2xl text-center border border-slate-100">
+                    <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest" id="lblModalInicio">Day 1</p>
+                    <p id="infoStartVal" class="text-sm font-black text-slate-800 mt-1">--</p>
                 </div>
-                <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100 text-center">
-                    <p class="text-[9px] font-black text-emerald-600 uppercase tracking-widest" id="lblModalMeta">Goal / Ideal</p>
-                    <p id="infoIdealVal" class="text-xl font-black text-emerald-700 mt-1">--</p>
+                <div class="bg-blue-50 p-3 rounded-2xl text-center border-2 border-blue-200 shadow-inner">
+                    <p class="text-[8px] font-black text-blue-600 uppercase tracking-widest" id="lblModalActual">Today</p>
+                    <p id="infoUserVal" class="text-lg font-black text-blue-900 mt-1">--</p>
+                </div>
+                <div class="bg-emerald-50 p-3 rounded-2xl text-center border border-emerald-100">
+                    <p class="text-[8px] font-black text-emerald-600 uppercase tracking-widest" id="lblModalMeta">Goal</p>
+                    <p id="infoIdealVal" class="text-sm font-black text-emerald-700 mt-1">--</p>
                 </div>
             </div>
-            <div class="bg-blue-50 p-5 rounded-2xl border border-blue-100">
-                <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-2" id="lblModalAccion">Clinical Motivation</p>
-                <p id="infoImpact" class="text-sm font-bold text-blue-900 leading-relaxed">--</p>
+
+            <div id="progressBadge" class="progress-pill bg-slate-100 text-slate-800">--</div>
+
+            <div class="bg-slate-900 p-5 rounded-2xl">
+                <p class="text-[10px] font-black text-blue-400 uppercase tracking-[3px] mb-2" id="lblModalAccion">Clinical Insight</p>
+                <p id="infoImpact" class="text-[13px] font-medium text-slate-100 leading-relaxed italic">--</p>
             </div>
-            <button onclick="closeModal()" class="w-full mt-6 bg-slate-900 text-white p-4 rounded-xl font-black text-xs uppercase tracking-widest active:scale-95 transition-transform" id="btnCloseModal">Cerrar / Close</button>
+            <button onclick="closeModal()" class="w-full mt-6 bg-slate-100 text-slate-800 p-4 rounded-xl font-black text-xs uppercase tracking-widest active:scale-95 transition-transform border border-slate-200" id="btnCloseModal">Close</button>
         </div>
     </div>
 
     <div class="fixed top-4 right-4 flex gap-2 z-[110]">
-        <button onclick="toggleLang()" class="bg-white border border-slate-200 text-[10px] font-black px-4 py-2 rounded-xl shadow-sm uppercase tracking-widest" id="langBtn">ESPAÑOL</button>
+        <button onclick="toggleLang()" class="bg-white/90 backdrop-blur-md border border-slate-200 text-[10px] font-black px-4 py-2 rounded-xl shadow-sm uppercase tracking-widest" id="langBtn">ESPAÑOL</button>
         <button onclick="toggleUnits()" class="bg-blue-600 text-white text-[10px] font-black px-4 py-2 rounded-xl shadow-md uppercase tracking-widest" id="unitBtn">LB</button>
     </div>
 
@@ -124,13 +101,11 @@
                 </div>
             </div>
         </div>
-        <button onclick="location.reload()" class="text-[10px] font-black text-slate-400 uppercase border border-slate-200 p-2 rounded-lg" id="btnExit">Exit</button>
+        <button onclick="location.reload()" class="text-[10px] font-black text-slate-400 uppercase border border-slate-200 p-2 rounded-lg bg-white" id="btnExit">Exit</button>
     </header>
 
-    <main id="mainContent" class="hidden p-5 space-y-10">
-        
+    <main id="mainContent" class="hidden p-5 space-y-8">
         <section id="view-stats" class="space-y-6 block">
-            
             <div class="grid grid-cols-2 gap-4">
                 <div class="card-medical p-5">
                     <div class="label-tiny"><span id="lblPeso">Weight</span> <span class="icon-info" onclick="openInfo('weight')">ℹ️</span></div>
@@ -145,42 +120,42 @@
                     <p class="value-med mt-2"><span id="valMusculo">--</span> <small class="text-[10px] uppercase uW">LB</small></p>
                 </div>
                 <div class="card-medical p-5 border-amber-100">
-                    <div class="label-tiny text-amber-600"><span id="lblVisceral">Visceral</span> <span class="icon-info" onclick="openInfo('visceral')">ℹ️</span></div>
+                    <div class="label-tiny text-amber-600"><span id="lblVisceral">Visceral</span> <span class="icon-info !bg-amber-100 !text-amber-700 !border-amber-200" onclick="openInfo('visceral')">ℹ️</span></div>
                     <p class="value-med text-amber-600 mt-2">Lvl <span id="valVisceral">--</span></p>
                 </div>
             </div>
 
             <div id="bannerRegained" class="card-medical p-6 bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200 shadow-sm flex items-center justify-between hidden">
                 <div>
-                    <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest flex items-center gap-2"><span id="lblCellular">Cellular Rejuvenation</span> <span class="icon-info" onclick="openInfo('age')">ℹ️</span></p>
-                    <p class="text-3xl font-black text-emerald-800 mt-1 leading-none"><span id="valYearsRegained">0</span> <span class="text-lg uppercase" id="lblYears">Yrs Regained</span></p>
+                    <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest flex items-center gap-2"><span id="lblCellular">Cellular Rejuvenation</span> <span class="icon-info !bg-emerald-100 !text-emerald-700 !border-emerald-200" onclick="openInfo('age')">ℹ️</span></p>
+                    <p class="text-3xl font-black text-emerald-800 mt-2 leading-none"><span id="valYearsRegained">0</span> <span class="text-sm font-bold uppercase tracking-widest ml-1" id="lblYears">Yrs Regained</span></p>
                 </div>
                 <div class="text-5xl opacity-80">🧬</div>
             </div>
 
             <div id="bannerNormalAge" class="card-medical p-6 bg-slate-50 border-slate-200 flex items-center justify-between hidden">
                 <div>
-                    <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2"><span id="lblBioAgeNorm">Metabolic Age</span> <span class="icon-info" onclick="openInfo('age')">ℹ️</span></p>
-                    <p class="text-2xl font-black text-slate-800 mt-1"><span id="valCurrentBioAge">--</span> <span class="text-sm uppercase text-slate-400" id="lblYrsNorm">Years</span></p>
+                    <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2"><span id="lblBioAgeNorm">Metabolic Age</span> <span class="icon-info !bg-slate-200 !text-slate-600 !border-slate-300" onclick="openInfo('age')">ℹ️</span></p>
+                    <p class="text-2xl font-black text-slate-800 mt-2"><span id="valCurrentBioAge">--</span> <span class="text-xs font-bold uppercase text-slate-400 tracking-widest ml-1" id="lblYrsNorm">Years</span></p>
                 </div>
                 <div class="text-4xl opacity-50">⏱️</div>
             </div>
 
             <div class="card-medical p-5 grid grid-cols-3 gap-y-8 gap-x-2 text-center">
-                <div><p class="label-tiny justify-center"><span id="lblBMI">BMI</span> <span class="icon-info ml-1" onclick="openInfo('bmi')">ℹ️</span></p><p class="text-[15px] font-black mt-2 text-slate-700" id="valIMC">--</p></div>
-                <div><p class="label-tiny justify-center"><span id="lblAgua">Water</span> <span class="icon-info ml-1" onclick="openInfo('water')">ℹ️</span></p><p class="text-[15px] font-black mt-2 text-blue-600" id="valAgua">--%</p></div>
-                <div><p class="label-tiny justify-center"><span id="lblBMR">BMR</span> <span class="icon-info ml-1" onclick="openInfo('bmr')">ℹ️</span></p><p class="text-[15px] font-black mt-2 text-slate-700" id="valBMR">--</p></div>
-                <div><p class="label-tiny justify-center"><span id="lblOsea">Bone</span> <span class="icon-info ml-1" onclick="openInfo('bone')">ℹ️</span></p><p class="text-[15px] font-black mt-2 text-slate-700" id="valOsea">--</p></div>
-                <div><p class="label-tiny justify-center"><span id="lblProt">Protein</span> <span class="icon-info ml-1" onclick="openInfo('protein')">ℹ️</span></p><p class="text-[15px] font-black text-emerald-600 mt-2" id="valProt">--%</p></div>
-                <div><p class="label-tiny justify-center"><span id="lblSub">Subcu.</span> <span class="icon-info ml-1" onclick="openInfo('subcu')">ℹ️</span></p><p class="text-[15px] font-black mt-2 text-slate-700" id="valSubcu">--%</p></div>
+                <div><p class="label-tiny justify-center"><span id="lblBMI">BMI</span> <span class="icon-info ml-2" onclick="openInfo('bmi')">ℹ️</span></p><p class="text-[16px] font-black mt-2 text-slate-700" id="valIMC">--</p></div>
+                <div><p class="label-tiny justify-center"><span id="lblAgua">Water</span> <span class="icon-info ml-2" onclick="openInfo('water')">ℹ️</span></p><p class="text-[16px] font-black mt-2 text-blue-600" id="valAgua">--%</p></div>
+                <div><p class="label-tiny justify-center"><span id="lblBMR">BMR</span> <span class="icon-info ml-2" onclick="openInfo('bmr')">ℹ️</span></p><p class="text-[16px] font-black mt-2 text-slate-700" id="valBMR">--</p></div>
+                <div><p class="label-tiny justify-center"><span id="lblOsea">Bone</span> <span class="icon-info ml-2" onclick="openInfo('bone')">ℹ️</span></p><p class="text-[16px] font-black mt-2 text-slate-700" id="valOsea">--</p></div>
+                <div><p class="label-tiny justify-center"><span id="lblProt">Protein</span> <span class="icon-info ml-2" onclick="openInfo('protein')">ℹ️</span></p><p class="text-[16px] font-black text-emerald-600 mt-2" id="valProt">--%</p></div>
+                <div><p class="label-tiny justify-center"><span id="lblSub">Subcu.</span> <span class="icon-info ml-2" onclick="openInfo('subcu')">ℹ️</span></p><p class="text-[16px] font-black mt-2 text-slate-700" id="valSubcu">--%</p></div>
             </div>
 
-            <div class="card-medical p-8 bg-slate-900 text-white shadow-2xl relative overflow-hidden border-2 border-slate-800">
+            <div class="card-medical p-8 bg-slate-900 text-white shadow-2xl relative overflow-hidden border border-slate-800 rounded-[24px]">
                 <div class="flex items-center gap-3 mb-4">
                     <div class="w-3 h-3 bg-blue-500 rounded-full animate-ping"></div>
                     <p class="text-xs font-black uppercase tracking-[3px] text-blue-300" id="headAI">Oxy-AI Clinical Insight</p>
                 </div>
-                <p id="aiReport" class="text-[15px] leading-relaxed font-medium text-slate-200 italic">--</p>
+                <p id="aiReport" class="text-[14px] leading-relaxed font-medium text-slate-200 italic">--</p>
             </div>
 
             <div class="space-y-4">
@@ -209,7 +184,6 @@
             <h3 class="text-2xl font-black italic text-slate-900 uppercase border-l-4 border-clinico pl-4" id="headTraining">Training Protocol</h3>
             <div class="card-medical p-6 bg-white" id="trainingContent"></div>
         </section>
-
     </main>
 
     <nav id="mainNav" class="hidden fixed bottom-4 inset-x-4 bg-white/95 backdrop-blur-xl border border-slate-200 h-20 flex justify-around items-center z-[150] px-2 shadow-2xl rounded-3xl">
@@ -227,6 +201,7 @@
 <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyuIcI4lN-AMx82_W35BfcGn1szKgnrIbu3YOPAwuhtx3kKAOQ5i-pBWxM0Z2G8oKPz/exec";
     let pData = null, uM = 'LB', lang = 'EN';
+    let gIniBio = null, gCurrBio = null;
     const LB = 2.20462;
 
     const ui = {
@@ -234,7 +209,7 @@
             headWelcome: "Patient Portal", btnAccess: "UNLOCK RECORD", headHistory: "Clinical History Log", headNutrition: "Nutrition Protocol", headTraining: "Training Program",
             lblPeso: "Weight", lblGrasa: "Body Fat", lblMusculo: "Muscle", lblVisceral: "Visceral", lblAgua: "Water", lblBMI: "BMI", lblBMR: "BMR", lblOsea: "Bone", lblProt: "Protein", lblSub: "Subcutaneous",
             navStats: "Stats", navNutrition: "Diet", navTraining: "Training", headAI: "Oxy-AI Clinical Analysis", btnExit: "Exit", btnCloseModal: "Close", 
-            lblModalActual: "Actual / You", lblModalMeta: "Ideal / Goal", lblModalAccion: "Clinical Motivation",
+            lblModalInicio: "Day 1", lblModalActual: "Today", lblModalMeta: "Goal", lblModalAccion: "Clinical Insight",
             lblCellular: "Cellular Rejuvenation", lblYears: "YRS REGAINED", lblBioAgeNorm: "Metabolic Age", lblYrsNorm: "Years",
             thDate: "Date", thWeight: "Weight", thFat: "Fat%", thMuscle: "Muscle", thVisc: "Visc", thWater: "Water", thBone: "Bone", thProt: "Prot", thSub: "Subcu", thBMI: "BMI", thAge: "Age"
         },
@@ -242,7 +217,7 @@
             headWelcome: "Portal del Paciente", btnAccess: "ABRIR EXPEDIENTE", headHistory: "Historial Clínico", headNutrition: "Protocolo Nutricional", headTraining: "Programa de Entrenamiento",
             lblPeso: "Peso", lblGrasa: "Grasa", lblMusculo: "Músculo", lblVisceral: "Visceral", lblAgua: "Agua", lblBMI: "IMC", lblBMR: "TMB", lblOsea: "Hueso", lblProt: "Proteína", lblSub: "Subcutánea",
             navStats: "Datos", navNutrition: "Dieta", navTraining: "Entreno", headAI: "Análisis Clínico Oxy-AI", btnExit: "Salir", btnCloseModal: "Cerrar", 
-            lblModalActual: "Tú / Actual", lblModalMeta: "Meta / Ideal", lblModalAccion: "Motivación Clínica",
+            lblModalInicio: "Día 1", lblModalActual: "Hoy", lblModalMeta: "Ideal", lblModalAccion: "Motivación Clínica",
             lblCellular: "Rejuvenecimiento Celular", lblYears: "AÑOS RECUPERADOS", lblBioAgeNorm: "Edad Metabólica", lblYrsNorm: "Años",
             thDate: "Fecha", thWeight: "Peso", thFat: "Grasa%", thMuscle: "Músculo", thVisc: "Visc", thWater: "Agua", thBone: "Hueso", thProt: "Prot", thSub: "Subcu", thBMI: "IMC", thAge: "Edad"
         }
@@ -259,7 +234,7 @@
         document.getElementById('errorBox').classList.add('hidden');
         
         try {
-            const r = await fetch(`${WEB_APP_URL}?action=obtenerClientes`);
+            const r = await fetch(WEB_APP_URL + "?action=obtenerClientes");
             if(!r.ok) throw new Error("HTTP Error " + r.status);
             const textData = await r.text();
             let d;
@@ -292,90 +267,78 @@
 
     function applyUI() {
         const t = ui[lang];
-        ['headWelcome', 'btnAccess', 'headHistory', 'headNutrition', 'headTraining', 'lblPeso', 'lblGrasa', 'lblMusculo', 'lblVisceral', 'lblAgua', 'lblBMI', 'lblBMR', 'lblOsea', 'lblProt', 'lblSub', 'navStats', 'navNutrition', 'navTraining', 'headAI', 'btnExit', 'btnCloseModal', 'lblModalActual', 'lblModalMeta', 'lblModalAccion', 'lblCellular', 'lblYears', 'lblBioAgeNorm', 'lblYrsNorm', 'thDate', 'thWeight', 'thFat', 'thMuscle', 'thVisc', 'thWater', 'thBone', 'thProt', 'thSub', 'thBMI', 'thAge'].forEach(id => { 
+        ['headWelcome', 'btnAccess', 'headHistory', 'headNutrition', 'headTraining', 'lblPeso', 'lblGrasa', 'lblMusculo', 'lblVisceral', 'lblAgua', 'lblBMI', 'lblBMR', 'lblOsea', 'lblProt', 'lblSub', 'navStats', 'navNutrition', 'navTraining', 'headAI', 'btnExit', 'btnCloseModal', 'lblModalInicio', 'lblModalActual', 'lblModalMeta', 'lblModalAccion', 'lblCellular', 'lblYears', 'lblBioAgeNorm', 'lblYrsNorm', 'thDate', 'thWeight', 'thFat', 'thMuscle', 'thVisc', 'thWater', 'thBone', 'thProt', 'thSub', 'thBMI', 'thAge'].forEach(id => { 
             const el = document.getElementById(id);
             if(el) {
-                if(el.childNodes[0].nodeType === 3) el.childNodes[0].nodeValue = t[id] + " ";
-                else el.innerText = t[id];
+                if(el.childNodes[0] && el.childNodes[0].nodeType === 3) {
+                    el.childNodes[0].nodeValue = t[id] + " ";
+                } else {
+                    el.innerText = t[id];
+                }
             }
         });
-
-        // Actualizar textos del banner PWA
-        if(document.getElementById('pwaTitle')) {
-            document.getElementById('pwaTitle').innerText = lang === 'EN' ? "OXYHYPERBARIC APP" : "APP OXYHYPERBARIC";
-            document.getElementById('pwaDesc').innerText = lang === 'EN' ? "Install your clinical record" : "Instala tu expediente clínico";
-            document.getElementById('btnInstallPwa').innerText = lang === 'EN' ? "INSTALL APP" : "INSTALAR APP";
-            document.getElementById('txtIosPwa').innerHTML = lang === 'EN' ? "To install: Tap the <span class='font-bold text-blue-300'>Share</span> icon below <br>and select <span class='font-bold text-blue-300'>Add to Home Screen</span>." : "Para instalar: Toca el icono de <span class='font-bold text-blue-300'>Compartir</span> abajo <br>y selecciona <span class='font-bold text-blue-300'>Agregar a Inicio</span>.";
-        }
-
         if(pData) { renderNutrition(); renderTraining(); generateAI(); renderHistory(); }
     }
 
     function calcBio(entry) {
-        let p = parseFloat(entry?.peso) || 0;
-        let g = parseFloat(entry?.grasa) || 0;
-        let edad = parseFloat(pData?.edad) || 30;
-        let isM = String(pData?.sexo).toLowerCase().startsWith('m');
-        let altM = (parseFloat(pData?.altura) || 170) / 100;
+        let p = parseFloat(entry && entry.peso) || 0;
+        let g = parseFloat(entry && entry.grasa) || 0;
+        let edad = parseFloat(pData && pData.edad) || 30;
+        let isM = String(pData && pData.sexo).toLowerCase().startsWith('m');
+        let altM = (parseFloat(pData && pData.altura) || 170) / 100;
         
         let ffm = p * (1 - (g/100)); 
-
-        let musc = parseFloat(entry?.masa_muscular_kg) || (ffm * 0.56);
-        let visc = parseInt(entry?.grasa_visceral) || Math.max(1, Math.round((g * 0.25) + (edad * 0.12) - (isM ? 3 : 6)));
-        let aguaPerc = parseFloat(entry?.agua_corporal_perc) || ((ffm * 0.732 / p) * 100);
+        let musc = parseFloat(entry && entry.masa_muscular_kg) || (ffm * 0.56);
+        let visc = parseInt(entry && entry.grasa_visceral) || Math.max(1, Math.round((g * 0.25) + (edad * 0.12) - (isM ? 3 : 6)));
+        let aguaPerc = parseFloat(entry && entry.agua_corporal_perc) || ((ffm * 0.732 / p) * 100);
         let aguaKg = p * (aguaPerc / 100);
-        let edadm = parseInt(entry?.edad_metabolica) || Math.max(18, Math.round(edad + (g - (isM ? 15 : 22)) * 0.5));
-        let bmr = parseFloat(entry?.bmr_kcal) || (370 + (21.6 * ffm));
+        let edadm = parseInt(entry && entry.edad_metabolica) || Math.max(18, Math.round(edad + (g - (isM ? 15 : 22)) * 0.5));
+        let bmr = parseFloat(entry && entry.bmr_kcal) || (370 + (21.6 * ffm));
         let imc = p / (altM * altM);
         
-        let oseaKg = parseFloat(entry?.masa_osea_kg) || (ffm * 0.055);
+        let oseaKg = parseFloat(entry && entry.masa_osea_kg) || (ffm * 0.055);
         let protKg = ffm - aguaKg - oseaKg;
-        let protPerc = parseFloat(entry?.proteina_perc) || ((protKg / p) * 100);
-        let subcu = parseFloat(entry?.grasa_subcutanea_perc) || (g * 0.85);
+        let protPerc = parseFloat(entry && entry.proteina_perc) || ((protKg / p) * 100);
+        let subcu = parseFloat(entry && entry.grasa_subcutanea_perc) || (g * 0.85);
 
         return { p, g, musc, visc, agua: aguaPerc, edadm, bmr, imc, osea: oseaKg, prot: Math.max(0, protPerc), subcu };
     }
 
     function getIdealWeight() {
-        let p1 = parseFloat(pData.peso) || 0;
-        let g1 = parseFloat(pData.grasa) || 0;
-        let isM = String(pData.sexo).toLowerCase().startsWith('m');
-        let ffm1 = p1 * (1 - (g1/100)); 
+        let isM = String(pData && pData.sexo).toLowerCase().startsWith('m');
         let gIdeal = isM ? 15 : 23; 
-        return ffm1 / (1 - (gIdeal/100));
+        return gIniBio.musc / 0.56 / (1 - (gIdeal/100));
     }
 
     function loadData() {
-        let lastEntry = pData.avances?.length ? [...pData.avances].pop() : pData;
-        const bio = calcBio(lastEntry);
+        gIniBio = calcBio(pData);
+        let lastEntry = (pData.avances && pData.avances.length > 0) ? pData.avances[pData.avances.length - 1] : pData;
+        gCurrBio = calcBio(lastEntry);
+        
         const c = (v) => uM==='LB'?(v*LB).toFixed(1):v.toFixed(1);
         
         document.getElementById('patientHello').innerText = pData.nombre.toUpperCase();
         document.getElementById('planBadge').innerText = `PLAN: ${pData.plan_asignado || 'GINOIDE'}`;
-        document.getElementById('sessionBadge').innerText = `SESSION #${(pData.avances?.length || 0) + 1}`;
+        document.getElementById('sessionBadge').innerText = `SESSION #${(pData.avances ? pData.avances.length : 0) + 1}`;
         
-        document.getElementById('valPeso')?.setAttribute('data-val', c(bio.p)); document.getElementById('valPeso').innerText = c(bio.p);
-        document.getElementById('valGrasa')?.setAttribute('data-val', bio.g.toFixed(1)); document.getElementById('valGrasa').innerText = bio.g.toFixed(1);
-        document.getElementById('valMusculo')?.setAttribute('data-val', c(bio.musc)); document.getElementById('valMusculo').innerText = c(bio.musc);
-        document.getElementById('valVisceral')?.setAttribute('data-val', bio.visc); document.getElementById('valVisceral').innerText = bio.visc;
-        document.getElementById('valIMC')?.setAttribute('data-val', bio.imc.toFixed(1)); document.getElementById('valIMC').innerText = bio.imc.toFixed(1);
-        document.getElementById('valAgua')?.setAttribute('data-val', bio.agua.toFixed(1)); document.getElementById('valAgua').innerText = bio.agua.toFixed(1);
-        document.getElementById('valBMR')?.setAttribute('data-val', Math.round(bio.bmr)); document.getElementById('valBMR').innerText = Math.round(bio.bmr);
-        document.getElementById('valOsea')?.setAttribute('data-val', c(bio.osea)); document.getElementById('valOsea').innerText = c(bio.osea);
-        document.getElementById('valProt')?.setAttribute('data-val', bio.prot.toFixed(1)); document.getElementById('valProt').innerText = bio.prot.toFixed(1);
-        document.getElementById('valSubcu')?.setAttribute('data-val', bio.subcu.toFixed(1)); document.getElementById('valSubcu').innerText = bio.subcu.toFixed(1);
+        document.getElementById('valPeso').innerText = c(gCurrBio.p);
+        document.getElementById('valGrasa').innerText = gCurrBio.g.toFixed(1);
+        document.getElementById('valMusculo').innerText = c(gCurrBio.musc);
+        document.getElementById('valVisceral').innerText = gCurrBio.visc;
+        document.getElementById('valIMC').innerText = gCurrBio.imc.toFixed(1);
+        document.getElementById('valAgua').innerText = gCurrBio.agua.toFixed(1);
+        document.getElementById('valBMR').innerText = Math.round(gCurrBio.bmr);
+        document.getElementById('valOsea').innerText = c(gCurrBio.osea);
+        document.getElementById('valProt').innerText = gCurrBio.prot.toFixed(1);
+        document.getElementById('valSubcu').innerText = gCurrBio.subcu.toFixed(1);
         
-        let iniBio = calcBio(pData);
-        let ageDiff = iniBio.edadm - bio.edadm;
-        
-        document.getElementById('valCurrentBioAge').innerText = bio.edadm;
-        document.getElementById('valCurrentBioAge').setAttribute('data-val', bio.edadm);
+        let ageDiff = gIniBio.edadm - gCurrBio.edadm;
+        document.getElementById('valCurrentBioAge').innerText = gCurrBio.edadm;
 
         if(ageDiff > 0) {
             document.getElementById('bannerRegained').classList.remove('hidden');
             document.getElementById('bannerNormalAge').classList.add('hidden');
             document.getElementById('valYearsRegained').innerText = ageDiff;
-            document.getElementById('valYearsRegained').setAttribute('data-val', bio.edadm);
         } else {
             document.getElementById('bannerRegained').classList.add('hidden');
             document.getElementById('bannerNormalAge').classList.remove('hidden');
@@ -387,53 +350,70 @@
     }
 
     function openInfo(metric) {
-        const bio1 = calcBio(pData); 
         const isM = String(pData.sexo).toLowerCase().startsWith('m');
         const c = (v) => uM==='LB'?(v*LB).toFixed(1) + ' LB' : v.toFixed(1) + ' KG';
         
-        let elVal = document.getElementById(`val${metric.charAt(0).toUpperCase() + metric.slice(1)}`);
-        if(metric === 'age') {
-            elVal = document.getElementById('valYearsRegained').parentElement.parentElement.parentElement.classList.contains('hidden') ? 
-                    document.getElementById('valCurrentBioAge') : document.getElementById('valYearsRegained');
-        }
-        const val = elVal ? elVal.getAttribute('data-val') : "--";
-
-        let ideal = "--", t = "", d = "", a = "";
+        let ini = "--", cur = "--", meta = "--", t = "", d = "", a = "", diffText = "", diffClass = "";
 
         if(metric === 'weight') {
-            ideal = c(getIdealWeight()); t = lang==='EN'?"Weight":"Peso"; d = lang==='EN'?"Total body mass.":"Masa corporal total.";
-            a = lang==='EN'?"Your goal weight is permanently locked to your Day 1 lean mass to guarantee that you only lose fat. Reaching this weight relieves 30% of mechanical pressure on your knees.":"Tu peso ideal está calculado y anclado a tu masa magra del Día 1 para garantizar que solo pierdas grasa. Lograr este peso reduce un 30% la presión mecánica de tus rodillas.";
+            ini = c(gIniBio.p); cur = c(gCurrBio.p); meta = c(getIdealWeight()); t = lang==='EN'?"Total Weight":"Peso Total"; d = lang==='EN'?"Total body mass.":"Masa corporal total.";
+            let diffNum = uM==='LB' ? (gCurrBio.p - gIniBio.p)*LB : (gCurrBio.p - gIniBio.p);
+            if(diffNum < 0) { diffText = `🔥 ${diffNum.toFixed(1)} ${uM}`; diffClass = "bg-emerald-100 text-emerald-800"; a = lang==='EN'?"Excellent track! Reducing weight relieves pressure on knees.":"¡Excelente camino! Bajar peso libera presión de las rodillas."; }
+            else { diffText = `⚖️ ${diffNum > 0 ? '+':''}${diffNum.toFixed(1)} ${uM}`; diffClass = "bg-slate-200 text-slate-700"; a = lang==='EN'?"Weight fluctuates. Let's focus on Fat %.":"El peso fluctúa con el agua y músculo. Enfócate en el % de Grasa."; }
         } else if(metric === 'fat') {
-            ideal = isM ? "12-20%" : "20-28%"; t = lang==='EN'?"Body Fat":"Grasa Corporal"; d = lang==='EN'?"Total adipose tissue.":"Tejido adiposo total.";
-            a = lang==='EN'?"Fat releases inflammatory hormones. Oxidizing it is a clinical priority.":"La grasa libera hormonas inflamatorias. Oxídala es prioridad médica.";
+            ini = gIniBio.g.toFixed(1)+"%"; cur = gCurrBio.g.toFixed(1)+"%"; meta = isM ? "12-20%" : "20-28%"; t = lang==='EN'?"Body Fat":"Grasa Corporal"; d = lang==='EN'?"Adipose tissue.":"Tejido adiposo total.";
+            let diffNum = gCurrBio.g - gIniBio.g;
+            if(diffNum < 0) { diffText = `🔥 ${diffNum.toFixed(1)}% FAT`; diffClass = "bg-emerald-100 text-emerald-800"; a = lang==='EN'?"Lipolysis is active. You are reversing metabolic stress.":"Lipólisis activa. Estás revirtiendo el estrés metabólico."; }
+            else { diffText = `⚠️ ${diffNum > 0 ? '+':''}${diffNum.toFixed(1)}% FAT`; diffClass = "bg-amber-100 text-amber-800"; a = lang==='EN'?"Metabolic resistance. Stick to the 2 weekly sessions.":"Resistencia metabólica. Mantén la constancia de 2 sesiones semanales."; }
         } else if(metric === 'muscle') {
-            ideal = "≥ " + c(bio1.musc); t = lang==='EN'?"Muscle":"Músculo"; d = lang==='EN'?"Skeletal active fiber.":"Fibra activa esquelética.";
-            a = lang==='EN'?"Muscle is your metabolic furnace. It burns calories while you sleep. Your goal is to protect your Day 1 baseline.":"El músculo es tu horno metabólico. Quema calorías mientras duermes. Tu meta es proteger tu base del Día 1.";
+            ini = c(gIniBio.musc); cur = c(gCurrBio.musc); meta = "≥ " + c(gIniBio.musc); t = lang==='EN'?"Muscle Mass":"Masa Muscular"; d = lang==='EN'?"Skeletal active fiber.":"Fibra activa esquelética.";
+            let diffNum = uM==='LB' ? (gCurrBio.musc - gIniBio.musc)*LB : (gCurrBio.musc - gIniBio.musc);
+            if(diffNum >= 0) { diffText = `💪 +${diffNum.toFixed(1)} ${uM}`; diffClass = "bg-blue-100 text-blue-800"; a = lang==='EN'?"Perfect! You are protecting your metabolic furnace.":"¡Perfecto! Estás protegiendo tu horno metabólico."; }
+            else { diffText = `⚠️ ${diffNum.toFixed(1)} ${uM}`; diffClass = "bg-red-100 text-red-800"; a = lang==='EN'?"Warning: Eat your protein to stop muscle loss.":"Atención: Consume tu proteína para detener la pérdida muscular."; }
         } else if(metric === 'visceral') {
-            ideal = "≤ 9 Lvl"; t = "Visceral"; d = lang==='EN'?"Fat wrapped around organs.":"Grasa asfixiando órganos vitales.";
-            a = parseInt(val) > 9 ? (lang==='EN'?"CRITICAL: Causes insulin resistance. Zero sugars!":"CRÍTICO: Causa resistencia a insulina. Cero azúcares.") : (lang==='EN'?"OPTIMAL: Organs are clean.":"ÓPTIMO: Órganos limpios.");
+            ini = gIniBio.visc; cur = gCurrBio.visc; meta = "≤ 9 Lvl"; t = "Visceral Fat"; d = lang==='EN'?"Fat wrapped around organs.":"Grasa asfixiando órganos.";
+            let diffNum = gCurrBio.visc - gIniBio.visc;
+            if(diffNum < 0) { diffText = `🔥 ${diffNum} LVL`; diffClass = "bg-emerald-100 text-emerald-800"; a = lang==='EN'?"Your organs are breathing better.":"Tus órganos están respirando mejor."; }
+            else if(gCurrBio.visc > 9) { diffText = `⚠️ LVL ${gCurrBio.visc}`; diffClass = "bg-red-100 text-red-800"; a = lang==='EN'?"CRITICAL: Avoid sugars strictly to clear this.":"CRÍTICO: Evita azúcares estrictamente para limpiar esto."; }
+            else { diffText = `✅ LVL ${gCurrBio.visc}`; diffClass = "bg-emerald-100 text-emerald-800"; a = lang==='EN'?"Organs are clean and safe.":"Órganos limpios y seguros."; }
         } else if(metric === 'bmi') {
-            ideal = "21.0 - 24.9"; t = "BMI / IMC"; d = lang==='EN'?"Weight relative to height.":"Relación peso a altura."; a = lang==='EN'?"Universal health standard.":"Estándar de salud universal.";
+            ini = gIniBio.imc.toFixed(1); cur = gCurrBio.imc.toFixed(1); meta = "21 - 24.9"; t = "BMI / IMC"; d = lang==='EN'?"Weight relative to height.":"Relación peso a altura.";
+            diffText = "CARDIO HEALTH"; diffClass = "bg-slate-200 text-slate-700"; a = lang==='EN'?"Universal health standard.":"Estándar de salud universal.";
         } else if(metric === 'water') {
-            ideal = isM ? "55-65%" : "45-60%"; t = lang==='EN'?"Water":"Agua"; d = lang==='EN'?"Total hydration level.":"Nivel de hidratación celular.";
-            a = lang==='EN'?"Fat burning is a chemical process that STOPS without water. Drink!":"La quema de grasa se detiene sin agua. ¡Bebe abundante agua!";
+            ini = gIniBio.agua.toFixed(1)+"%"; cur = gCurrBio.agua.toFixed(1)+"%"; meta = isM ? "55-65%" : "45-60%"; t = lang==='EN'?"Water":"Agua Corporal"; d = lang==='EN'?"Hydration level.":"Nivel de hidratación celular.";
+            diffText = "💧 HYDRATION"; diffClass = "bg-blue-100 text-blue-800"; a = lang==='EN'?"Fat burning STOPS without water. Drink!":"La quema de grasa se DETIENE sin agua. ¡Bebe abundante agua!";
         } else if(metric === 'bmr') {
-            ideal = "High/Alto"; t = "BMR"; d = lang==='EN'?"Resting calorie burn.":"Calorías quemadas en reposo."; a = lang==='EN'?"Higher BMR prevents weight rebound.":"Un BMR alto previene el temido rebote de peso.";
+            ini = Math.round(gIniBio.bmr); cur = Math.round(gCurrBio.bmr); meta = "High/Alto"; t = "BMR"; d = lang==='EN'?"Resting calorie burn.":"Calorías quemadas en reposo."; 
+            diffText = "🔥 METABOLISM"; diffClass = "bg-orange-100 text-orange-800"; a = lang==='EN'?"Higher BMR prevents rebound.":"Un BMR alto previene el temido rebote de peso.";
         } else if(metric === 'age') {
-            ideal = "≤ " + pData.edad; t = lang==='EN'?"Bio Age":"Edad Bio"; d = lang==='EN'?"Cellular performance.":"Rendimiento metabólico celular."; a = lang==='EN'?"Reaching your targets reverses your aging process.":"Alcanzar tus metas revierte el envejecimiento celular.";
+            ini = gIniBio.edadm; cur = gCurrBio.edadm; meta = "≤ " + pData.edad; t = lang==='EN'?"Bio Age":"Edad Bio"; d = lang==='EN'?"Cellular performance.":"Rendimiento celular."; 
+            let diffNum = gCurrBio.edadm - gIniBio.edadm;
+            if(diffNum < 0) { diffText = `🧬 ${Math.abs(diffNum)} YRS REGAINED`; diffClass = "bg-emerald-100 text-emerald-800"; a = lang==='EN'?"You are literally reversing aging!":"¡Estás literalmente revirtiendo tu envejecimiento!"; }
+            else { diffText = `⏱️ ADAPTING`; diffClass = "bg-slate-200 text-slate-700"; a = lang==='EN'?"Keep pedaling to reverse your cellular age.":"Sigue pedaleando para revertir tu edad celular."; }
         } else if(metric === 'bone') {
-            ideal = "≥ " + c(bio1.osea); t = lang==='EN'?"Bone Mass":"Masa Ósea"; d = lang==='EN'?"Mineral density.":"Densidad mineral."; a = lang==='EN'?"Protects your skeletal frame during weight loss.":"Protege tu estructura ósea durante la pérdida de peso.";
+            ini = c(gIniBio.osea); cur = c(gCurrBio.osea); meta = "≥ " + c(gIniBio.osea); t = lang==='EN'?"Bone Mass":"Masa Ósea"; d = lang==='EN'?"Mineral density.":"Densidad mineral."; 
+            diffText = "🦴 STRUCTURE"; diffClass = "bg-slate-200 text-slate-700"; a = lang==='EN'?"Protects your skeletal frame.":"Protege tu estructura ósea.";
         } else if(metric === 'protein') {
-            ideal = "16-18%"; t = lang==='EN'?"Protein":"Proteína"; d = lang==='EN'?"Amino acid reserves.":"Reservas de aminoácidos."; a = lang==='EN'?"Vital for post-session tissue repair.":"Vital para reparación de tejido celular post-sesión.";
+            ini = gIniBio.prot.toFixed(1)+"%"; cur = gCurrBio.prot.toFixed(1)+"%"; meta = "16-18%"; t = lang==='EN'?"Protein":"Proteína"; d = lang==='EN'?"Amino acid reserves.":"Reservas de aminoácidos."; 
+            diffText = "🥩 RECOVERY"; diffClass = "bg-red-100 text-red-800"; a = lang==='EN'?"Vital for post-session tissue repair.":"Vital para reparación de tejido celular post-sesión.";
         } else if(metric === 'subcu') {
-            ideal = "< 20%"; t = "Subcutanea"; d = lang==='EN'?"Under-skin fat.":"Grasa bajo la piel."; a = lang==='EN'?"Primary fuel utilized during Infra Baldan.":"Combustible primario usado durante Infra Baldan.";
+            ini = gIniBio.subcu.toFixed(1)+"%"; cur = gCurrBio.subcu.toFixed(1)+"%"; meta = "< " + gIniBio.subcu.toFixed(1)+"%"; t = "Subcutanea"; d = lang==='EN'?"Under-skin fat.":"Grasa bajo la piel."; 
+            let diffNum = gCurrBio.subcu - gIniBio.subcu;
+            if(diffNum < 0) { diffText = `🔥 ${diffNum.toFixed(1)}%`; diffClass = "bg-emerald-100 text-emerald-800"; a = lang==='EN'?"Burning primary fuel!":"Quemando combustible primario."; }
+            else { diffText = `⚖️ ${diffNum > 0 ? '+':''}${diffNum.toFixed(1)}%`; diffClass = "bg-slate-200 text-slate-700"; a = lang==='EN'?"Primary fuel for Infra Baldan.":"Combustible primario usado durante Infra Baldan."; }
         }
 
         document.getElementById('infoTitle').innerText = t;
         document.getElementById('infoDesc').innerText = d;
-        document.getElementById('infoUserVal').innerText = val + (metric === 'weight' || metric === 'muscle' || metric === 'bone' ? " " + uM : "");
-        document.getElementById('infoIdealVal').innerText = ideal;
+        document.getElementById('infoStartVal').innerText = ini;
+        document.getElementById('infoUserVal').innerText = cur;
+        document.getElementById('infoIdealVal').innerText = meta;
         document.getElementById('infoImpact').innerText = a;
+        
+        let pill = document.getElementById('progressBadge');
+        pill.innerText = diffText;
+        pill.className = `progress-pill ${diffClass}`;
+
         document.getElementById('modalInfo').style.display='flex';
     }
     function closeModal() { document.getElementById('modalInfo').style.display='none'; }
@@ -441,197 +421,84 @@
     function renderHistory() {
         const b = document.getElementById('historyBody');
         const list = [{ fecha: pData.fechaInicio || 'START', ...pData }, ...(pData.avances || [])];
-        const c = (v) => uM==='LB'?(v*LB).toFixed(1):v.toFixed(1);
+        const c = (v) => uM==='LB'?(parseFloat(v||0)*LB).toFixed(1):parseFloat(v||0).toFixed(1);
         
         b.innerHTML = list.reverse().map(e => {
             const dateStr = e.fecha === 'START' ? (lang==='EN'?'Initial':'Inicio') : e.fecha.substring(0,10);
             const bio = calcBio(e); 
-            return `<tr>
-                <td class="text-blue-800">${dateStr}</td>
-                <td>${c(bio.p)}</td>
-                <td class="text-blue-600">${bio.g.toFixed(1)}%</td>
-                <td>${c(bio.musc)}</td>
-                <td class="${bio.visc > 9 ? 'text-red-500 font-black':'text-amber-500'}">${bio.visc}</td>
-                <td>${bio.agua.toFixed(1)}%</td>
-                <td>${c(bio.osea)}</td>
-                <td class="text-emerald-600">${bio.prot.toFixed(1)}%</td>
-                <td>${bio.subcu.toFixed(1)}%</td>
-                <td>${bio.imc.toFixed(1)}</td>
-                <td>${bio.edadm}</td>
-            </tr>`;
+            return `<tr><td class="text-blue-800">${dateStr}</td><td>${c(bio.p)}</td><td class="text-blue-600">${bio.g.toFixed(1)}%</td><td>${c(bio.musc)}</td><td class="${bio.visc > 9 ? 'text-red-500 font-black':'text-amber-500'}">${bio.visc}</td><td>${bio.agua.toFixed(1)}%</td><td>${c(bio.osea)}</td><td class="text-emerald-600">${bio.prot.toFixed(1)}%</td><td>${bio.subcu.toFixed(1)}%</td><td>${bio.imc.toFixed(1)}</td><td>${bio.edadm}</td></tr>`;
         }).join('');
     }
 
     function generateAI() {
-        let iniBio = calcBio(pData);
-        let lastEntry = pData.avances?.length ? [...pData.avances].pop() : pData;
-        let currBio = calcBio(lastEntry);
-        
         let msg = lang === 'EN' ? `Clinical analysis for ${pData.nombre.split(' ')[0]}: ` : `Análisis clínico para ${pData.nombre.split(' ')[0]}: `;
-        
-        if(currBio.g < iniBio.g) {
-            msg += lang === 'EN' ? `You have reduced your body fat by ${(iniBio.g - currBio.g).toFixed(1)}%. The Infra Baldan protocol is effectively stimulating cellular lipid oxidation. ` : `Has reducido tu grasa corporal en ${(iniBio.g - currBio.g).toFixed(1)}%. El protocolo Infra Baldan está estimulando efectivamente la oxidación de lípidos en tus células. `;
-        } else {
-            // AQUÍ ESTÁ LA CORRECCIÓN DE 3 A 2 SESIONES
-            msg += lang === 'EN' ? `Your metabolism is in an adaptation phase. Do not skip your 2 weekly sessions to break this resistance. ` : `Tu metabolismo está en fase de adaptación. No omitas tus 2 sesiones semanales para romper esta resistencia de tu cuerpo. `;
-        }
-
-        if(currBio.visc > 9) {
-            msg += lang === 'EN' ? `URGENT: Visceral fat (Lvl ${currBio.visc}) is dangerously suffocating your organs. Zero refined carbs this week is a clinical mandate. ` : `URGENTE: La grasa visceral (Nivel ${currBio.visc}) asfixia tus órganos. Cero carbohidratos refinados esta semana es un mandato clínico. `;
-        } else {
-            msg += lang === 'EN' ? `Your visceral fat is in an optimal protective range. ` : `Tu grasa visceral está en un rango óptimo de protección. `;
-        }
-
+        if(gCurrBio.g < gIniBio.g) { msg += lang === 'EN' ? `You reduced body fat by ${(gIniBio.g - gCurrBio.g).toFixed(1)}%. Lipolysis is active. ` : `Has reducido grasa en ${(gIniBio.g - gCurrBio.g).toFixed(1)}%. Lipólisis activa. `; }
+        else { msg += lang === 'EN' ? `Your metabolism is adapting. Do not skip your 2 weekly sessions. ` : `Tu metabolismo está en fase de adaptación. No omitas tus 2 sesiones semanales para romper esta resistencia. `; }
+        if(gCurrBio.visc > 9) { msg += lang === 'EN' ? `URGENT: Visceral fat (Lvl ${gCurrBio.visc}) is high. Zero refined carbs this week is mandatory. ` : `URGENTE: Grasa visceral (Nivel ${gCurrBio.visc}) asfixia tus órganos. Cero carbohidratos refinados esta semana es un mandato clínico. `; }
         document.getElementById('aiReport').innerText = msg;
     }
 
     function renderNutrition() {
         const plan = pData.plan_asignado || 'Ginoide';
         const c = document.getElementById('nutritionContent');
-        
         const dietsEN = {
             "Ginoide": `
                 <p class="diet-title">MORNING</p>
                 <p class="diet-txt">As soon as you wake up, drink 1 large glass of water at room temperature with 1 serving of herbal tea 28:<br><br>A) Tea or coffee without sugar + lactose-free Greek yogurt or lactose-free plain yogurt or soy yogurt (all must be white), adding fresh fruit to it ... we recommend blackberries, raspberries, blueberries, or strawberries (since they have low sugar content), or simply add 2 teaspoons of sunflower, chia, flax or pumpkin seeds;<br><br>B) Tea or coffee without sugar, with 2 100% whole meal, rye, buckwheat, or quinoa rusk slices ... with butter or cream of organic peanut butter without added sugar or spalmatofu spreadable tofu (sufficient quantity to be spread over it);<br><br>C) Tea or coffee without sugar with 3 wholemeal, buckwheat or quinoa crackers... or amaranth ... with gluten-free or lactose-free cooked ham, or low-sodium bresaola, or bresaola carpaccio. Amount of cold cuts slices (to taste).</p>
-                <p class="diet-title">SNACK</p>
-                <p class="diet-txt">1 Fruit.</p>
-                <p class="diet-title">LUNCH</p>
-                <p class="diet-txt">2 Days a week, rice or wholemeal pasta dressed as you wish, avoiding butter, cream, béchamel sauce, and sautéed oil + second course of lean red and white meat + vegetables as side dish + raw or cooked and seasoned with raw oil.<br><br>2 Days a week only, fish/crustaceans/mollusks with raw and cooked vegetables.<br><br>2 Days a week, all-you-can-eat chickpeas or beans or lentils, plus cooked vegetables seasoned with raw oil.<br><br>1 day a week, buffalo mozzarella or goat or sheep ricotta or fresh cheeses (never with cow’s milk), plus vegetables, either row or cooked, plus 1 slice of wholemeal/rye/buckwheat bread.</p>
-                <p class="diet-title">AFTERNOON</p>
-                <p class="diet-txt">5 Walnuts or 12 almonds or hazelnuts + various crudités of fennel, carrots, cucumber, celery, etc.</p>
-                <p class="diet-title">DINNER</p>
-                <p class="diet-txt">All-you-can-eat mixed vegetables (always), both raw and cooked, plus:<br>- Carpaccio or tartare of lean meat with parmesan flakes (e.g.: roast beef)<br>- Fish (any)<br>- Frittata or omelette made with 2-3 egg whites, 1 egg yolk and 1 tablespoon Grana Padano and courgette<br>- Bresaola, rocket and Parmigiano or Grana Padano<br>- Cooked ham with lactose-free stracchino and 2 whole-grain crackers<br>- Vegetable soup (green only) and legumes, like beans, chickpeas or lentils with Parmigiano flakes.</p>
-                <div class="bg-red-50 border-l-4 border-red-500 p-5 mt-8 rounded-xl shadow-sm">
-                    <p class="diet-title !text-red-700 mt-0">TO AVOID</p>
-                    <p class="diet-txt !text-red-900 !mb-0 text-[13px]">White and refined flours and white sugars (absolutely forbidden), cured meats, all spirits (including beer), fats, milk, dairy products, cheese (cow’s milk), cakes, bread (100% wholemeal or quinoa or buckwheat; or low-sugar flours, even better, chickpea or lupin flour) pizza, piadina, breadsticks, rice and corn cakes, pumpkin, carrots, cooked celery, beetroot, honey, jam, fruit juices and drinks in general, including those labeled "sugarless".</p>
-                </div>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-4 rounded-xl shadow-sm">
-                    <p class="diet-title mt-0">TIPS & HERBAL TEAS</p>
-                    <p class="diet-txt !mb-0 text-[13px]"><b>Herbal tea 21 for men:</b> 2-3 scoops diluted in 1.0 litre of water during the day.<br><b>Herbal tea 28:</b> after dinner, 1 serving in water (1 glass).<br><br>Remember to alternate as much as possible. Season with 3 tablespoon of raw oil, apple vinegar and lemon, and a variety of spices. Salt should only be added only during cooking.</p>
-                </div>
+                <p class="diet-title">SNACK</p><p class="diet-txt">1 Fruit.</p>
+                <p class="diet-title">LUNCH</p><p class="diet-txt">2 Days a week, rice or wholemeal pasta dressed as you wish, avoiding butter, cream, béchamel sauce, and sautéed oil + second course of lean red and white meat + vegetables as side dish + raw or cooked and seasoned with raw oil.<br><br>2 Days a week only, fish/crustaceans/mollusks with raw and cooked vegetables.<br><br>2 Days a week, all-you-can-eat chickpeas or beans or lentils, plus cooked vegetables seasoned with raw oil.<br><br>1 day a week, buffalo mozzarella or goat or sheep ricotta or fresh cheeses (never with cow’s milk), plus vegetables, either row or cooked, plus 1 slice of wholemeal/rye/buckwheat bread.</p>
+                <p class="diet-title">AFTERNOON</p><p class="diet-txt">5 Walnuts or 12 almonds or hazelnuts + various crudités of fennel, carrots, cucumber, celery, etc.</p>
+                <p class="diet-title">DINNER</p><p class="diet-txt">All-you-can-eat mixed vegetables (always), both raw and cooked, plus:<br>- Carpaccio or tartare of lean meat with parmesan flakes (e.g.: roast beef)<br>- Fish (any)<br>- Frittata or omelette made with 2-3 egg whites, 1 egg yolk and 1 tablespoon Grana Padano and courgette<br>- Bresaola, rocket and Parmigiano or Grana Padano<br>- Cooked ham with lactose-free stracchino and 2 whole-grain crackers<br>- Vegetable soup (green only) and legumes, like beans, chickpeas or lentils with Parmigiano flakes.</p>
+                <div class="bg-red-50 border-l-4 border-red-500 p-5 mt-8 rounded-xl shadow-sm"><p class="diet-title !text-red-700 mt-0">TO AVOID</p><p class="diet-txt !text-red-900 !mb-0 text-[13px]">White and refined flours and white sugars (absolutely forbidden), cured meats, all spirits (including beer), fats, milk, dairy products, cheese (cow’s milk), cakes, bread (100% wholemeal or quinoa or buckwheat; or low-sugar flours, even better, chickpea or lupin flour) pizza, piadina, breadsticks, rice and corn cakes, pumpkin, carrots, cooked celery, beetroot, honey, jam, fruit juices and drinks in general, including those labeled "sugarless".</p></div>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-4 rounded-xl shadow-sm"><p class="diet-title mt-0">TIPS & HERBAL TEAS</p><p class="diet-txt !mb-0 text-[13px]"><b>Herbal tea 21 for men:</b> 2-3 scoops diluted in 1.0 litre of water during the day.<br><b>Herbal tea 28:</b> after dinner, 1 serving in water (1 glass).<br><br>Remember to alternate as much as possible. Season with 3 tablespoon of raw oil, apple vinegar and lemon, and a variety of spices. Salt should only be added only during cooking.</p></div>
             `,
             "Androide": `
-                <p class="diet-title">MORNING</p>
-                <p class="diet-txt">Tea/Coffee + soy yogurt with 1 tbsp oat bran OR 2 whole-wheat rusks.</p>
-                <p class="diet-title">SNACK</p>
-                <p class="diet-txt">4 walnuts or raw carrots/celery.</p>
-                <p class="diet-title">LUNCH</p>
-                <p class="diet-txt">Legumes (chickpeas/beans) OR fish + raw/cooked vegetables + 1 fresh fruit.</p>
-                <p class="diet-title">DINNER</p>
-                <p class="diet-txt">Lean red meat (carpaccio/tartare) or fish + mixed vegetables. NO CARBS AFTER 4:00 PM.</p>
-                <div class="bg-red-50 border-l-4 border-red-500 p-5 mt-8 rounded-xl shadow-sm">
-                    <p class="diet-title !text-red-700 mt-0">TO AVOID</p>
-                    <p class="diet-txt !text-red-900 !mb-0 text-[13px]">White and refined flours and white sugars (absolutely forbidden), cured meats, all spirits (including beer), fats, milk, dairy products, cheese (cow’s milk), cakes, bread, pizza, piadina, breadsticks, rice and corn cakes, pumpkin, carrots, cooked celery, beetroot, honey, jam, fruit juices and drinks in general.</p>
-                </div>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-4 rounded-xl shadow-sm">
-                    <p class="diet-title mt-0">TIPS</p>
-                    <p class="diet-txt !mb-0 text-[13px]">Android body types should not fear a fat or greasy second course as much as sweets/breadsticks/refined bread/very sugary fruit, etc.</p>
-                </div>
+                <p class="diet-title">MORNING</p><p class="diet-txt">Tea/Coffee + soy yogurt with 1 tbsp oat bran OR 2 whole-wheat rusks.</p>
+                <p class="diet-title">SNACK</p><p class="diet-txt">4 walnuts or raw carrots/celery.</p>
+                <p class="diet-title">LUNCH</p><p class="diet-txt">Legumes (chickpeas/beans) OR fish + raw/cooked vegetables + 1 fresh fruit.</p>
+                <p class="diet-title">DINNER</p><p class="diet-txt">Lean red meat (carpaccio/tartare) or fish + mixed vegetables. NO CARBS AFTER 4:00 PM.</p>
+                <div class="bg-red-50 border-l-4 border-red-500 p-5 mt-8 rounded-xl shadow-sm"><p class="diet-title !text-red-700 mt-0">TO AVOID</p><p class="diet-txt !text-red-900 !mb-0 text-[13px]">White and refined flours and white sugars (absolutely forbidden), cured meats, all spirits (including beer), fats, milk, dairy products, cheese (cow’s milk), cakes, bread, pizza, piadina, breadsticks, rice and corn cakes, pumpkin, carrots, cooked celery, beetroot, honey, jam, fruit juices and drinks in general.</p></div>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-4 rounded-xl shadow-sm"><p class="diet-title mt-0">TIPS</p><p class="diet-txt !mb-0 text-[13px]">Android body types should not fear a fat or greasy second course as much as sweets/breadsticks/refined bread/very sugary fruit, etc.</p></div>
             `
         };
-
         const dietsES = {
             "Ginoide": `
                 <p class="diet-title">MAÑANA</p>
                 <p class="diet-txt">Al despertar, bebe 1 vaso grande de agua a temperatura ambiente con 1 porción de té herbal 28:<br><br>A) Té o café sin azúcar + yogur griego deslactosado o yogur natural deslactosado o yogur de soja (todos deben ser blancos), añadiendo fruta fresca... recomendamos moras, frambuesas, arándanos o fresas (ya que tienen bajo contenido de azúcar), o simplemente añade 2 cucharaditas de semillas de girasol, chía, lino o calabaza;<br><br>B) Té o café sin azúcar, con 2 rebanadas de pan tostado 100% integral, de centeno, trigo sarraceno o quinoa... con mantequilla de maní orgánica sin azúcar añadido o tofu para untar spalmatofu;<br><br>C) Té o café sin azúcar con 3 galletas integrales, de trigo sarraceno o quinoa... o amaranto... con jamón cocido sin gluten o sin lactosa, o bresaola baja en sodio, o carpaccio de bresaola.</p>
-                <p class="diet-title">MERIENDA</p>
-                <p class="diet-txt">1 Fruta.</p>
-                <p class="diet-title">COMIDA</p>
-                <p class="diet-txt">2 Días a la semana, arroz o pasta integral aderezada a tu gusto, evitando mantequilla, crema, salsa bechamel y aceite salteado + segundo plato de carne magra roja y blanca + verduras como guarnición + crudas o cocidas y aderezadas con aceite crudo.<br><br>2 Días a la semana solamente, pescado/crustáceos/moluscos con verduras crudas y cocidas.<br><br>2 Días a la semana, garbanzos o frijoles o lentejas a discreción, más verduras cocidas aderezadas con aceite crudo.<br><br>1 día a la semana, mozzarella de búfala o ricotta de cabra u oveja o quesos frescos (nunca de leche de vaca), más verduras, ya sean crudas o cocidas, más 1 rebanada de pan integral/centeno/trigo sarraceno.</p>
-                <p class="diet-title">TARDE</p>
-                <p class="diet-txt">5 Nueces o 12 almendras o avellanas + varias crudités de hinojo, zanahorias, pepino, apio, etc.</p>
-                <p class="diet-title">CENA</p>
-                <p class="diet-txt">Verduras mixtas a discreción (siempre), tanto crudas como cocidas, más:<br>- Carpaccio o tartar de carne magra con hojuelas de parmesano (ej: roast beef)<br>- Pescado (cualquiera)<br>- Frittata o tortilla hecha con 2-3 claras de huevo, 1 yema y 1 cucharada de Grana Padano y calabacín<br>- Bresaola, rúcula y Parmigiano o Grana Padano<br>- Jamón cocido con stracchino sin lactosa y 2 galletas integrales<br>- Sopa de verduras (solo verdes) y legumbres, como frijoles, garbanzos o lentejas con hojuelas de Parmigiano.</p>
-                <div class="bg-red-50 border-l-4 border-red-500 p-5 mt-8 rounded-xl shadow-sm">
-                    <p class="diet-title !text-red-700 mt-0">PROHIBIDO</p>
-                    <p class="diet-txt !text-red-900 !mb-0 text-[12px]">Harinas blancas y refinadas y azúcares blancos (absolutamente prohibido), embutidos, todos los licores (incluyendo cerveza), grasas, leche, productos lácteos, queso (de leche de vaca), pasteles, pan (100% integral o de quinoa o trigo sarraceno; o harinas bajas en azúcar, aún mejor, harina de garbanzo o altramuz) pizza, piadina, palitos de pan, tortas de arroz y maíz, calabaza, zanahorias cocidas, apio cocido, remolacha, miel, mermelada, jugos de frutas y bebidas en general, incluyendo las etiquetadas como "sin azúcar".</p>
-                </div>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-4 rounded-xl shadow-sm">
-                    <p class="diet-title mt-0">CONSEJOS Y TÉS HERBALES</p>
-                    <p class="diet-txt !mb-0 text-[12px]"><b>Té herbal 21 para hombres:</b> 2-3 medidas diluidas en 1.0 litro de agua durante el día.<br><b>Té herbal 28:</b> después de la cena, 1 porción en agua (1 vaso).<br><br>Recuerda alternar lo más posible. Sazona con 3 cucharadas de aceite crudo, vinagre de manzana y limón, y una variedad de especias. La sal solo debe añadirse durante la cocción.</p>
-                </div>
+                <p class="diet-title">MERIENDA</p><p class="diet-txt">1 Fruta.</p>
+                <p class="diet-title">COMIDA</p><p class="diet-txt">2 Días a la semana, arroz o pasta integral aderezada a tu gusto, evitando mantequilla, crema, salsa bechamel y aceite salteado + segundo plato de carne magra roja y blanca + verduras como guarnición + crudas o cocidas y aderezadas con aceite crudo.<br><br>2 Días a la semana solamente, pescado/crustáceos/moluscos con verduras crudas y cocidas.<br><br>2 Días a la semana, garbanzos o frijoles o lentejas a discreción, más verduras cocidas aderezadas con aceite crudo.<br><br>1 día a la semana, mozzarella de búfala o ricotta de cabra u oveja o quesos frescos (nunca de leche de vaca), más verduras, ya sean crudas o cocidas, más 1 rebanada de pan integral/centeno/trigo sarraceno.</p>
+                <p class="diet-title">TARDE</p><p class="diet-txt">5 Nueces o 12 almendras o avellanas + varias crudités de hinojo, zanahorias, pepino, apio, etc.</p>
+                <p class="diet-title">CENA</p><p class="diet-txt">Verduras mixtas a discreción (siempre), tanto crudas como cocidas, más:<br>- Carpaccio o tartar de carne magra con hojuelas de parmesano (ej: roast beef)<br>- Pescado (cualquiera)<br>- Frittata o tortilla hecha con 2-3 claras de huevo, 1 yema y 1 cucharada de Grana Padano y calabacín<br>- Bresaola, rúcula y Parmigiano o Grana Padano<br>- Jamón cocido con stracchino sin lactosa y 2 galletas integrales<br>- Sopa de verduras (solo verdes) y legumbres, como frijoles, garbanzos o lentejas con hojuelas de Parmigiano.</p>
+                <div class="bg-red-50 border-l-4 border-red-500 p-5 mt-8 rounded-xl shadow-sm"><p class="diet-title !text-red-700 mt-0">PROHIBIDO ABSOLUTO</p><p class="diet-txt !text-red-900 !mb-0 text-[13px]">Harinas blancas y refinadas y azúcares blancos (absolutamente prohibido), embutidos, todos los licores (incluyendo cerveza), grasas, leche, productos lácteos, queso (de leche de vaca), pasteles, pan (100% integral o de quinoa o trigo sarraceno; o harinas bajas en azúcar, aún mejor, harina de garbanzo o altramuz) pizza, piadina, palitos de pan, tortas de arroz y maíz, calabaza, zanahorias cocidas, apio cocido, remolacha, miel, mermelada, jugos de frutas y bebidas en general, incluyendo las etiquetadas como "sin azúcar".</p></div>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-4 rounded-xl shadow-sm"><p class="diet-title mt-0">CONSEJOS Y TÉS HERBALES</p><p class="diet-txt !mb-0 text-[13px]"><b>Té herbal 21 para hombres:</b> 2-3 medidas diluidas en 1.0 litro de agua durante el día.<br><b>Té herbal 28:</b> después de la cena, 1 porción en agua (1 vaso).<br><br>Recuerda alternar lo más posible. Sazona con 3 cucharadas de aceite crudo, vinagre de manzana y limón, y una variedad de especias. La sal solo debe añadirse durante la cocción.</p></div>
             `,
             "Androide": `
-                <p class="diet-title">DESAYUNO</p>
-                <p class="diet-txt">Té/Café + yogur de soya con 1 cucharada de salvado de avena O 2 tostadas integrales.</p>
-                <p class="diet-title">MERIENDA</p>
-                <p class="diet-txt">4 nueces o zanahorias/apio crudos.</p>
-                <p class="diet-title">COMIDA</p>
-                <p class="diet-txt">Legumbres (garbanzos/frijoles) O pescado + verduras crudas/cocidas + 1 fruta fresca.</p>
-                <p class="diet-title">CENA</p>
-                <p class="diet-txt">Carne roja magra (carpaccio/tartar) o pescado + verduras mixtas. NO CARBOHIDRATOS DESPUÉS DE LAS 4:00 PM.</p>
-                <div class="bg-red-50 border-l-4 border-red-500 p-5 mt-8 rounded-xl shadow-sm">
-                    <p class="diet-title !text-red-700 mt-0">PROHIBIDO</p>
-                    <p class="diet-txt !text-red-900 !mb-0 text-[13px]">Harinas blancas y refinadas y azúcares blancos (absolutamente prohibido), embutidos, todos los licores (incluyendo cerveza), grasas, leche, productos lácteos, queso (de leche de vaca), pasteles, pan, pizza, piadina, palitos de pan, tortas de arroz y maíz, calabaza, zanahorias cocidas, apio cocido, remolacha, miel, mermelada, jugos de frutas y bebidas en general.</p>
-                </div>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-4 rounded-xl shadow-sm">
-                    <p class="diet-title mt-0">CONSEJOS</p>
-                    <p class="diet-txt !mb-0 text-[13px]">Los tipos de cuerpo Androide no deben temer a un segundo plato graso tanto como a los dulces, palitos de pan, pan refinado, fruta muy azucarada, etc.</p>
-                </div>
+                <p class="diet-title">DESAYUNO</p><p class="diet-txt">Té/Café + yogur de soya con 1 cucharada de salvado de avena O 2 tostadas integrales.</p>
+                <p class="diet-title">MERIENDA</p><p class="diet-txt">4 nueces o zanahorias/apio crudos.</p>
+                <p class="diet-title">COMIDA</p><p class="diet-txt">Legumbres (garbanzos/frijoles) O pescado + verduras crudas/cocidas + 1 fruta fresca.</p>
+                <p class="diet-title">CENA</p><p class="diet-txt">Carne roja magra (carpaccio/tartar) o pescado + verduras mixtas. NO CARBOHIDRATOS DESPUÉS DE LAS 4:00 PM.</p>
+                <div class="bg-red-50 border-l-4 border-red-500 p-5 mt-8 rounded-xl shadow-sm"><p class="diet-title !text-red-700 mt-0">PROHIBIDO</p><p class="diet-txt !text-red-900 !mb-0 text-[13px]">Harinas blancas y refinadas y azúcares blancos (absolutamente prohibido), embutidos, todos los licores, grasas, leche, productos lácteos, queso (de leche de vaca), pasteles, pan, pizza, piadina, palitos de pan, tortas de arroz y maíz, calabaza, zanahorias cocidas, apio cocido, remolacha, miel, mermelada, jugos de frutas.</p></div>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-5 mt-4 rounded-xl shadow-sm"><p class="diet-title mt-0">CONSEJOS</p><p class="diet-txt !mb-0 text-[13px]">Los tipos de cuerpo Androide no deben temer a un segundo plato graso tanto como a los dulces, palitos de pan, pan refinado, fruta muy azucarada, etc.</p></div>
             `
         };
-
         let planKey = pData.plan_asignado || 'Ginoide';
         if (!dietsEN[planKey]) planKey = "Ginoide";
-        
         document.getElementById('nutritionContent').innerHTML = lang === 'EN' ? dietsEN[planKey] : dietsES[planKey];
     }
 
     function renderTraining() {
         const plan = pData.plan_asignado || 'Ginoide';
         const c = document.getElementById('trainingContent');
-        
         const protocolsEN = {
-            "Ginoide": `
-                <p class="diet-title">GYNOID TRAINING</p>
-                <p class="diet-txt">Exercises with pre-session Infrabaldan weighs; if desired, can be completed while in pedaling position:</p>
-                <p class="diet-txt">• crosses with 2 dumbbells (pectorals) 3 sets of 12 repetitions with 20” pause between sets</p>
-                <p class="diet-txt">• lateral lifts with 2 dumbbells (shoulders, always on the I.B. seat), 3 sets of 10 repetitions and with 20” pause between one series and the other</p>
-                <p class="diet-txt">• biceps with 2 dumbbells (always in the same position), 2 series for 10 repetitions</p>
-                <p class="diet-txt">• triceps with 1 dumbbell at a time (“French press”). Same position as above, 3 series for 10 repetitions</p>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
-                    <p class="diet-txt !mb-0 text-[12px]">In order to activate microcirculation from the start of the workout session, it would be optimal to work for 3-5 minutes on the vibrating platform (for those who already have one at the Institute), before starting the pedaling session. Otherwise, we suggest starting directly with the pedaling routine.</p>
-                </div>
-            `,
-            "Androide": `
-                <p class="diet-title">ANDROID TRAINING</p>
-                <p class="diet-txt">Exercises to be done before starting the Infrabaldan session:</p>
-                <p class="diet-txt">• 2x15 free body squat (with 20” recovery between drill series)</p>
-                <p class="diet-txt">• 2x10 free body lunges (20” recovery, as above)</p>
-                <p class="diet-txt">• 2x25 free-body buttock stretches standing with hands resting on the wall (20” recovery, as above)</p>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
-                    <p class="diet-txt !mb-0 text-[12px]">Once the heartbeat is restored to normal values, you can start the Infrabaldan session.</p>
-                </div>
-            `
+            "Ginoide": `<p class="diet-title">GYNOID TRAINING</p><p class="diet-txt">Exercises with pre-session Infrabaldan weighs; if desired, can be completed while in pedaling position:</p><p class="diet-txt">• crosses with 2 dumbbells (pectorals) 3 sets of 12 repetitions with 20” pause between sets</p><p class="diet-txt">• lateral lifts with 2 dumbbells (shoulders, always on the I.B. seat), 3 sets of 10 repetitions and with 20” pause between one series and the other</p><p class="diet-txt">• biceps with 2 dumbbells (always in the same position), 2 series for 10 repetitions</p><p class="diet-txt">• triceps with 1 dumbbell at a time (“French press”). Same position as above, 3 series for 10 repetitions</p><div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4"><p class="diet-txt !mb-0 text-[12px]">In order to activate microcirculation from the start of the workout session, it would be optimal to work for 3-5 minutes on the vibrating platform (for those who already have one at the Institute), before starting the pedaling session. Otherwise, we suggest starting directly with the pedaling routine.</p></div>`,
+            "Androide": `<p class="diet-title">ANDROID TRAINING</p><p class="diet-txt">Exercises to be done before starting the Infrabaldan session:</p><p class="diet-txt">• 2x15 free body squat (with 20” recovery between drill series)</p><p class="diet-txt">• 2x10 free body lunges (20” recovery, as above)</p><p class="diet-txt">• 2x25 free-body buttock stretches standing with hands resting on the wall (20” recovery, as above)</p><div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4"><p class="diet-txt !mb-0 text-[12px]">Once the heartbeat is restored to normal values, you can start the Infrabaldan session.</p></div>`
         };
-
         const protocolsES = {
-            "Ginoide": `
-                <p class="diet-title">ENTRENAMIENTO GINOIDE</p>
-                <p class="diet-txt">Ejercicios con pesas Infrabaldan pre-sesión; si se desea, pueden completarse mientras se está en posición de pedaleo:</p>
-                <p class="diet-txt">• cruces con 2 mancuernas (pectorales) 3 series de 12 repeticiones con pausa de 20” entre series</p>
-                <p class="diet-txt">• elevaciones laterales con 2 mancuernas (hombros, siempre en el asiento I.B.), 3 series de 10 repeticiones y con pausa de 20” entre una serie y otra</p>
-                <p class="diet-txt">• bíceps con 2 mancuernas (siempre en la misma posición), 2 series de 10 repeticiones</p>
-                <p class="diet-txt">• tríceps con 1 mancuerna a la vez (“Press francés”). Misma posición anterior, 3 series de 10 repeticiones</p>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
-                    <p class="diet-txt !mb-0 text-[12px]">Para activar la microcirculación desde el inicio de la sesión de entrenamiento, sería óptimo trabajar de 3 a 5 minutos en la plataforma vibratoria (para quienes ya tienen una en el Instituto), antes de comenzar la sesión de pedaleo. De lo contrario, sugerimos comenzar directamente con la rutina de pedaleo.</p>
-                </div>
-            `,
-            "Androide": `
-                <p class="diet-title">ENTRENAMIENTO ANDROIDE</p>
-                <p class="diet-txt">Ejercicios a realizar antes de comenzar la sesión de Infrabaldan:</p>
-                <p class="diet-txt">• 2x15 sentadillas libres (con recuperación de 20” entre series)</p>
-                <p class="diet-txt">• 2x10 estocadas libres (recuperación de 20”, como arriba)</p>
-                <p class="diet-txt">• 2x25 estiramientos de glúteos libres de pie con las manos apoyadas en la pared (recuperación de 20”, como arriba)</p>
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4">
-                    <p class="diet-txt !mb-0 text-[12px]">Una vez que el ritmo cardíaco vuelva a sus valores normales, puedes comenzar la sesión de Infrabaldan.</p>
-                </div>
-            `
+            "Ginoide": `<p class="diet-title">ENTRENAMIENTO GINOIDE</p><p class="diet-txt">Ejercicios con pesas Infrabaldan pre-sesión; si se desea, pueden completarse mientras se está en posición de pedaleo:</p><p class="diet-txt">• cruces con 2 mancuernas (pectorales) 3 series de 12 repeticiones con pausa de 20” entre series</p><p class="diet-txt">• elevaciones laterales con 2 mancuernas (hombros, siempre en el asiento I.B.), 3 series de 10 repeticiones y con pausa de 20” entre una serie y otra</p><p class="diet-txt">• bíceps con 2 mancuernas (siempre en la misma posición), 2 series de 10 repeticiones</p><p class="diet-txt">• tríceps con 1 mancuerna a la vez (“Press francés”). Misma posición anterior, 3 series de 10 repeticiones</p><div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4"><p class="diet-txt !mb-0 text-[12px]">Para activar la microcirculación desde el inicio de la sesión de entrenamiento, sería óptimo trabajar de 3 a 5 minutos en la plataforma vibratoria (para quienes ya tienen una en el Instituto), antes de comenzar la sesión de pedaleo. De lo contrario, sugerimos comenzar directamente con la rutina de pedaleo.</p></div>`,
+            "Androide": `<p class="diet-title">ENTRENAMIENTO ANDROIDE</p><p class="diet-txt">Ejercicios a realizar antes de comenzar la sesión de Infrabaldan:</p><p class="diet-txt">• 2x15 sentadillas libres (con recuperación de 20” entre series)</p><p class="diet-txt">• 2x10 estocadas libres (recuperación de 20”, como arriba)</p><p class="diet-txt">• 2x25 estiramientos de glúteos libres de pie con las manos apoyadas en la pared (recuperación de 20”, como arriba)</p><div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4"><p class="diet-txt !mb-0 text-[12px]">Una vez que el ritmo cardíaco vuelva a sus valores normales, puedes comenzar la sesión de Infrabaldan.</p></div>`
         };
-
         let pKey = pData.plan_asignado || 'Ginoide';
         if (!protocolsEN[pKey]) pKey = "Ginoide";
-        
         document.getElementById('trainingContent').innerHTML = lang === 'EN' ? protocolsEN[pKey] : protocolsES[pKey];
     }
 
@@ -639,81 +506,17 @@
         document.getElementById('view-stats').classList.add('hidden');
         document.getElementById('view-nutrition').classList.add('hidden');
         document.getElementById('view-training').classList.add('hidden');
-        document.getElementById(`view-${t}`).classList.remove('hidden');
-        
+        document.getElementById('view-' + t).classList.remove('hidden');
         document.getElementById('tab-stats').classList.remove('nav-active', 'text-slate-400');
         document.getElementById('tab-nutrition').classList.remove('nav-active', 'text-slate-400');
         document.getElementById('tab-training').classList.remove('nav-active', 'text-slate-400');
-        
         document.getElementById('tab-stats').classList.add('text-slate-400');
         document.getElementById('tab-nutrition').classList.add('text-slate-400');
         document.getElementById('tab-training').classList.add('text-slate-400');
-        
-        document.getElementById(`tab-${t}`).classList.remove('text-slate-400');
-        document.getElementById(`tab-${t}`).classList.add('nav-active');
+        document.getElementById('tab-' + t).classList.remove('text-slate-400');
+        document.getElementById('tab-' + t).classList.add('nav-active');
         window.scrollTo(0,0);
     }
-
-    // ==========================================
-    // LÓGICA DE INSTALACIÓN PWA (SMART BANNER)
-    // ==========================================
-    let deferredPrompt;
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        if (!window.matchMedia('(display-mode: standalone)').matches && !navigator.standalone) {
-            showPwaBanner('android');
-        }
-    });
-
-    function showPwaBanner(os) {
-        const banner = document.getElementById('pwaBanner');
-        banner.classList.remove('hidden');
-        setTimeout(() => { banner.classList.remove('translate-y-full'); }, 50);
-        
-        if (os === 'android') {
-            document.getElementById('pwaActionAndroid').classList.remove('hidden');
-            document.getElementById('pwaActionIOS').classList.add('hidden');
-        } else if (os === 'ios') {
-            document.getElementById('pwaActionAndroid').classList.add('hidden');
-            document.getElementById('pwaActionIOS').classList.remove('hidden');
-        }
-    }
-
-    function dismissPwaBanner() {
-        document.getElementById('pwaBanner').classList.add('translate-y-full');
-        setTimeout(() => { document.getElementById('pwaBanner').classList.add('hidden'); }, 300);
-    }
-
-    async function installPWA() {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                dismissPwaBanner();
-            }
-            deferredPrompt = null;
-        }
-    }
-
-    window.addEventListener('load', () => {
-        // Detectar si es iOS y si NO está ya instalado (standalone)
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
-        
-        if (isIOS && !isStandalone) {
-            setTimeout(() => { showPwaBanner('ios'); }, 1000);
-        }
-
-        // Registrar Service Worker "Dummy" (Requisito para Android)
-        if ('serviceWorker' in navigator) {
-            const swCode = "self.addEventListener('fetch', function(event) {});";
-            const blob = new Blob([swCode], {type: 'application/javascript'});
-            const swUrl = URL.createObjectURL(blob);
-            navigator.serviceWorker.register(swUrl).catch(console.error);
-        }
-    });
 </script>
 </body>
 </html>
