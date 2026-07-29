@@ -203,7 +203,7 @@
 
 <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyuIcI4lN-AMx82_W35BfcGn1szKgnrIbu3YOPAwuhtx3kKAOQ5i-pBWxM0Z2G8oKPz/exec";
-    const OVERRIDES_URL = "https://raw.githubusercontent.com/yariancn/renpho-wyze-scales/main/data/overrides.json?v=programa2";
+    const OVERRIDES_URL = "https://raw.githubusercontent.com/yariancn/renpho-wyze-scales/main/data/overrides.json?v=id113345";
     let pData = null, uM = 'LB', lang = 'EN';
     let gIniBio = null, gCurrBio = null;
     let remoteOverrides = {};
@@ -255,8 +255,18 @@
         if (!p) return p;
         const key = String(p.id);
         const bare = key.replace(/^ID-/i, '');
-        const patch = remoteOverrides[key] || remoteOverrides[bare] || remoteOverrides['ID-' + bare] || {};
-        const { nota, updatedAt, avances_override, ...fields } = patch;
+        let patch = {
+            ...(remoteOverrides[key] || {}),
+            ...(remoteOverrides[bare] || {}),
+            ...(remoteOverrides['ID-' + bare] || {})
+        };
+        Object.keys(remoteOverrides || {}).forEach(k => {
+            const ov = remoteOverrides[k];
+            if (ov && ov._from_id && String(ov._from_id).replace(/^ID-/i, '') === bare) {
+                patch = { ...patch, ...ov };
+            }
+        });
+        const { nota, updatedAt, avances_override, _from_id, ...fields } = patch;
         return {
             ...p,
             ...fields,
@@ -266,6 +276,18 @@
 
     function idsMatch(a, b) {
         return String(a || '').trim().replace(/^ID-/i, '') === String(b || '').trim().replace(/^ID-/i, '');
+    }
+
+    function findPatientForLogin(list, id, name) {
+        const n = String(name || '').toLowerCase();
+        return (list || []).find(p => {
+            if (!String(p.nombre || '').toLowerCase().includes(n)) return false;
+            const patched = applyPatientOverrides(p);
+            if (idsMatch(p.id, id) || idsMatch(patched.id, id)) return true;
+            const byLogin = remoteOverrides[String(id)] || remoteOverrides[String(id).replace(/^ID-/i, '')];
+            if (byLogin && byLogin._from_id && idsMatch(p.id, byLogin._from_id)) return true;
+            return false;
+        });
     }
 
     const ui = {
@@ -307,7 +329,7 @@
                 throw new Error("Permisos en Google Apps Script bloqueados.");
             }
 
-            const m = d.find(p => idsMatch(p.id, id) && String(p.nombre).toLowerCase().includes(name));
+            const m = findPatientForLogin(d, id, name);
             if(m) { 
                 pData = applyPatientOverrides(m); 
                 document.getElementById('loginScreen').style.display='none'; 
