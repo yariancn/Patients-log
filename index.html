@@ -99,7 +99,8 @@
             <div class="mt-2">
                 <p id="patientHello" class="text-xl font-black text-slate-900 uppercase italic leading-none mb-3">--</p>
                 <div class="flex flex-wrap gap-2">
-                    <span id="planBadge" class="text-[9px] font-black text-blue-600 uppercase bg-blue-50 px-2 py-1 rounded border border-blue-100">PLAN: --</span>
+                    <span id="programBadge" class="text-[9px] font-black uppercase px-2 py-1 rounded border border-cyan-200 bg-cyan-50 text-cyan-800">PROGRAM: --</span>
+                    <span id="planBadge" class="text-[9px] font-black text-blue-600 uppercase bg-blue-50 px-2 py-1 rounded border border-blue-100 hidden">NUTRI: --</span>
                     <span id="sessionBadge" class="text-[9px] font-black text-emerald-600 uppercase bg-emerald-50 px-2 py-1 rounded border border-emerald-100">SESSION --</span>
                 </div>
             </div>
@@ -202,9 +203,70 @@
 
 <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyuIcI4lN-AMx82_W35BfcGn1szKgnrIbu3YOPAwuhtx3kKAOQ5i-pBWxM0Z2G8oKPz/exec";
+    const OVERRIDES_URL = "https://raw.githubusercontent.com/yariancn/renpho-wyze-scales/main/data/overrides.json?v=programa2";
     let pData = null, uM = 'LB', lang = 'EN';
     let gIniBio = null, gCurrBio = null;
+    let remoteOverrides = {};
     const LB = 2.20462;
+
+    function coerceHeightCm(raw) {
+        const h = parseFloat(raw);
+        if (!(h > 0)) return 170;
+        if (h >= 4 && h <= 8) return +(h * 30.48).toFixed(1);
+        if (h > 8 && h < 90) return +(h * 2.54).toFixed(1);
+        return +h.toFixed(1);
+    }
+
+    function isHyperbaric(p) {
+        return String(p && p.programa || '').trim() === 'camara_hiperbarica';
+    }
+
+    function isRedLight(p) {
+        return String(p && p.programa || '').trim() === 'luz_roja';
+    }
+
+    function programBadgeInfo(p) {
+        if (isHyperbaric(p)) {
+            return {
+                text: lang === 'ES' ? 'CÁMARA HIPERBÁRICA · WELLNESS' : 'HYPERBARIC CHAMBER · WELLNESS',
+                cls: 'text-[9px] font-black uppercase px-2 py-1 rounded border border-cyan-200 bg-cyan-50 text-cyan-800'
+            };
+        }
+        if (isRedLight(p)) {
+            return {
+                text: lang === 'ES' ? 'LUZ ROJA · INFRA BALDAN' : 'RED LIGHT · INFRA BALDAN',
+                cls: 'text-[9px] font-black uppercase px-2 py-1 rounded border border-rose-200 bg-rose-50 text-rose-800'
+            };
+        }
+        return {
+            text: lang === 'ES' ? 'PÉRDIDA DE PESO · INFRA BALDAN' : 'WEIGHT LOSS · INFRA BALDAN',
+            cls: 'text-[9px] font-black uppercase px-2 py-1 rounded border border-blue-200 bg-blue-50 text-blue-800'
+        };
+    }
+
+    async function loadRemoteOverrides() {
+        try {
+            const r = await fetch(OVERRIDES_URL + '&t=' + Date.now());
+            if (r.ok) remoteOverrides = await r.json() || {};
+        } catch (e) { console.warn('overrides', e); }
+    }
+
+    function applyPatientOverrides(p) {
+        if (!p) return p;
+        const key = String(p.id);
+        const bare = key.replace(/^ID-/i, '');
+        const patch = remoteOverrides[key] || remoteOverrides[bare] || remoteOverrides['ID-' + bare] || {};
+        const { nota, updatedAt, avances_override, ...fields } = patch;
+        return {
+            ...p,
+            ...fields,
+            altura: coerceHeightCm(fields.altura != null ? fields.altura : p.altura)
+        };
+    }
+
+    function idsMatch(a, b) {
+        return String(a || '').trim().replace(/^ID-/i, '') === String(b || '').trim().replace(/^ID-/i, '');
+    }
 
     const ui = {
         EN: {
@@ -236,6 +298,7 @@
         document.getElementById('errorBox').classList.add('hidden');
         
         try {
+            await loadRemoteOverrides();
             const r = await fetch(WEB_APP_URL + "?action=obtenerClientes");
             if(!r.ok) throw new Error("HTTP Error " + r.status);
             const textData = await r.text();
@@ -244,9 +307,9 @@
                 throw new Error("Permisos en Google Apps Script bloqueados.");
             }
 
-            const m = d.find(p => String(p.id).trim() === id && String(p.nombre).toLowerCase().includes(name));
+            const m = d.find(p => idsMatch(p.id, id) && String(p.nombre).toLowerCase().includes(name));
             if(m) { 
-                pData = m; 
+                pData = applyPatientOverrides(m); 
                 document.getElementById('loginScreen').style.display='none'; 
                 document.getElementById('mainHeader').classList.remove('hidden');
                 document.getElementById('mainContent').classList.remove('hidden');
@@ -293,7 +356,7 @@
         let g = parseFloat(entry && entry.grasa) || 0;
         let edad = parseFloat(pData && pData.edad) || 30;
         let isM = String(pData && pData.sexo).toLowerCase().startsWith('m');
-        let altM = (parseFloat(pData && pData.altura) || 170) / 100;
+        let altM = coerceHeightCm(pData && pData.altura) / 100;
         
         let ffm = p * (1 - (g/100)); 
         let musc = parseFloat(entry && entry.masa_muscular_kg) || (ffm * 0.56);
@@ -326,7 +389,18 @@
         const c = (v) => uM==='LB'?(v*LB).toFixed(1):v.toFixed(1);
         
         document.getElementById('patientHello').innerText = pData.nombre.toUpperCase();
-        document.getElementById('planBadge').innerText = `PLAN: ${pData.plan_asignado || 'GINOIDE'}`;
+        const prog = programBadgeInfo(pData);
+        const progEl = document.getElementById('programBadge');
+        progEl.innerText = prog.text;
+        progEl.className = prog.cls;
+        const planEl = document.getElementById('planBadge');
+        if (isHyperbaric(pData)) {
+            // Nutrition plan is secondary for HBOT wellness — hide Mixto/Ginoide as "the program"
+            planEl.classList.add('hidden');
+        } else {
+            planEl.classList.remove('hidden');
+            planEl.innerText = `NUTRI: ${(pData.plan_asignado || 'GINOIDE').toUpperCase()}`;
+        }
         document.getElementById('sessionBadge').innerText = `SESSION #${(pData.avances ? pData.avances.length : 0) + 1}`;
         
         document.getElementById('valPeso').setAttribute('data-val', c(gCurrBio.p)); document.getElementById('valPeso').innerText = c(gCurrBio.p);
@@ -446,6 +520,18 @@
 
     function generateAI() {
         let msg = lang === 'EN' ? `Clinical analysis for ${pData.nombre.split(' ')[0]}: ` : `Análisis clínico para ${pData.nombre.split(' ')[0]}: `;
+        if (isHyperbaric(pData)) {
+            msg += lang === 'EN'
+                ? `You are on mild hyperbaric wellness (not weight-loss / red light). Stay consistent with chamber sessions and surgeon guidance. Composition is supportive context — how you feel day to day matters most. `
+                : `Estás en wellness de cámara hiperbárica (no pérdida de peso / luz roja). Mantén tus sesiones y las indicaciones de tu cirujano. La composición es contexto de apoyo — cómo te sientes día a día importa más. `;
+            if (gCurrBio && gCurrBio.g < 3) {
+                msg += lang === 'EN'
+                    ? `Complete a full scale scan (ohms) so body-fat % is accurate. `
+                    : `Completa un escaneo de báscula con ohms para que el % de grasa sea preciso. `;
+            }
+            document.getElementById('aiReport').innerText = msg;
+            return;
+        }
         if(gCurrBio.g < gIniBio.g) { msg += lang === 'EN' ? `You reduced body fat by ${(gIniBio.g - gCurrBio.g).toFixed(1)}%. Lipolysis is active. ` : `Has reducido grasa en ${(gIniBio.g - gCurrBio.g).toFixed(1)}%. Lipólisis activa. `; }
         else { msg += lang === 'EN' ? `Your metabolism is adapting. Do not skip your 2 weekly sessions. ` : `Tu metabolismo está en fase de adaptación. No omitas tus 2 sesiones semanales para romper esta resistencia. `; }
         if(gCurrBio.visc > 9) { msg += lang === 'EN' ? `URGENT: Visceral fat (Lvl ${gCurrBio.visc}) is high. Zero refined carbs this week is mandatory. ` : `URGENTE: Grasa visceral (Nivel ${gCurrBio.visc}) asfixia tus órganos. Cero carbohidratos refinados esta semana es un mandato clínico. `; }
@@ -453,8 +539,24 @@
     }
 
     function renderNutrition() {
-        const plan = pData.plan_asignado || 'Ginoide';
         const c = document.getElementById('nutritionContent');
+        if (isHyperbaric(pData)) {
+            c.innerHTML = lang === 'EN' ? `
+                <p class="diet-title">HYPERBARIC WELLNESS · RECOVERY FUEL</p>
+                <p class="diet-txt">This is <b>not</b> a weight-loss / Infra Baldan nutrition protocol. Eat to support healing, hydration, and energy around your chamber sessions.</p>
+                <p class="diet-title">DAILY FOCUS</p>
+                <p class="diet-txt">• Protein at each meal<br>• Colorful vegetables and fruit<br>• Steady hydration before/after sessions<br>• Surgeon / clinic restrictions come first</p>
+                <div class="bg-cyan-50 border-l-4 border-cyan-500 p-5 mt-6 rounded-xl"><p class="diet-title !text-cyan-800 mt-0">NOTE</p><p class="diet-txt !mb-0 text-[13px]">Educational wellness guidance only — not medical treatment.</p></div>
+            ` : `
+                <p class="diet-title">WELLNESS CÁMARA · RECUPERACIÓN</p>
+                <p class="diet-txt">Esto <b>no</b> es el protocolo de pérdida de peso / Infra Baldan. Come para apoyar cicatrización, hidratación y energía.</p>
+                <p class="diet-title">ENFOQUE DIARIO</p>
+                <p class="diet-txt">• Proteína en cada comida<br>• Verduras y fruta de color<br>• Hidratación antes/después de sesión<br>• Primero las indicaciones de tu cirujano</p>
+                <div class="bg-cyan-50 border-l-4 border-cyan-500 p-5 mt-6 rounded-xl"><p class="diet-title !text-cyan-800 mt-0">NOTA</p><p class="diet-txt !mb-0 text-[13px]">Orientación educativa de wellness — no es tratamiento médico.</p></div>
+            `;
+            return;
+        }
+        const plan = pData.plan_asignado || 'Ginoide';
         const dietsEN = {
             "Ginoide": `
                 <p class="diet-title">MORNING</p>
@@ -501,8 +603,32 @@
     }
 
     function renderTraining() {
-        const plan = pData.plan_asignado || 'Ginoide';
         const c = document.getElementById('trainingContent');
+        if (isHyperbaric(pData)) {
+            c.innerHTML = lang === 'EN' ? `
+                <p class="diet-title">HYPERBARIC WELLNESS · SESSION RHYTHM</p>
+                <p class="diet-txt">Your program is <b>mild hyperbaric chamber wellness</b> — not red-light / Infra Baldan pedaling workouts.</p>
+                <p class="diet-title">BEFORE</p>
+                <p class="diet-txt">Arrive calm, hydrated, and follow clinic check-in. Share any post-surgical limits with staff.</p>
+                <p class="diet-title">DURING</p>
+                <p class="diet-txt">Breathe normally, rest, and use the session as recovery time. Staff will guide pressure and duration.</p>
+                <p class="diet-title">AFTER</p>
+                <p class="diet-txt">Hydrate, note how you feel (swelling, comfort, energy, sleep), and keep your next appointment.</p>
+                <div class="bg-cyan-50 border-l-4 border-cyan-500 p-4 mt-4"><p class="diet-txt !mb-0 text-[12px]">Wellness education only. Clearance from your surgeon may be required for post-op clients.</p></div>
+            ` : `
+                <p class="diet-title">WELLNESS CÁMARA · RITMO DE SESIÓN</p>
+                <p class="diet-txt">Tu programa es <b>wellness de cámara hiperbárica suave</b> — no es el entrenamiento de luz roja / Infra Baldan.</p>
+                <p class="diet-title">ANTES</p>
+                <p class="diet-txt">Llega calmada, hidratada y sigue el check-in de la clínica. Comparte límites post-quirúrgicos con el staff.</p>
+                <p class="diet-title">DURANTE</p>
+                <p class="diet-txt">Respira normal, descansa y usa la sesión como recuperación. El equipo guía presión y duración.</p>
+                <p class="diet-title">DESPUÉS</p>
+                <p class="diet-txt">Hidrátate, anota cómo te sientes (hinchazón, confort, energía, sueño) y mantén tu próxima cita.</p>
+                <div class="bg-cyan-50 border-l-4 border-cyan-500 p-4 mt-4"><p class="diet-txt !mb-0 text-[12px]">Solo educación de wellness. Puede requerirse autorización del cirujano en post-op.</p></div>
+            `;
+            return;
+        }
+        const plan = pData.plan_asignado || 'Ginoide';
         const protocolsEN = {
             "Ginoide": `<p class="diet-title">GYNOID TRAINING</p><p class="diet-txt">Exercises with pre-session Infrabaldan weighs; if desired, can be completed while in pedaling position:</p><p class="diet-txt">• crosses with 2 dumbbells (pectorals) 3 sets of 12 repetitions with 20” pause between sets</p><p class="diet-txt">• lateral lifts with 2 dumbbells (shoulders, always on the I.B. seat), 3 sets of 10 repetitions and with 20” pause between one series and the other</p><p class="diet-txt">• biceps with 2 dumbbells (always in the same position), 2 series for 10 repetitions</p><p class="diet-txt">• triceps with 1 dumbbell at a time (“French press”). Same position as above, 3 series for 10 repetitions</p><div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4"><p class="diet-txt !mb-0 text-[12px]">In order to activate microcirculation from the start of the workout session, it would be optimal to work for 3-5 minutes on the vibrating platform (for those who already have one at the Institute), before starting the pedaling session. Otherwise, we suggest starting directly with the pedaling routine.</p></div>`,
             "Androide": `<p class="diet-title">ANDROID TRAINING</p><p class="diet-txt">Exercises to be done before starting the Infrabaldan session:</p><p class="diet-txt">• 2x15 free body squat (with 20” recovery between drill series)</p><p class="diet-txt">• 2x10 free body lunges (20” recovery, as above)</p><p class="diet-txt">• 2x25 free-body buttock stretches standing with hands resting on the wall (20” recovery, as above)</p><div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-4"><p class="diet-txt !mb-0 text-[12px]">Once the heartbeat is restored to normal values, you can start the Infrabaldan session.</p></div>`
