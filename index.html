@@ -203,7 +203,8 @@
 
 <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyuIcI4lN-AMx82_W35BfcGn1szKgnrIbu3YOPAwuhtx3kKAOQ5i-pBWxM0Z2G8oKPz/exec";
-    const OVERRIDES_URL = "https://raw.githubusercontent.com/yariancn/renpho-wyze-scales/main/data/overrides.json?v=id113345";
+    const OVERRIDES_URL = "https://raw.githubusercontent.com/yariancn/renpho-wyze-scales/main/data/overrides.json?v=wellnessRedirect";
+    const WELLNESS_BASE = "https://value-stacking.vercel.app/your-wellness";
     let pData = null, uM = 'LB', lang = 'EN';
     let gIniBio = null, gCurrBio = null;
     let remoteOverrides = {};
@@ -331,7 +332,19 @@
 
             const m = findPatientForLogin(d, id, name);
             if(m) { 
-                pData = applyPatientOverrides(m); 
+                pData = applyPatientOverrides(m);
+                // Cámara / hyperbaric wellness → Your Wellness (not this weight-control portal)
+                if (isHyperbaric(pData)) {
+                    const dest = String(pData.wellness_url || '').trim()
+                        || (pData.scale_member_no
+                            ? WELLNESS_BASE + '/p/' + pData.scale_member_no
+                            : WELLNESS_BASE);
+                    document.getElementById('btnAccess').innerText = lang === 'ES'
+                        ? 'ABRIENDO YOUR WELLNESS…'
+                        : 'OPENING YOUR WELLNESS…';
+                    window.location.replace(dest);
+                    return;
+                }
                 document.getElementById('loginScreen').style.display='none'; 
                 document.getElementById('mainHeader').classList.remove('hidden');
                 document.getElementById('mainContent').classList.remove('hidden');
